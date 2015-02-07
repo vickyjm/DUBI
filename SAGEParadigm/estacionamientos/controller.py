@@ -22,9 +22,9 @@ def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
 	if ReservaInicio > HoraFin:
 		return (False, 'El horario de comienzo de reserva debe ser menor al horario de cierre del estacionamiento')
 	if ReservaFin < HoraInicio:
-		return (False, 'El horario de apertura de estacionamiento debe ser menor al horario de finalización de reservas')
+		return (False, 'El horario de apertura de estacionamiento debe ser menor al horario de finalizacion de reservas')
 	if ReservaFin > HoraFin:
-		return (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalización de reservas')
+		return (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalizacion de reservas')
 	return (True, '')
 
 
@@ -34,7 +34,7 @@ def buscar(hin, hout, estacionamiento):
 		return (-1, -1, False)
 	if len(estacionamiento) == 0:
 		return (-1, -1, False)
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
 		return (-1, -1, False)
 	for i in range(len(estacionamiento)):
 		posicion = busquedaBin(hin, hout, estacionamiento[i])
@@ -56,14 +56,14 @@ def binaria(valor, inicio, fin, lista):
 # puede ser insertado, y ademas devuelve un booleano que dice si la
 # tupla puede ser insertada, es decir que sus valores no solapen alguno
 # ya existente.
-# Precondición: la lista debe tener ya la mayor y menor posible tupla
+# Precondicion: la lista debe tener ya la mayor y menor posible tupla
 def busquedaBin(hin, hout, listaTuplas):
 	# ln = len(listaTuplas)
 	if not isinstance(listaTuplas, list):
 		return (0, False)
 	if len(listaTuplas) == 0:
 		return (0, True)
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
 		return (0, False)
 	index = binaria(hin, 0, len(listaTuplas), listaTuplas)
 	if index == 0:
@@ -80,7 +80,7 @@ def insertarReserva(hin, hout, puesto, listaReserva):
 		return None
 	if len(listaReserva) == 0:
 		return listaReserva
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
 		return listaReserva
 	tupla = (hin, hout)
 	listaReserva.insert(puesto, tupla)
@@ -92,7 +92,7 @@ def reservar(hin, hout, estacionamiento):
 		return 1
 	if len(estacionamiento) == 0:
 		return 1
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
 		return 1
 	puesto = buscar(hin, hout, estacionamiento)
 	if puesto[2] != False:
@@ -103,14 +103,17 @@ def reservar(hin, hout, estacionamiento):
 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
-
+	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
+	hFin = datetime.time(ReservaFin.hour,ReservaFin.minute)
+	delta = ReservaFin - ReservaInicio
+	
 	if ReservaInicio >= ReservaFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
-	if ReservaFin.hour - ReservaInicio.hour < 1:
+	if (delta.days == 0) and (delta.seconds < 3600) :
 		return (False, 'El tiempo de reserva debe ser al menos de 1 hora')
-	if ReservaFin > HorarioCierre:
-		return (False, 'El horario de inicio de reserva debe estar en un horario válido')
-	if ReservaInicio < HorarioApertura:
-		return (False, 'El horario de cierre de reserva debe estar en un horario válido')
+	if hFin > HorarioCierre:
+		return (False, 'El horario de inicio de reserva debe estar en un horario valido')
+	if hIni < HorarioApertura:
+		return (False, 'El horario de cierre de reserva debe estar en un horario valido')
 	return (True, '')
 

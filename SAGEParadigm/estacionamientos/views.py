@@ -3,6 +3,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
+from django.utils import timezone
+
 from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
@@ -106,10 +108,12 @@ def estacionamiento_reserva(request, _id):
     if len(listaReserva) < 1:
 
         Puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('Puesto', 'InicioReserva', 'FinalReserva')
-        elem1 = (estacion.Apertura, estacion.Apertura)
-        elem2 = (estacion.Cierre, estacion.Cierre)
+        #elem1 = (estacion.Apertura, estacion.Apertura)
+        #elem2 = (estacion.Cierre, estacion.Cierre)
+        elem1 = (datetime.datetime.min, datetime.datetime.min)
+        elem2 = (datetime.datetime.max,datetime.datetime.max)
         listaReserva = [[elem1, elem2] for _ in range(estacion.NroPuesto)]
-
+        
         for obj in Puestos:
             puesto = busquedaBin(obj[1], obj[2], listaReserva[obj[0]])
             listaReserva[obj[0]] = insertarReserva(obj[1], obj[2], puesto[0], listaReserva[obj[0]])
@@ -125,8 +129,13 @@ def estacionamiento_reserva(request, _id):
             form = EstacionamientoReserva(request.POST)
             # Verificamos si es valido con los validadores del formulario
             if form.is_valid():
-                inicio_reserva = form.cleaned_data['inicio']
-                final_reserva = form.cleaned_data['final']
+                fechaIni = form.cleaned_data['fechaInicio']
+                horaIni = form.cleaned_data['horaInicio']
+                fechaFin = form.cleaned_data['fechaFinal']
+                horaFin = form.cleaned_data['horaFinal']
+                
+                inicio_reserva = datetime.datetime.combine(fechaIni,horaIni)
+                final_reserva = datetime.datetime.combine(fechaFin,horaFin)
 
                 # Validamos los horarios con los horario de salida y entrada
                 m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre)
@@ -140,6 +149,8 @@ def estacionamiento_reserva(request, _id):
                 x = buscar(inicio_reserva, final_reserva, listaReserva)
                 if x[2] == True :
                     reservar(inicio_reserva, final_reserva, listaReserva)
+                    inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())
+                    final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
                     reservaFinal = ReservasModel(
                                         Estacionamiento = estacion,
                                         Puesto = x[0],
