@@ -1,5 +1,8 @@
 # Archivo con funciones de control para SAGE
-import datetime
+
+from decimal import Decimal
+from datetime import datetime
+from datetime import timedelta
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -102,17 +105,31 @@ def reservar(hin, hout, estacionamiento):
 		return 1
 	
 def calculoTarifaHora(iniR,finR,tarifa):
-	temp1=(finR-iniR).seconds//3600
-	temp2=(finR-iniR).seconds/3600
+	
+	assert(finR > iniR)
+	assert(tarifa > 0)
+	assert(finR < iniR + timedelta(hours = 1))
+	assert(finR > iniR + timedelta(days = 7))
+	
+	temp1=(finR - iniR).seconds//3600
+	temp2=(finR - iniR).seconds/3600
 	if temp1<temp2:
 		temp1+=1
+		
 	return tarifa*temp1
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
+	
+	assert(finR > iniR)
+	assert(tarifa > 0)
+	assert(finR < iniR + timedelta(hours = 1))
+	assert(finR > iniR + timedelta(days = 7))
+	
 	temp1 = (finR - iniR).seconds//3600
 	temp2 = (finR - iniR).seconds/3600
 	minextra = temp2 - temp1
 	fraccion = tarifa*minextra
+	
 	return tarifa * temp1 + fraccion 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
