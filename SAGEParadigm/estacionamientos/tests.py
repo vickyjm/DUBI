@@ -1306,14 +1306,14 @@ class SimpleFormTestCase(TestCase):
 	def test_tarifaPorMinutoFraccion1Min(self):
 		tarifa = 20
 		inires = datetime(2015,7,5,18,25,0,0)
-		finres = datetime(2015,7,5,19,26,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20 + 20/60)
+		finres = datetime(2015,7,5,20,26,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20*2 + 20/60)
 		
 	def test_tarifaPorMinutoFraccion59Min(self):
 		tarifa = 20
 		inires = datetime(2015,7,5,18,25,0,0)
-		finres = datetime(2015,7,5,20,24,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20 + 59 *(20/60))
+		finres = datetime(2015,7,5,22,24,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20*3 + 59 *(20/60))
 		
 	
 
