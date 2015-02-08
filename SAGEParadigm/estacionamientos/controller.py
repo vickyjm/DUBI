@@ -108,6 +108,12 @@ def calculoTarifaHora(iniR,finR,tarifa):
 		temp1+=1
 	return tarifa*temp1
 
+def calculoTarifaMin (iniR, finR, tarifa):
+	temp1 = (finR - iniR).seconds//3600
+	temp2 = (finR - iniR).seconds/3600
+	minextra = temp2 - temp1
+	fraccion = tarifa*minextra
+	return tarifa * temp1 + fraccion 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
 
