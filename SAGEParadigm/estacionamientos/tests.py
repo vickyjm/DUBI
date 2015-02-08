@@ -1271,6 +1271,18 @@ class SimpleFormTestCase(TestCase):
 		inires = datetime(2015,7,5,18,25,0,0)
 		finres = datetime(2015,7,12,18,25,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 15*24*7)
+		
+	def test_tarifaPorHoraFraccion1Min(self):
+		tarifa = 20
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,19,26,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
+		
+	def test_tarifaPorHoraFraccion59Min(self):
+		tarifa = 20
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,20,24,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
 	
 		
 #################################################################
@@ -1290,6 +1302,19 @@ class SimpleFormTestCase(TestCase):
 		inires = datetime(2015,7,5,18,25,0,0)
 		finres = datetime(2015,7,12,18,25,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 15*24*7)
+		
+	def test_tarifaPorMinutoFraccion1Min(self):
+		tarifa = 20
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,19,26,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20 + 20/60)
+		
+	def test_tarifaPorMinutoFraccion59Min(self):
+		tarifa = 20
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,20,24,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 20 + 59 *(20/60))
+		
 	
 
 
