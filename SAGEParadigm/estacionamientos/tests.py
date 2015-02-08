@@ -1253,3 +1253,53 @@ class SimpleFormTestCase(TestCase):
 	def test_reservar_todo_None(self):
 		x = reservar(None, None, None)
 		self.assertEqual(x, 1)
+		
+#################################################################
+#		Pruebas calculo de tarifa por horas 
+################################################################
+
+	# El minimo tiempo de reserva es de 1 hora
+	def test_tarifaPorHoraMinTiempo(self):
+		tarifa = 15
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,19,25,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 15)
+		
+	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	def test_tarifaPorHoraMaxTiempo(self):
+		tarifa = 15
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,12,18,25,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 15*24*7)
+	
+		
+#################################################################
+#		Pruebas calculo de tarifa por minutos 
+#################################################################
+
+	# El minimo tiempo de reserva es de 1 hora
+	def test_tarifaPorMinutoMinTiempo(self):
+		tarifa = 15
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,5,19,25,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 15)
+		
+	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	def test_tarifaPorMinutoMaxTiempo(self):
+		tarifa = 15
+		inires = datetime(2015,7,5,18,25,0,0)
+		finres = datetime(2015,7,12,18,25,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 15*24*7)
+	
+
+
+
+
+
+
+
+
+
+
+
+
