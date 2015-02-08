@@ -1,8 +1,7 @@
 # Archivo con funciones de control para SAGE
 
 from decimal import Decimal
-from datetime import datetime
-from datetime import timedelta
+from datetime import *
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -37,7 +36,7 @@ def buscar(hin, hout, estacionamiento):
 		return (-1, -1, False)
 	if len(estacionamiento) == 0:
 		return (-1, -1, False)
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, time) or not isinstance(hout,time):
 		return (-1, -1, False)
 	for i in range(len(estacionamiento)):
 		posicion = busquedaBin(hin, hout, estacionamiento[i])
@@ -66,7 +65,7 @@ def busquedaBin(hin, hout, listaTuplas):
 		return (0, False)
 	if len(listaTuplas) == 0:
 		return (0, True)
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, time) or not isinstance(hout, time):
 		return (0, False)
 	index = binaria(hin, 0, len(listaTuplas), listaTuplas)
 	if index == 0:
@@ -83,7 +82,7 @@ def insertarReserva(hin, hout, puesto, listaReserva):
 		return None
 	if len(listaReserva) == 0:
 		return listaReserva
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, time) or not isinstance(hout, time):
 		return listaReserva
 	tupla = (hin, hout)
 	listaReserva.insert(puesto, tupla)
@@ -95,7 +94,7 @@ def reservar(hin, hout, estacionamiento):
 		return 1
 	if len(estacionamiento) == 0:
 		return 1
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, time) or not isinstance(hout, time):
 		return 1
 	puesto = buscar(hin, hout, estacionamiento)
 	if puesto[2] != False:
@@ -108,8 +107,8 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	
 	assert(finR > iniR)
 	assert(tarifa > 0)
-	assert(finR < iniR + timedelta(hours = 1))
-	assert(finR > iniR + timedelta(days = 7))
+	#assert(finR < iniR + timedelta(hours = 1))
+	#assert(finR > iniR + timedelta(days = 7))
 	
 	temp1=(finR - iniR).seconds//3600
 	temp2=(finR - iniR).seconds/3600
@@ -122,8 +121,8 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	
 	assert(finR > iniR)
 	assert(tarifa > 0)
-	assert(finR < iniR + timedelta(hours = 1))
-	assert(finR > iniR + timedelta(days = 7))
+	#assert(finR < iniR + timedelta(hours = 1))
+	#assert(finR > iniR + timedelta(days = 7))
 	
 	temp1 = (finR - iniR).seconds//3600
 	temp2 = (finR - iniR).seconds/3600
