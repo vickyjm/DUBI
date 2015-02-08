@@ -100,6 +100,13 @@ def reservar(hin, hout, estacionamiento):
 		return estacionamiento
 	else:
 		return 1
+	
+def calculoTarifaHora(iniR,finR,tarifa):
+	temp1=(finR-iniR).seconds//3600
+	temp2=(finR-iniR).seconds/3600
+	if temp1<temp2:
+		temp1+=1
+	return tarifa*temp1
 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):

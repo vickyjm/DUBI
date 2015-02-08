@@ -143,20 +143,24 @@
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
       {% if estacionamiento.Reservas_Inicio %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Horario inicio de reserva:</b></td></tr>
+        <tr><td><b><i class="fa fa-clock-o"></i> Hora inicio de reserva:</b></td></tr>
         <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
       {% endif %}
       {% if estacionamiento.Reservas_Cierre %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Horario fin de reserva:</b></td></tr>
+        <tr><td><b><i class="fa fa-clock-o"></i> Hora fin de reserva:</b></td></tr>
         <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
       {% endif %}
       {% if estacionamiento.Apertura %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Horario apertura:</b></td></tr>
+        <tr><td><b><i class="fa fa-clock-o"></i> Hora apertura:</b></td></tr>
         <tr><td>{{estacionamiento.Apertura}}</td></tr>
       {% endif %}
       {% if estacionamiento.Cierre %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Horario cierre:</b></td></tr>
+        <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
         <tr><td>{{estacionamiento.Cierre}}</td></tr>
+      {% endif %}
+      {% if estacionamiento.Esquema %}
+        <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
+        <tr><td>{{estacionamiento.Esquema}}</td></tr>
       {% endif %}
  	  {% if estacionamiento.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>

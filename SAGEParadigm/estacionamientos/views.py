@@ -78,6 +78,7 @@ def estacionamiento_detail(request, _id):
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
 
                 estacion.Tarifa = form.cleaned_data['tarifa']
+                estacion.Esquema = form.cleaned_data['esquema']
                 estacion.Apertura = hora_in
                 estacion.Cierre = hora_out
                 estacion.Reservas_Inicio = reserva_in
@@ -147,8 +148,13 @@ def estacionamiento_reserva(request, _id):
                                         FinalReserva = final_reserva
                                     )
                     reservaFinal.save()
-                    tarifaCosto=100
-                    mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaCosto)
+                    inicio_reserva=datetime.datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
+                    final_reserva=datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
+                    tarifaCosto=int(estacion.Tarifa)
+                    tarifaFinal=0
+                    if estacion.Esquema=='Hora' or estacion.Esquema=='hora':
+                        tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
+                    mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaFinal)
                     return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeTarifa})
                 else:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario'})
