@@ -107,8 +107,8 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	
 	assert(finR > iniR)
 	assert(tarifa > 0)
-	#assert(finR < iniR + timedelta(hours = 1))
-	#assert(finR > iniR + timedelta(days = 7))
+	assert(finR >= iniR + timedelta(hours = 1))
+	assert(finR <= iniR + timedelta(days = 7))
 	
 	temp1=(finR - iniR).seconds//3600
 	temp2=(finR - iniR).seconds/3600
@@ -121,8 +121,8 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	
 	assert(finR > iniR)
 	assert(tarifa > 0)
-	#assert(finR < iniR + timedelta(hours = 1))
-	#assert(finR > iniR + timedelta(days = 7))
+	assert(finR >= iniR + timedelta(hours = 1))
+	assert(finR <= iniR + timedelta(days = 7))
 	
 	temp1 = (finR - iniR).seconds//3600
 	temp2 = (finR - iniR).seconds/3600
