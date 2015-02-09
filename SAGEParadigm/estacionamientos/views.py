@@ -149,8 +149,8 @@ def estacionamiento_reserva(request, _id):
                 x = buscar(inicio_reserva, final_reserva, listaReserva)
                 if x[2] == True :
                     reservar(inicio_reserva, final_reserva, listaReserva)
-                    inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())
-                    final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
+                    #inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())
+                    #final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
                     reservaFinal = ReservasModel(
                                         Estacionamiento = estacion,
                                         Puesto = x[0],
