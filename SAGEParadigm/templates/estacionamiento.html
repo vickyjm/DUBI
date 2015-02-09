@@ -146,6 +146,11 @@
         <tr><td><b><i class="fa fa-clock-o"></i> Horario inicio de reserva:</b></td></tr>
         <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
       {% endif %}
+      <!-- QUITAR DESPUES -->
+      {% if estacionamiento.Reservas_Inicio == estacionamiento.Apertura %}
+        <tr><td><b><i class="fa fa-clock-o"></i> Horario inicio de reserva:</b></td></tr>
+        <tr><td>{{estacionamiento.Reservas_Inicio.hour}}{{":"}}{{estacionamiento.Reservas_Inicio.minute}}{{estacionamiento.Reservas_Inicio.minute}}{{" a.m."}}</td></tr>
+      {% endif %}
       {% if estacionamiento.Reservas_Cierre %}
         <tr><td><b><i class="fa fa-clock-o"></i> Horario fin de reserva:</b></td></tr>
         <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
@@ -153,6 +158,11 @@
       {% if estacionamiento.Apertura %}
         <tr><td><b><i class="fa fa-clock-o"></i> Horario apertura:</b></td></tr>
         <tr><td>{{estacionamiento.Apertura}}</td></tr>
+      {% endif %}
+      <!-- QUITAR DESPUES -->
+      {% if estacionamiento.Reservas_Inicio == estacionamiento.Apertura %}
+        <tr><td><b><i class="fa fa-clock-o"></i> Horario apertura:</b></td></tr>
+        <tr><td>{{estacionamiento.Apertura.hour}}{{":"}}{{estacionamiento.Apertura.minute}}{{estacionamiento.Apertura.minute}}{{" a.m."}}</td></tr>
       {% endif %}
       {% if estacionamiento.Cierre %}
         <tr><td><b><i class="fa fa-clock-o"></i> Horario cierre:</b></td></tr>

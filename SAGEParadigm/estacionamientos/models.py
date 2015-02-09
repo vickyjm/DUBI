@@ -23,7 +23,7 @@ class Estacionamiento(models.Model):
 	Tarifa = models.CharField(max_length = 50, blank = True, null = True)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
-	Reservas_Inicio = models.TimeField(blank = True, null = True)
+	Reservas_Inicio = models.TimeField(blank = True,null = True)
 	Reservas_Cierre = models.TimeField(blank = True, null = True)
 	NroPuesto = models.IntegerField(blank = True, null = True)
 

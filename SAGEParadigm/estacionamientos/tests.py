@@ -509,8 +509,8 @@ class SimpleFormTestCase(TestCase):
 
 	# normal
 	def test_HorarioReservaValido(self):
-		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 0, second = 0)
-		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 15, minute = 0, second = 0)
+		ReservaInicio = datetime.datetime.now()
+		ReservaFin = ReservaInicio + datetime.timedelta(hours = 5)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
