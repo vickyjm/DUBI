@@ -434,7 +434,7 @@ class SimpleFormTestCase(TestCase):
 		ReservaInicio = datetime.time(hour = 17, minute = 0, second = 0)
 		ReservaFin = datetime.time(hour = 20, minute = 0, second = 0)
 		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalización de reservas'))
+		self.assertEqual(x, (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalizacion de reservas'))
 
 	# malicia
 	def test_CierreReserva_Menos_HoraInicioEstacionamiento(self):
@@ -465,7 +465,7 @@ class SimpleFormTestCase(TestCase):
 
 	# normal
 	def test_EstacionamientoReserva_TodosCamposBien(self):
-		form_data = {'inicio':datetime.time(6, 0), 'final':datetime.time(12, 0)}
+		form_data = {'fechaInicio': datetime.date(2015,10,5),'horaInicio':datetime.time(6, 0),'fechaFinal': datetime.date(2015,10,5), 'horaFinal':datetime.time(12, 0)}
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
@@ -509,8 +509,8 @@ class SimpleFormTestCase(TestCase):
 
 	# normal
 	def test_HorarioReservaValido(self):
-		ReservaInicio = datetime.time(hour = 13, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 15, minute = 0, second = 0)
+		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 0, second = 0)
+		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 15, minute = 0, second = 0)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
@@ -518,8 +518,8 @@ class SimpleFormTestCase(TestCase):
 
 	# caso borde
 	def test_HorarioReservaInvalido_InicioReservacion_Mayor_FinalReservacion(self):
-		ReservaInicio = datetime.time(hour = 13, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 12, minute = 59, second = 59)
+		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 0)
+		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 12, minute = 59)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
@@ -527,8 +527,8 @@ class SimpleFormTestCase(TestCase):
 
 	# caso borde
 	def test_HorarioReservaInvalido_TiempoTotalMenor1h(self):
-		ReservaInicio = datetime.time(hour = 13, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 13, minute = 59, second = 59)
+		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 0, second = 0)
+		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 59, second = 59)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
@@ -536,25 +536,25 @@ class SimpleFormTestCase(TestCase):
 
 	# caso borde
 	def test_HorarioReservaInvalido_ReservaFinal_Mayor_HorarioCierre(self):
-		ReservaInicio = datetime.time(hour = 13, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 18, minute = 0, second = 1)
+		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 13, minute = 0)
+		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 18, minute = 1)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe estar en un horario válido'))
+		self.assertEqual(x, (False, 'El horario de inicio de reserva debe estar en un horario valido'))
 
 	# caso borde
 	def test_HorarioReservaInvalido_ReservaInicial_Menor_HorarioApertura(self):
-		ReservaInicio = datetime.time(hour = 11, minute = 59, second = 59)
-		ReservaFin = datetime.time(hour = 15, minute = 0, second = 1)
+		ReservaInicio = datetime.datetime(year = 2015, month = 10, day = 5,hour = 11, minute = 59, second = 59)
+		ReservaFin = datetime.datetime(year = 2015, month = 10, day = 5,hour = 15, minute = 0, second = 1)
 		HoraApertura = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre)
-		self.assertEqual(x, (False, 'El horario de cierre de reserva debe estar en un horario válido'))
+		self.assertEqual(x, (False, 'El horario de cierre de reserva debe estar en un horario valido'))
 
 	# malicia
 	def test_Reservacion_CamposVacios(self):
-		form_data = {'inicio':datetime.time(6, 0), 'final':datetime.time(12, 0)}
+		form_data = {'fechaInicio': datetime.date(2015,10,5),'horaInicio':datetime.time(6, 0),'fechaFinal': datetime.date(2015,10,5), 'horaFinal':datetime.time(12, 0)}
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
@@ -659,91 +659,91 @@ class SimpleFormTestCase(TestCase):
 
 	# caso borde
 	def test_BusquedaBin_horarios_todoeldia(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 22, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (1, True))
 
 	# caso borde
 	def test_BusquedaBin_noDisponible(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora3In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora3Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora3In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 7, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 9, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 7, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 9, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (2, False))
 
 	# normal
 	def test_BusquedaBin_noDisponible_reservarTodoElDia(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora3In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora3Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora3In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 22, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (1, False))
 
 	# caso borde
 	def test_BusquedaBin_lista_solo_maxmin(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 18, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 18, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (1, True))
 
 	# caso borde
 	def test_BusquedaBin_horasIguales_Inicio(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 6, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (1, True))
 
 	# caso borde
 	def test_BusquedaBin_horasIguales_Fin(self):
-		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		HoraIn = datetime.time(hour = 22, minute = 0, second = 0)
-		HoraOut = datetime.time(hour = 22, minute = 0, second = 0)
+		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		x = busquedaBin(HoraIn, HoraOut, lista)
 		self.assertEqual(x, (1, True))
 
@@ -987,12 +987,12 @@ class SimpleFormTestCase(TestCase):
 
 	# normal
 	def test_insertarReserva_funcionalidadOk(self):
-		Hora1In = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora3In = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora3Out = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
-		Hora2In = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
@@ -1085,12 +1085,12 @@ class SimpleFormTestCase(TestCase):
 
 	# normal
 	def test_reservar_funcionalidadOk(self):
-		Hora1In = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora3In = datetime.time(year = 2015,month = 10,day = 5,hour = 8, minute = 0, second = 0)
-		Hora3Out = datetime.time(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
-		Hora2In = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 8, minute = 0, second = 0)
+		Hora3Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
@@ -1123,12 +1123,12 @@ class SimpleFormTestCase(TestCase):
 
 	# caso frontera
 	def test_reservar_ultimoPuestoAReservar(self):
-		Hora1In = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora1Out = datetime.time(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		Hora3In = datetime.time(year = 2015,month = 10,day = 5,hour = 8, minute = 0, second = 0)
-		Hora3Out = datetime.time(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
-		Hora2In = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
-		Hora2Out = datetime.time(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
+		Hora3In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 8, minute = 0, second = 0)
+		Hora3Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
+		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
+		Hora2Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 22, minute = 0, second = 0)
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
