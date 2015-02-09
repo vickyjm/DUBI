@@ -105,15 +105,28 @@ def reservar(hin, hout, estacionamiento):
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
 	hFin = datetime.time(ReservaFin.hour,ReservaFin.minute)
+	inicioBorde = datetime.time(0,0)
+	finBorde = datetime.time(23,59)
+	fechaActual = datetime.datetime.now()
 	delta = ReservaFin - ReservaInicio
+	deltaActual = ReservaInicio - fechaActual
 	
-	if ReservaInicio >= ReservaFin:
-		return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	if (delta.days == 0) and (delta.seconds < 3600) :
 		return (False, 'El tiempo de reserva debe ser al menos de 1 hora')
+	else:
+		if (ReservaInicio >= ReservaFin):
+			return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	if hFin > HorarioCierre:
 		return (False, 'El horario de inicio de reserva debe estar en un horario valido')
 	if hIni < HorarioApertura:
 		return (False, 'El horario de cierre de reserva debe estar en un horario valido')
+	if ((delta.days == 7) and (delta.seconds > 0)) or (delta.days > 7):
+		return (False, 'El tiempo de reserva debe ser menor a 7 días')
+	elif (delta.days > 0) and ((HorarioApertura != inicioBorde) or (HorarioCierre != finBorde)): # Mayor a un dia y no 24h
+		return (False, 'Este estacionamiento no trabaja 24 horas')
+	if (deltaActual.days < 0):
+		return (False, 'La fecha ingresada para su reserva ya pasó')
+	elif (deltaActual.days > 7) or ((deltaActual.days == 7) and (deltaActual.seconds > 0)):
+		return (False, 'La reserva puede ser máximo hasta dentro de 7 días')			
 	return (True, '')
 
