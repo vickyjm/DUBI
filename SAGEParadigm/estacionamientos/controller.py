@@ -111,12 +111,13 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
-	temp1=(finR - iniR).seconds//3600
-	temp2=(finR - iniR).seconds/3600
+	temp1=(finR-iniR).days*24 + (finR - iniR).seconds//3600
+	temp2=(finR-iniR).days*24 + (finR - iniR).seconds/3600
+	
 	if temp1<temp2:
 		temp1+=1
 		
-	return floor(tarifa*temp1)
+	return tarifa*temp1
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
 	
@@ -125,12 +126,12 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
-	temp1 = (finR - iniR).seconds//3600
-	temp2 = (finR - iniR).seconds/3600
+	temp1 = (finR-iniR).days*24 + (finR - iniR).seconds//3600
+	temp2 = (finR-iniR).days*24 + (finR - iniR).seconds/3600
 	minextra = temp2 - temp1
 	fraccion = tarifa*minextra
 	
-	return floor(tarifa * temp1 + fraccion) 
+	return round(tarifa * temp1 + fraccion,2) 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
 
