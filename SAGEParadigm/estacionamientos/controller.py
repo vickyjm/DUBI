@@ -1,5 +1,8 @@
 # Archivo con funciones de control para SAGE
+
+from decimal import Decimal
 import datetime
+from math import floor
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -34,7 +37,7 @@ def buscar(hin, hout, estacionamiento):
 		return (-1, -1, False)
 	if len(estacionamiento) == 0:
 		return (-1, -1, False)
-	if not isinstance(hin, datetime.time) or not isinstance(hout, datetime.time):
+	if not isinstance(hin, datetime.time) or not isinstance(hout,datetime.time):
 		return (-1, -1, False)
 	for i in range(len(estacionamiento)):
 		posicion = busquedaBin(hin, hout, estacionamiento[i])
@@ -102,12 +105,32 @@ def reservar(hin, hout, estacionamiento):
 		return 1
 	
 def calculoTarifaHora(iniR,finR,tarifa):
-	temp1=(finR-iniR).seconds//3600
-	temp2=(finR-iniR).seconds/3600
+	
+	assert(finR > iniR)
+	assert(tarifa > 0)
+	assert(finR >= iniR + datetime.timedelta(hours = 1))
+	assert(finR <= iniR + datetime.timedelta(days = 7))
+	
+	temp1=(finR - iniR).seconds//3600
+	temp2=(finR - iniR).seconds/3600
 	if temp1<temp2:
 		temp1+=1
-	return tarifa*temp1
+		
+	return floor(tarifa*temp1)
 
+def calculoTarifaMinuto (iniR, finR, tarifa):
+	
+	assert(finR > iniR)
+	assert(tarifa > 0)
+	assert(finR >= iniR + datetime.timedelta(hours = 1))
+	assert(finR <= iniR + datetime.timedelta(days = 7))
+	
+	temp1 = (finR - iniR).seconds//3600
+	temp2 = (finR - iniR).seconds/3600
+	minextra = temp2 - temp1
+	fraccion = tarifa*minextra
+	
+	return floor(tarifa * temp1 + fraccion) 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
 
