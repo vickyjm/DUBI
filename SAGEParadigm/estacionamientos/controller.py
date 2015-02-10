@@ -2,6 +2,7 @@
 
 from decimal import Decimal
 import datetime
+from math import floor
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -115,7 +116,7 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	if temp1<temp2:
 		temp1+=1
 		
-	return tarifa*temp1
+	return floor(tarifa*temp1)
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
 	
@@ -129,7 +130,7 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	minextra = temp2 - temp1
 	fraccion = tarifa*minextra
 	
-	return tarifa * temp1 + fraccion 
+	return floor(tarifa * temp1 + fraccion) 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
 
