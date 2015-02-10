@@ -11,6 +11,9 @@ import datetime
 # [[(horaIn,horaOut),(horaIn,horaOut)],[],....]
 
 # chequeo de horarios de extended
+
+# -*- coding: utf-8 -*-
+
 def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
 
 	if HoraInicio >= HoraFin:
@@ -102,12 +105,11 @@ def reservar(hin, hout, estacionamiento):
 		return 1
 
 
-def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre):
+def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
 	hFin = datetime.time(ReservaFin.hour,ReservaFin.minute)
 	inicioBorde = datetime.time(0,0)
 	finBorde = datetime.time(23,59)
-	fechaActual = datetime.datetime.now()
 	delta = ReservaFin - ReservaInicio
 	deltaActual = ReservaInicio - fechaActual
 	
@@ -121,7 +123,7 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
 	if hIni < HorarioApertura:
 		return (False, 'El horario de cierre de reserva debe estar en un horario valido')
 	if ((delta.days == 7) and (delta.seconds > 0)) or (delta.days > 7):
-		return (False, 'El tiempo de reserva debe ser menor a 7 días')
+		return (False, 'El tiempo de reserva no puede ser vmayor a 7 días')
 	elif (delta.days > 0) and ((HorarioApertura != inicioBorde) or (HorarioCierre != finBorde)): # Mayor a un dia y no 24h
 		return (False, 'Este estacionamiento no trabaja 24 horas')
 	if (deltaActual.days < 0):
