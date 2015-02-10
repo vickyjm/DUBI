@@ -1278,11 +1278,30 @@ class SimpleFormTestCase(TestCase):
 		finres = datetime.datetime(2015,7,5,19,26,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
 		
+	def test_tarifaPorHoraHorasExactasMismoDia(self):
+		tarifa = 30
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,5,21,25,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 30*3)
+	
+	def test_tarifaPorHoraHorasExactasDiferentesDia(self):
+		tarifa = 30
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,8,18,25,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 72*30)
+	
+		
 	def test_tarifaPorHoraFraccion59Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,24,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2,2)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
+		
+	def test_tarifaPorHora1MinMenosQueTiempoMaximo(self):
+		tarifa = 20
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,12,18,24,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 7*24*20)
 	
 		
 #################################################################
@@ -1314,7 +1333,24 @@ class SimpleFormTestCase(TestCase):
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(20*3 + 59 *(20/60),2))
+	
+	def test_tarifaPorMinutoHorasExactasMismoDia(self):
+		tarifa = 30
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,5,21,25,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 30*3)
+	
+	def test_tarifaPorMinutoHorasExactasDiferentesDia(self):
+		tarifa = 30
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,8,18,25,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 72*30)
 		
+	def test_tarifaPorMinuto1MinMenosQueTiempoMaximo(self):
+		tarifa = 20
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,12,18,24,0,0)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(6*24*20 + 23*20 + 20/60*59,2))
 	
 
 
