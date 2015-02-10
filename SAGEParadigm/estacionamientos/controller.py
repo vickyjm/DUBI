@@ -8,6 +8,8 @@ from math import floor
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
 
 
+
+
 # Suponiendo que cada estacionamiento tiene una estructura "matricial" lista de listas
 # donde si m es una matriz, m[i,j] las i corresponden a los puestos y las j corresponden a tuplas
 # con el horario inicio y fin de las reservas
