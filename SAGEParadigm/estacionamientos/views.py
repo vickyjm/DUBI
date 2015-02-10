@@ -148,11 +148,11 @@ def estacionamiento_reserva(request, _id):
                                         FinalReserva = final_reserva
                                     )
                     reservaFinal.save()
-                    inicio_reserva=datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
-                    final_reserva=datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
+                    inicio_reserva = datetime.datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
+                    final_reserva = datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
                     tarifaCosto=int(estacion.Tarifa)
                     tarifaFinal=0
-                    if estacion.Esquema=='Hora' or estacion.Esquema=='hora':
+                    if estacion.Esquema == 'Hora' or estacion.Esquema=='hora':
                         tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
                     elif estacion.Esquema == 'Minuto' or estacion.Esquema == 'minuto':
                         tarifaFinal = calculoTarifaMinuto(inicio_reserva, final_reserva, tarifaCosto)
