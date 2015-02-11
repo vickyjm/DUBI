@@ -1308,5 +1308,3 @@ class SimpleFormTestCase(TestCase):
 		fechaActual = datetime.datetime(2015,2,10,2,0)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,fechaActual)
 		self.assertEqual(x, (True, ''))
-	
-	
