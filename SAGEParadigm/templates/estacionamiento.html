@@ -186,17 +186,30 @@
             <div class="panel-body">
 
       
-              
+
               <form action="." method="post" class="form form-vertical">
               {% csrf_token %}
               {% for field in form %}
-                <div class="control-group">
+              	<div class="control-group">
                   <div class="controls">
+                	{% ifnotequal field.name "esquema" %}
+                
                     <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
-                    {{ field.errors }}
+                    
+                  {% else %}
+                  	
+					<select id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
+						<option value ="" select disable style="display:none;">Esquema</option>
+						<option value="Hora" style = "color:#000;">Por hora</option>
+						<option value="Minuto" style = "color:#000;">Por minuto</option>
+					</select>                	
+                	</h></tr>
+                	<br></br>
+                {%endifnotequal%} 
+              {{ field.errors }}
                   </div>
-                </div> 
-              {% endfor %}
+                </div>
+                {% endfor %}
                 
                 <div class="control-group">
                   <label>
