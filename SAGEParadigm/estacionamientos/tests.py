@@ -1265,8 +1265,8 @@ class SimpleFormTestCase(TestCase):
 		ReservaFin = datetime.datetime(2015,2,17,3,0)
 		HoraApertura = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 23, minute = 59, second = 0)
-		horaActual = datetime.datetime(2015,2,10,3,0)
-		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
+		fechaActual = datetime.datetime(2015,2,10,3,0)
+		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre, fechaActual)
 		self.assertEqual(x, (True, ''))
 	
 	# esquina malicia
@@ -1275,19 +1275,19 @@ class SimpleFormTestCase(TestCase):
 		ReservaFin = datetime.datetime(2015,2,17,3,0)
 		HoraApertura = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 23, minute = 58, second = 0)
-		horaActual = datetime.datetime(2015,2,10,3,0)
-		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
+		fechaActual = datetime.datetime(2015,2,10,3,0)
+		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,fechaActual)
 		self.assertEqual(x, (False, 'Este estacionamiento no trabaja 24 horas'))
 	
 	# malicia
-	def test_Reserva_InvalidaMenorAntelacion_7Dias(self):
+	def test_Reserva_InvalidaAntelacion_7DiasMas1Min(self):
 		ReservaInicio = datetime.datetime(2015,2,10,3,0)
 		ReservaFin = datetime.datetime(2015,2,17,3,0)
 		HoraApertura = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 23, minute = 59, second = 0)
-		horaActual = datetime.datetime(2015,2,10,2,59)
-		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
-		self.assertEqual(x, (False, ''))
+		fechaActual = datetime.datetime(2015,2,10,2,59)
+		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,fechaActual)
+		self.assertEqual(x, (False, 'La reserva debe estar en un intervalo dentro de los próximos 7 días'))
 	
 	# malicia
 	def test_Reserva_Mas_Corta_ConAntelacion(self):
@@ -1295,8 +1295,8 @@ class SimpleFormTestCase(TestCase):
 		ReservaFin = datetime.datetime(2015,2,17,3,0)
 		HoraApertura = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 23, minute = 59, second = 0)
-		horaActual = datetime.datetime(2015,2,10,3,0)
-		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
+		fechaActual = datetime.datetime(2015,2,10,3,0)
+		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,fechaActual)
 		self.assertEqual(x, (True, ''))
 	
 	# malicia	
@@ -1305,8 +1305,8 @@ class SimpleFormTestCase(TestCase):
 		ReservaFin = datetime.datetime(2015,2,17,2,0)
 		HoraApertura = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraCierre = datetime.time(hour = 23, minute = 59, second = 0)
-		horaActual = datetime.datetime(2015,2,10,2,0)
-		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
+		fechaActual = datetime.datetime(2015,2,10,2,0)
+		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,fechaActual)
 		self.assertEqual(x, (True, ''))
 	
 	

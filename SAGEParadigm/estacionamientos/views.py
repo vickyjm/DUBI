@@ -138,7 +138,7 @@ def estacionamiento_reserva(request, _id):
                 final_reserva = datetime.datetime.combine(fechaFin,horaFin)
 
                 # Validamos los horarios con los horario de salida y entrada
-                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre)
+                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,datetime.datetime.now())
 
                 # Si no es valido devolvemos el request
                 if not m_validado[0]:

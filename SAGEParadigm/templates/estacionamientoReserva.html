@@ -185,7 +185,12 @@
               {% for field in form %}
                 <div class="control-group">
                   <div class="controls">
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
+                  	<h5>{{field.label}}</h1>
+                  	{% if field.label == "Fecha Inicio Reserva" or field.label == "Fecha Final Reserva" %}
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" for="id_{{field.name}}"><p>            
+                    {% elif field.label == "Horario Inicio Reserva" or field.label == "Horario Final Reserva"%}
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+                    {% endif %}
                     {{ field.errors }}
                   </div>
                 </div> 
