@@ -251,7 +251,7 @@ class SimpleFormTestCase(TestCase):
 								'horarioout': datetime.time(19, 0),
 								'horario_reserin': datetime.time(7, 0),
 								'horario_reserout': datetime.time(14, 0),
-								'esquema':'minuto',
+								'esquema':'Minuto',
 								'tarifa': '12'}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
@@ -275,7 +275,7 @@ class SimpleFormTestCase(TestCase):
 								'horarioout': datetime.time(19, 0),
 								'horario_reserin': datetime.time(7, 0),
 								'horario_reserout': datetime.time(7, 0),
-								'esquema':'minuto',
+								'esquema':'Minuto',
 								'tarifa': '12'}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
