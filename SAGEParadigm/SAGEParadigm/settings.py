@@ -76,9 +76,9 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+# USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -88,5 +88,8 @@ STATIC_URL = '/static/'
 
 # Directorio de templates y de statics.
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
+STATICFILES_DIRS= [os.path.join(BASE_DIR,'static')]
+
+# Paraarreglar el problema de midnight y noon
+TIME_FORMAT = 'g:i a'
 

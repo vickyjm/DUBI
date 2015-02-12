@@ -26,7 +26,7 @@ class Estacionamiento(models.Model):
 	#Esquema = models.CharField(max_length = 50, blank = True, null = True)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
-	Reservas_Inicio = models.TimeField(blank = True, null = True)
+	Reservas_Inicio = models.TimeField(blank = True,null = True)
 	Reservas_Cierre = models.TimeField(blank = True, null = True)
 	NroPuesto = models.IntegerField(blank = True, null = True)
 
@@ -52,5 +52,5 @@ class Estacionamiento(models.Model):
 class ReservasModel(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
 	Puesto = models.IntegerField()
-	InicioReserva = models.TimeField()
-	FinalReserva = models.TimeField()
+	InicioReserva = models.DateTimeField()
+	FinalReserva = models.DateTimeField()
