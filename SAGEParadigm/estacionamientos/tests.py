@@ -1363,9 +1363,64 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(6*24*20 + 23*20 + 20/60*59,2))
 	
 
+#################################################################
+#		Pruebas calculo de tarifa por hora y fracion
+#################################################################
 
+def test_tarifaPorHoraYFraccionMinTiempo(self):
+	tarifa = 15
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,19,25,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 15)
+		
+	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+def test_tarifaPorHoraYFraccionMaxTiempo(self):
+	tarifa = 15
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,12,18,25,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(15*24*7,2))
+	
+def test_tarifaPorHoraYFraccionFraccion1Min(self):
+	tarifa = 20
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,20,26,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 10,2))
 
+def test_tarifaPorHoraYFraccionFraccion30Min(self):
+	tarifa = 20
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,20,55,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 10,2))
 
+def test_tarifaPorHoraYFraccionFraccion31Min(self):
+	tarifa = 20
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,20,56,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 20,2))
+
+def test_tarifaPorHoraYFraccionFraccion59Min(self):
+	tarifa = 20
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,22,24,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*3 + 20,2))
+
+def test_tarifaPorHoraYFraccionHorasExactasMismoDia(self):
+	tarifa = 30
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,5,21,25,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 30*3)
+
+def test_tarifaPorHoraYFraccionHorasExactasDiferentesDia(self):
+	tarifa = 30
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,8,18,25,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 72*30)
+	
+def test_tarifaPorHoraYFraccion1MinMenosQueTiempoMaximo(self):
+	tarifa = 20
+	inires = datetime.datetime(2015,7,5,18,25,0,0)
+	finres = datetime.datetime(2015,7,12,18,24,0,0)
+	self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(6*24*20 + 23*20 + 20,2))
 
 
 
