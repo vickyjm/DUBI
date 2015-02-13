@@ -143,20 +143,14 @@
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
       {% if estacionamiento.Reservas_Inicio or estacionamiento.Reservas_Cierre or estacionamiento.Apertura or estacionamiento.Cierre%}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora inicio de reserva:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Reservas_Cierre %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora fin de reserva:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Apertura %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora apertura:</b></td></tr>
-        <tr><td>{{estacionamiento.Apertura}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Cierre %}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
-        <tr><td>{{estacionamiento.Cierre}}</td></tr>
+	    <tr><td><b><i class="fa fa-clock-o"></i> Hora inicio de reserva:</b></td></tr>
+	    <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
+	    <tr><td><b><i class="fa fa-clock-o"></i> Hora fin de reserva:</b></td></tr>
+	    <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
+	    <tr><td><b><i class="fa fa-clock-o"></i> Hora apertura:</b></td></tr>
+	    <tr><td>{{estacionamiento.Apertura}}</td></tr>
+	    <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
+	    <tr><td>{{estacionamiento.Cierre}}</td></tr>
       {% endif %}
       {% if estacionamiento.Esquema %}
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
