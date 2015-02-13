@@ -144,20 +144,19 @@ def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	assert(tarifa > 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
+	
 	fraccion = 0
 	diasdif = (finR-iniR).days
 	segundosdif =(finR - iniR).seconds
-	print(diasdif, segundosdif)
 	temp1 = segundosdif//3600
 	temp2 = Decimal(segundosdif/3600)
-	print(temp1, temp2)
-	print(temp1-temp2)
 	minextra = round((temp2 - temp1)*60,2)
-	print(minextra)
+
 	if minextra > 30:
 		fraccion = tarifa
 	elif minextra <= 30 and minextra != 0:
 		fraccion = tarifa/2
+	
 	return round(tarifa*diasdif*24 + tarifa * temp1 + fraccion,2)
 	
 
