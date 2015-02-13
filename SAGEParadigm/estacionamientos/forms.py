@@ -66,8 +66,8 @@ class EstacionamientoExtendedForm(forms.Form):
 
     horario_reserin = forms.TimeField(required = True, label = 'Hora Inicio Reserva')
     horario_reserout = forms.TimeField(required = True, label = 'Hora Fin Reserva')
-    
-    esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = (("Hora", "Por hora"), ("Minuto", "Por minuto")))
+    opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraYFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
+    esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = opciones_esquema)
 
     tarifa = forms.CharField(required = True, validators = [tarifa_validator])
 

@@ -165,7 +165,7 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 	assert(tarifapico > 0)
 	assert(finr >= inir + datetime.timedelta(hours = 1))
 	assert(finr <= inir + datetime.timedelta(days = 7))
-	
+		
 	
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
