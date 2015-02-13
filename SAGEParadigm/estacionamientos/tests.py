@@ -530,7 +530,7 @@ class SimpleFormTestCase(TestCase):
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		horaActual = datetime.datetime(year = 2015,month = 10, day = 5, hour = 12,minute = 50)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
-		self.assertEqual(x, (False, 'El horario de apertura debe ser menor al horario de cierre'))
+		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor que le horario de fin de reserva'))
 
 	# caso borde
 	def test_HorarioReservaInvalido_TiempoTotalMenor1h(self):
