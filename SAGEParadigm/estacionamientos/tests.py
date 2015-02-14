@@ -1423,9 +1423,71 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(6*24*20 + 23*20 + 20,2))
 
 
+#################################################################
+#		Pruebas calculo de tarifa diferencido por hora
+#################################################################
 
+	def test_tarifaDiferenciadoPorHoraMinTiempoFueraHoraPico(self):
+		tarifa = 15
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,5,19,25,0,0)
+		tarifapico = 20
+		iniciopico = datetime.time(12,0,0)
+		finpico = datetime.time(15,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), 15)
+		
+	def test_tarifaDiferenciadoPorHoraMinTiempoDentroHoraPico(self):
+		tarifa = 15
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,5,19,25,0,0)
+		tarifapico = 20
+		iniciopico = datetime.time(15,0,0)
+		finpico = datetime.time(20,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), 20)
+			
+		# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	def test_tarifaDiferenciadoPorHoraMaxTiempo(self):
+		tarifa = 15
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,12,18,25,0,0)
+		tarifapico = 20
+		iniciopico = datetime.time(15,0,0)
+		finpico = datetime.time(20,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(5*20*7+19*15*7,2))
+		
+		
+	def test_tarifaDiferenciadoPorHora1MinMenosQueTiempoMaximo(self):
+		tarifa = 20
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,12,18,24,0,0)
+		tarifapico = 25
+		iniciopico = datetime.time(15,0,0)
+		finpico = datetime.time(20,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(20*19*7+25*5*5+20*35/60+25+3*25+24/60*25,2))
 
+	
+	def test_tarifaDiferenciadoPorHoraReservaIgualQueHoraPico(self):
+		tarifa = 20
+		inires = datetime.datetime(2015,7,5,13,25,0,0)
+		finres = datetime.datetime(2015,7,5,18,25,0,0)
+		tarifapico = 25
+		iniciopico = datetime.time(13,25,0,0)
+		finpico = datetime.time(18,25,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(25*5,2))
 
+	def test_tarifaDiferenciadoPorHoraMaxTiempoFueraDeHoraPico(self):
+		tarifa = 20
+		inires = datetime.datetime(2015,7,5,20,1,0,0)
+		finres = datetime.datetime(2015,7,6,14,59,0,0)
+		tarifapico = 25
+		iniciopico = datetime.time(15,0,0)
+		finpico = datetime.time(20,0,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(17*20+59/60*20*2,2))
 
-
-
+	
