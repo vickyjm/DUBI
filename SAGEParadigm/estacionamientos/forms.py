@@ -76,3 +76,7 @@ class EstacionamientoReserva(forms.Form):
     horaInicio = forms.TimeField(label = 'Horario Inicio Reserva')
     fechaFinal = forms.DateField(label = 'Fecha Final Reserva')
     horaFinal = forms.TimeField(label = 'Horario Final Reserva')
+    
+class PagoReserva(forms.Form):
+    tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), choices = ("Vista","Mister","Xpres"))
+    numTarjeta = forms.CharField(required = True,label = "Numero de Tarjeta")                                
