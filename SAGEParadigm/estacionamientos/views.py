@@ -168,8 +168,8 @@ def estacionamiento_reserva(request, _id):
                         tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
                     elif estacion.Esquema == 'Minuto' or estacion.Esquema == 'minuto':
                         tarifaFinal = calculoTarifaMinuto(inicio_reserva, final_reserva, tarifaCosto)
-                    mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaFinal)
-                    return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeTarifa})
+                    mensajeTarifa='La solicitud es factible. El costo es de ' + str(tarifaFinal)+" BsF"
+                    return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa})
                 else:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario'})
     else:
