@@ -151,8 +151,8 @@ def estacionamiento_reserva(request, _id):
                 if x[2] == True :
                     
                     request.session['puesto'] = x[0]
-                    request.session['inicioR'] = str(inicio_reserva)
-                    request.session['finalR'] = str(final_reserva)
+                    request.session['inicioR'] = inicio_reserva.strftime('%Y-%m-%d %H:%M:%S')
+                    request.session['finalR'] = final_reserva.strftime('%Y-%m-%d %H:%M:%S')
                     
 #                     reservar(inicio_reserva, final_reserva, listaReserva)
 #                     reservaFinal = ReservasModel(
@@ -184,36 +184,37 @@ def estacionamiento_pagar_reserva(request, _id):
         estacion = Estacionamiento.objects.get(id = _id)
     except ObjectDoesNotExist:
         return render(request, '404.html')
-
-    global listaReserva
     
     if request.method == 'GET':
         form = PagoReserva()
         return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion})
     elif request.method == 'POST':
         form = PagoReserva(request.POST)
+        
+        puesto = request.session.get('puesto')
+        inicio_reserva = request.session.get('inicioR')
+        final_reserva = request.session.get('finalR')
+        datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
+        datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
+        request.session.flush()
+        
         # Verificamos si es valido con los validadores del formulario
         if form.is_valid():
             tipoTarjeta = form.cleaned_data['tipoTarjeta']
             numTarjeta = form.cleaned_data['numTarjeta']
             
-        puesto = request.session['puesto']
-        inicio_reserva = request.session['inicioR']
-        final_reserva = request.session['finalR']
-        datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%m')
-        datetime.strptime(final_reserva,'%Y-%m-%d %H:%m')
-        
-        reservar(inicio_reserva, final_reserva, listaReserva)
-        reservaFinal = ReservasModel(
-                            Estacionamiento = estacion,
-                            Puesto = puesto,
-                            InicioReserva = inicio_reserva,
-                            FinalReserva = final_reserva
-                        )
-        reservaFinal.save()
-        request.session.flush()
-        
-        mensajeExito = 'Reserva fue realizada con exito'
-        return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
-    
+            reservar(inicio_reserva, final_reserva, listaReserva)
+            reservaFinal = ReservasModel(
+                                Estacionamiento = estacion,
+                                Puesto = puesto,
+                                InicioReserva = inicio_reserva,
+                                FinalReserva = final_reserva
+                            )
+            reservaFinal.save()
+            
+            mensajeExito = 'La reserva fue realizada con exito'
+            return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
+    else : 
+        form = PagoReserva()
+    return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
     
