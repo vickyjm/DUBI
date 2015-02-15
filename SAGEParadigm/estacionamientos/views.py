@@ -168,6 +168,8 @@ def estacionamiento_reserva(request, _id):
                         tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
                     elif estacion.Esquema == 'Minuto' or estacion.Esquema == 'minuto':
                         tarifaFinal = calculoTarifaMinuto(inicio_reserva, final_reserva, tarifaCosto)
+                        
+                    request.session['monto'] = tarifaFinal
                     mensajeTarifa='La solicitud es factible. El costo es de ' + str(tarifaFinal)+" BsF"
                     return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa})
                 else:
@@ -185,18 +187,19 @@ def estacionamiento_pagar_reserva(request, _id):
     except ObjectDoesNotExist:
         return render(request, '404.html')
     
+    puesto = request.session.get('puesto')
+    inicio_reserva = request.session.get('inicioR')
+    final_reserva = request.session.get('finalR')
+    monto = request.session.get('monto')
+    datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
+    datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
+    request.session.flush()
+    
     if request.method == 'GET':
         form = PagoReserva()
-        return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion})
+        return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
     elif request.method == 'POST':
         form = PagoReserva(request.POST)
-        
-        puesto = request.session.get('puesto')
-        inicio_reserva = request.session.get('inicioR')
-        final_reserva = request.session.get('finalR')
-        datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
-        datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
-        request.session.flush()
         
         # Verificamos si es valido con los validadores del formulario
         if form.is_valid():
@@ -216,5 +219,5 @@ def estacionamiento_pagar_reserva(request, _id):
             return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
     else : 
         form = PagoReserva()
-    return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
+    return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
     
