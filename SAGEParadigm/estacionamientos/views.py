@@ -189,7 +189,7 @@ def estacionamiento_pagar_reserva(request, _id):
     
     if request.method == 'GET':
         form = PagoReserva()
-        return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
+        return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion})
     elif request.method == 'POST':
         form = PagoReserva(request.POST)
         # Verificamos si es valido con los validadores del formulario
@@ -214,6 +214,6 @@ def estacionamiento_pagar_reserva(request, _id):
         request.session.flush()
         
         mensajeExito = 'Reserva fue realizada con exito'
-        return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeExito})
+        return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
     
     

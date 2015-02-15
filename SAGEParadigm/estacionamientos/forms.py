@@ -78,5 +78,9 @@ class EstacionamientoReserva(forms.Form):
     horaFinal = forms.TimeField(label = 'Horario Final Reserva')
     
 class PagoReserva(forms.Form):
+    numTarjeta_validator = RegexValidator(
+                                regex = '^\d{4}-?\d{4}-?\d{4}-?\d{4}$',
+                                message = 'Formato erróneo'          
+                                          )
     tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), choices = ("Vista","Mister","Xpres"))
-    numTarjeta = forms.CharField(required = True,label = "Numero de Tarjeta")                                
+    numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",validators = [numTarjeta_validator])                                

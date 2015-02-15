@@ -183,7 +183,7 @@
               {% for field in form %}
                 <div class="control-group">
                   <div class="controls">
-                  	<h5>{{field.label}}</h1>
+                  	<h5>{{field.label}}</h5>
                   	{% if field.label == "Fecha Inicio Reserva" or field.label == "Fecha Final Reserva" %}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" for="id_{{field.name}}"><p>            
                     {% elif field.label == "Horario Inicio Reserva" or field.label == "Horario Final Reserva"%}
