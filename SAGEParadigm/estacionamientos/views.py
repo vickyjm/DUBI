@@ -11,6 +11,7 @@ from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
 from estacionamientos.forms import PagoReserva
 from estacionamientos.models import Estacionamiento, ReservasModel
+from time import strptime
 
 
 listaReserva = []
@@ -110,8 +111,6 @@ def estacionamiento_reserva(request, _id):
     if len(listaReserva) < 1:
 
         Puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('Puesto', 'InicioReserva', 'FinalReserva')
-        #elem1 = (estacion.Apertura, estacion.Apertura)
-        #elem2 = (estacion.Cierre, estacion.Cierre)
         elem1 = (datetime.datetime.min, datetime.datetime.min)
         elem2 = (datetime.datetime.max,datetime.datetime.max)
         listaReserva = [[elem1, elem2] for _ in range(estacion.NroPuesto)]
@@ -150,18 +149,19 @@ def estacionamiento_reserva(request, _id):
                 # el lugar a insertar
                 x = buscar(inicio_reserva, final_reserva, listaReserva)
                 if x[2] == True :
-                    reservar(inicio_reserva, final_reserva, listaReserva)
-                    #inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())
-                    #final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
-                    reservaFinal = ReservasModel(
-                                        Estacionamiento = estacion,
-                                        Puesto = x[0],
-                                        InicioReserva = inicio_reserva,
-                                        FinalReserva = final_reserva
-                                    )
-                    reservaFinal.save()
-                    #inicio_reserva = datetime.datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
-                    #final_reserva = datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
+                    
+                    request.session['puesto'] = x[0]
+                    request.session['inicioR'] = str(inicio_reserva)
+                    request.session['finalR'] = str(final_reserva)
+                    
+#                     reservar(inicio_reserva, final_reserva, listaReserva)
+#                     reservaFinal = ReservasModel(
+#                                         Estacionamiento = estacion,
+#                                         Puesto = x[0],
+#                                         InicioReserva = inicio_reserva,
+#                                         FinalReserva = final_reserva
+#                                     )
+#                     reservaFinal.save()
                     tarifaCosto=int(estacion.Tarifa)
                     tarifaFinal=0
                     if estacion.Esquema == 'Hora' or estacion.Esquema=='hora':
@@ -177,3 +177,43 @@ def estacionamiento_reserva(request, _id):
 
     return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
 
+def estacionamiento_pagar_reserva(request, _id):
+    _id = int(_id)
+    # Verificamos que el objeto exista antes de continuar
+    try:
+        estacion = Estacionamiento.objects.get(id = _id)
+    except ObjectDoesNotExist:
+        return render(request, '404.html')
+
+    global listaReserva
+    
+    if request.method == 'GET':
+        form = PagoReserva()
+        return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
+    elif request.method == 'POST':
+        form = PagoReserva(request.POST)
+        # Verificamos si es valido con los validadores del formulario
+        if form.is_valid():
+            tipoTarjeta = form.cleaned_data['tipoTarjeta']
+            numTarjeta = form.cleaned_data['numTarjeta']
+            
+        puesto = request.session['puesto']
+        inicio_reserva = request.session['inicioR']
+        final_reserva = request.session['finalR']
+        datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%m')
+        datetime.strptime(final_reserva,'%Y-%m-%d %H:%m')
+        
+        reservar(inicio_reserva, final_reserva, listaReserva)
+        reservaFinal = ReservasModel(
+                            Estacionamiento = estacion,
+                            Puesto = puesto,
+                            InicioReserva = inicio_reserva,
+                            FinalReserva = final_reserva
+                        )
+        reservaFinal.save()
+        request.session.flush()
+        
+        mensajeExito = 'Reserva fue realizada con exito'
+        return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeExito})
+    
+    
