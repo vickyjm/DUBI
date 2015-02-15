@@ -193,7 +193,6 @@ def estacionamiento_pagar_reserva(request, _id):
     monto = request.session.get('monto')
     datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
     datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
-    request.session.flush()
     
     if request.method == 'GET':
         form = PagoReserva()
