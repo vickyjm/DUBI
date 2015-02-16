@@ -3,6 +3,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.forms import ModelForm
+from Crypto.Random.random import choice
+from django.contrib.admin.filters import ChoicesFieldListFilter
 
 
 class Estacionamiento(models.Model):
@@ -22,8 +24,7 @@ class Estacionamiento(models.Model):
 
 	Tarifa = models.CharField(max_length = 50, blank = True, null = True)
 	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"))
-	Esquema = models.CharField(max_length = 6, choices = opciones_esquema)
-	#Esquema = models.CharField(max_length = 50, blank = True, null = True)
+	Esquema = models.CharField(max_length = 6, choices = opciones_esquema, null = True)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
 	Reservas_Inicio = models.TimeField(blank = True,null = True)
@@ -31,26 +32,15 @@ class Estacionamiento(models.Model):
 	NroPuesto = models.IntegerField(blank = True, null = True)
 
 
-# class ExtendedModel(models.Model):
-# 	Estacionamiento = models.ForeignKey(Estacionamiento, primary_key = True)
-
-# class EstacionamientoModelForm(EstacionamientoForm):
-# 	class Meta:
-# 		model = EstacionamientoModel
-# 		fields = ['propietario', 'nombre', 'direccion', 'telefono_1', 'telefono_2', 'telefono_3', 'email_1',
-# 				'email_2', 'rif', 'tarifa', 'horarioin', 'horariout', 'horario_resein', 'horario_reserout']
-
-# class Propietario(models.Model):
-	# nombre = models.CharField(max_length = 50, help_text = "Nombre Propio")
-
-# class EstadoEstacionamiento(models.Model):
-	#
-
-# class PuestosModel(models.Model):
-# 	estacionamiento = models.ForeignKey(ExtendedModel)
-
 class ReservasModel(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
 	Puesto = models.IntegerField()
 	InicioReserva = models.DateTimeField()
 	FinalReserva = models.DateTimeField()
+	
+class PagoReservaModel(models.Model):
+	Reserva = models.ForeignKey(ReservasModel)
+	opciones_tarjeta = (('Vista','Vista'), ('Mister','Mister'), ('Xpres','Xpres'))
+	TipoTarjeta = models.CharField(max_length = 6, choices = opciones_tarjeta)
+	NumTarjeta = models.CharField(max_length = 19)
+	MontoPago = models.DecimalField(max_digits = 1000, decimal_places = 2)

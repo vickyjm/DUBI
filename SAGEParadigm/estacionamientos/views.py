@@ -10,7 +10,7 @@ from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
 from estacionamientos.forms import PagoReserva
-from estacionamientos.models import Estacionamiento, ReservasModel
+from estacionamientos.models import Estacionamiento, ReservasModel, PagoReservaModel
 from time import strptime
 
 
@@ -214,7 +214,15 @@ def estacionamiento_pagar_reserva(request, _id):
                             )
             reservaFinal.save()
             
-            mensajeExito = 'La reserva fue realizada con exito'
+            pago = PagoReservaModel(
+                               Reserva = reservaFinal,
+                               TipoTarjeta = tipoTarjeta,
+                               NumTarjeta = numTarjeta,
+                               MontoPago = monto
+                            )
+            pago.save()
+            
+            mensajeExito = 'La reserva fue realizada con éxito. El número de su transacción es: '+str(pago.id)
             return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
     else : 
         form = PagoReserva()
