@@ -856,7 +856,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -871,7 +871,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -889,7 +889,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.time(hour = 12, minute = 0, second = 0)
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -931,7 +931,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = None
 		HoraOut = datetime.time(hour = 12, minute = 0, second = 0)
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -949,7 +949,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
 		HoraOut = None
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -967,7 +967,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1In, Hora1Out])
 		lista.append([Hora3In, Hora3Out])
 		lista.append([Hora2In, Hora2Out])
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		HoraIn = 'String'
 		HoraOut = datetime.time(hour = 12, minute = 0, second = 0)
 		x = buscar(HoraIn, HoraOut, estacionamiento)
@@ -1104,7 +1104,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1127,7 +1127,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora3In, Hora3Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		x = reservar(Hora3In, Hora3Out, estacionamiento)
 		self.assertEqual(x, 1)
 
@@ -1182,7 +1182,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1204,7 +1204,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1226,7 +1226,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1248,7 +1248,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1362,11 +1362,46 @@ class SimpleFormTestCase(TestCase):
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(6*24*20 + 23*20 + 20/60*59,2))
 	
+	def test_PagoReserva_CamposBien(self):
+		form_data = { 	'tipoTarjeta': 'Mister',
+						'numTarjeta': '1234-1234-1234-1234',
+								}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), True)
 
+	def test_PagoReserva_TarjetaMayor16Digitos(self):
+		form_data = { 	'tipoTarjeta': 'Vista',
+						'numTarjeta': '1234-1234-1234-1234-5',
+								}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+	
+	def test_PagoReserva_TarjetaMenor16Digitos(self):
+		form_data = { 	'tipoTarjeta': 'Xpres',
+						'numTarjeta': '1234-1234-1234-123',
+								}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+		
+	def test_PagoReserva_SinTipo(self):
+		form_data = {	'numTarjeta': '1234-1234-1234-1234',
+								}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+	
+	def test_PagoReserva_NumTarjetaSinGuiones(self):
+		form_data = { 	'tipoTarjeta': 'Mister',
+						'numTarjeta': '1234123412341234',
+								}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), True)
 
-
-
-
+	def test_PagoReserva_NumTarjetaConLetras(self):
+		form_data = { 	'tipoTarjeta': 'Mister',
+						'numTarjeta': '1234-1234-1234-abcd',
+							}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
 
 
 

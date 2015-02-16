@@ -3,8 +3,6 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.forms import ModelForm
-from Crypto.Random.random import choice
-from django.contrib.admin.filters import ChoicesFieldListFilter
 
 
 class Estacionamiento(models.Model):
