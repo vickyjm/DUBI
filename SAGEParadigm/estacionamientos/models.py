@@ -22,12 +22,15 @@ class Estacionamiento(models.Model):
 
 	Tarifa = models.CharField(max_length = 50, blank = True, null = True)
 	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraYFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
-	Esquema = models.CharField(max_length = 6, choices = opciones_esquema)
+	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
 	Reservas_Inicio = models.TimeField(blank = True,null = True)
 	Reservas_Cierre = models.TimeField(blank = True, null = True)
 	NroPuesto = models.IntegerField(blank = True, null = True)
+	Pico_Ini = models.TimeField(blank = True,null = True)
+	Pico_Fin = models.TimeField(blank = True, null = True)
+	TarifaPico = models.CharField(max_length = 50, blank = True, null = True)
 
 
 # class ExtendedModel(models.Model):

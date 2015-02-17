@@ -86,6 +86,9 @@ def estacionamiento_detail(request, _id):
                 estacion.Reservas_Inicio = reserva_in
                 estacion.Reservas_Cierre = reserva_out
                 estacion.NroPuesto = form.cleaned_data['puestos']
+                estacion.Pico_Ini = form.cleaned_data['hora_picoini']
+                estacion.Pico_Fin = form.cleaned_data['hora_picofin']
+                estacion.TarifaPico = form.cleaned_data['tarifa_pico']
 
                 estacion.save()
     else:
@@ -161,12 +164,17 @@ def estacionamiento_reserva(request, _id):
                     reservaFinal.save()
                     #inicio_reserva = datetime.datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
                     #final_reserva = datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
-                    tarifaCosto=int(estacion.Tarifa)
+                    tarifaCosto=Decimal(estacion.Tarifa)
                     tarifaFinal=0
                     if estacion.Esquema == 'Hora' or estacion.Esquema=='hora':
                         tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
                     elif estacion.Esquema == 'Minuto' or estacion.Esquema == 'minuto':
                         tarifaFinal = calculoTarifaMinuto(inicio_reserva, final_reserva, tarifaCosto)
+                    elif estacion.Esquema == 'HoraYFraccion' or estacion.Esquema=='Hora y fracción':
+                        tarifaFinal = calculoTarifaHoraYFraccion(inicio_reserva, final_reserva, tarifaCosto)
+                    elif estacion.Esquema=='DifHora' or estacion.Esquema=='Diferenciado por hora':
+                        tarifaPico=Decimal(estacion.TarifaPico)
+                        tarifaFinal= calculoTarifaDiferenciadoPorHora(inicio_reserva, final_reserva, estacion.Pico_Ini, estacion.Pico_Fin, tarifaCosto, tarifaPico)
                     mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaFinal)
                     return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeTarifa})
                 else:

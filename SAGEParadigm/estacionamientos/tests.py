@@ -385,7 +385,7 @@ class SimpleFormTestCase(TestCase):
 		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		ReservaFin = datetime.time(hour = 11, minute = 0, second = 0)
 		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de cierre'))
+		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva'))
 
 	# caso borde
 	def test_HorariosInvalido_HoraCierreReserva_Igual_HoraAperturaReserva(self):
@@ -394,7 +394,7 @@ class SimpleFormTestCase(TestCase):
 		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		ReservaFin = datetime.time(hour = 12, minute = 0, second = 0)
 		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de cierre'))
+		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva'))
 
 	# caso borde
 	def test_Limite_HorarioValido_Apertura_Cierre(self):
@@ -1273,45 +1273,45 @@ class SimpleFormTestCase(TestCase):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 15)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(15))
 		
 	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
 	def test_tarifaPorHoraMaxTiempo(self):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 15*24*7)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(15*24*7))
 		
 	def test_tarifaPorHoraFraccion1Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,26,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(20*2))
 		
 	def test_tarifaPorHoraHorasExactasMismoDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 30*3)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(30*3))
 	
 	def test_tarifaPorHoraHorasExactasDiferentesDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 72*30)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(72*30))
 	
 		
 	def test_tarifaPorHoraFraccion59Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,24,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 20*2)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(20*2))
 		
 	def test_tarifaPorHora1MinMenosQueTiempoMaximo(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
-		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), 7*24*20)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(7*24*20))
 	
 		
 #################################################################
@@ -1323,44 +1323,44 @@ class SimpleFormTestCase(TestCase):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 15)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(15))
 		
 	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
 	def test_tarifaPorMinutoMaxTiempo(self):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(15*24*7,2))
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(round(15*24*7,2)))
 		
 	def test_tarifaPorMinutoFraccion1Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,26,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(20*2 + 20/60,2))
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(round(20*2 + 20/60,2)).quantize(Decimal(10)**-2))
 		
 	def test_tarifaPorMinutoFraccion59Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(20*3 + 59 *(20/60),2))
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(round(20*3 + 59 *(20/60),2)).quantize(Decimal(10)**-2))
 	
 	def test_tarifaPorMinutoHorasExactasMismoDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 30*3)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(30*3))
 	
 	def test_tarifaPorMinutoHorasExactasDiferentesDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), 72*30)
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(72*30))
 		
 	def test_tarifaPorMinuto1MinMenosQueTiempoMaximo(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
-		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), round(6*24*20 + 23*20 + 20/60*59,2))
+		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(round(6*24*20 + 23*20 + 20/60*59,2)).quantize(Decimal(10)**-2))
 	
 
 #################################################################
@@ -1371,56 +1371,56 @@ class SimpleFormTestCase(TestCase):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 15)
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(15))
 			
 		# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
 	def test_tarifaPorHoraYFraccionMaxTiempo(self):
 		tarifa = 15
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(15*24*7,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(15*24*7,2)))
 		
 	def test_tarifaPorHoraYFraccionFraccion1Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,26,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 10,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(20*2 + 10,2)))
 	
 	def test_tarifaPorHoraYFraccionFraccion30Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,55,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 10,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(20*2 + 10,2)))
 	
 	def test_tarifaPorHoraYFraccionFraccion31Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,56,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*2 + 20,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(20*2 + 20,2)))
 	
 	def test_tarifaPorHoraYFraccionFraccion59Min(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(20*3 + 20,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(20*3 + 20,2)))
 	
 	def test_tarifaPorHoraYFraccionHorasExactasMismoDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 30*3)
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(30*3))
 	
 	def test_tarifaPorHoraYFraccionHorasExactasDiferentesDia(self):
 		tarifa = 30
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), 72*30)
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(72*30))
 		
 	def test_tarifaPorHoraYFraccion1MinMenosQueTiempoMaximo(self):
 		tarifa = 20
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
-		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), round(6*24*20 + 23*20 + 20,2))
+		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(round(6*24*20 + 23*20 + 20,2)))
 
 
 #################################################################
@@ -1435,7 +1435,7 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(12,0,0)
 		finpico = datetime.time(15,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), 15)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(900))
 		
 	def test_tarifaDiferenciadoPorHoraMinTiempoDentroHoraPico(self):
 		tarifa = 15
@@ -1445,7 +1445,7 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(15,0,0)
 		finpico = datetime.time(20,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), 20)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(1200))
 			
 		# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
 	def test_tarifaDiferenciadoPorHoraMaxTiempo(self):
@@ -1456,7 +1456,7 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(15,0,0)
 		finpico = datetime.time(20,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(5*20*7+19*15*7,2))
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(round(60*5*20*7+60*19*15*7,2)))
 		
 		
 	def test_tarifaDiferenciadoPorHora1MinMenosQueTiempoMaximo(self):
@@ -1467,7 +1467,7 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(15,0,0)
 		finpico = datetime.time(20,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(20*19*7+25*5*5+20*35/60+25+3*25+24/60*25,2))
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(round(60*5*25*7+60*19*20*7,2)-25))
 
 	
 	def test_tarifaDiferenciadoPorHoraReservaIgualQueHoraPico(self):
@@ -1478,7 +1478,7 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(13,25,0,0)
 		finpico = datetime.time(18,25,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(25*5,2))
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(round(60*25*5,2)))
 
 	def test_tarifaDiferenciadoPorHoraMaxTiempoFueraDeHoraPico(self):
 		tarifa = 20
@@ -1488,6 +1488,4 @@ class SimpleFormTestCase(TestCase):
 		iniciopico = datetime.time(15,0,0)
 		finpico = datetime.time(20,0,0)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), round(17*20+59/60*20*2,2))
-
-	
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(round(60*19*20-20*2,2)).quantize(Decimal(10)**-2))

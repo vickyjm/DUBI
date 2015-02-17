@@ -153,9 +153,21 @@
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
       {% endif %}
-    {% if estacionamiento.Tarifa %}
+	  {% if estacionamiento.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
         <tr><td>{{estacionamiento.Tarifa}} Bsf.</td></tr>
+      {% endif %}
+      {% if estacionamiento.Pico_Ini %}
+	    <tr><td><b><i class="fa fa-clock-o"></i> Inicio Hora Pico:</b></td></tr>
+	    <tr><td>{{estacionamiento.Pico_Ini}}</td></tr>
+	  {% endif %}  
+	  {% if estacionamiento.Pico_Fin %}
+	    <tr><td><b><i class="fa fa-clock-o"></i> Fin Hora Pico:</b></td></tr>
+	    <tr><td>{{estacionamiento.Pico_Fin}}</td></tr>
+	  {% endif %}
+	  {% if estacionamiento.TarifaPico %}
+        <tr><td><b><i class="fa fa-money"></i></i> Tarifa Horario Pico:</b></td></tr>
+        <tr><td>{{estacionamiento.TarifaPico}} Bsf.</td></tr>
       {% endif %}
       
       

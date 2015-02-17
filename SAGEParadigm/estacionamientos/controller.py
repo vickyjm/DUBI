@@ -24,7 +24,7 @@ def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
 	if HoraInicio >= HoraFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	if ReservaInicio >= ReservaFin:
-		return (False, 'El horario de inicio de reserva debe ser menor al horario de cierre')
+		return (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva')
 	if ReservaInicio < HoraInicio:
 		return (False, 'El horario de inicio de reserva debe mayor o igual al horario de apertura del estacionamiento')
 	if ReservaInicio > HoraFin:
@@ -122,7 +122,7 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	if temp1<temp2:
 		temp1+=1
 		
-	return tarifa*temp1
+	return tarifa*Decimal(temp1)
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
 	
@@ -134,9 +134,9 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	temp1 = (finR-iniR).days*24 + (finR - iniR).seconds//3600
 	temp2 = (finR-iniR).days*24 + (finR - iniR).seconds/3600
 	minextra = temp2 - temp1
-	fraccion = tarifa*minextra
+	fraccion = tarifa*Decimal(minextra)
 	
-	return round(tarifa * temp1 + fraccion,2) 
+	return Decimal(round(tarifa * temp1 + fraccion,2))
 
 def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	
@@ -156,7 +156,7 @@ def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	elif minextra <= 30 and minextra != 0:
 		fraccion = tarifa/2
 	
-	return round(tarifa * temp1 + fraccion,2)
+	return Decimal(round(tarifa * Decimal(temp1) + Decimal(fraccion),2))
 	
 def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarifapico):
 
@@ -165,8 +165,17 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 	assert(tarifapico > 0)
 	assert(finr >= inir + datetime.timedelta(hours = 1))
 	assert(finr <= inir + datetime.timedelta(days = 7))
-		
 	
+	totalTarifa=0
+	tempDatetime=inir
+	while tempDatetime<finr:
+		tempTime=tempDatetime.time()
+		if tempTime>=inipico and tempTime<finpico:
+			totalTarifa+=tarifapico
+		else:
+			totalTarifa+=tarifa
+		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
+	return Decimal(totalTarifa)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
