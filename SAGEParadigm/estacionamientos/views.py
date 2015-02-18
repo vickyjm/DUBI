@@ -111,13 +111,14 @@ def estacionamiento_reserva(request, _id):
         Puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('Puesto', 'InicioReserva', 'FinalReserva')
         #elem1 = (estacion.Apertura, estacion.Apertura)
         #elem2 = (estacion.Cierre, estacion.Cierre)
-        elem1 = (datetime.datetime.min, datetime.datetime.min)
-        elem2 = (datetime.datetime.max,datetime.datetime.max)
-        listaReserva = [[elem1, elem2] for _ in range(estacion.NroPuesto)]
+        #elem1 = (datetime.datetime.min, datetime.datetime.min)
+        #elem2 = (datetime.datetime.max,datetime.datetime.max)
+        #listaReserva = [[elem1, elem2] for _ in range(estacion.NroPuesto)]
         
         for obj in Puestos:
-            puesto = busquedaBin(obj[1], obj[2], listaReserva[obj[0]])
-            listaReserva[obj[0]] = insertarReserva(obj[1], obj[2], puesto[0], listaReserva[obj[0]])
+            exito,listaReserva = reservar(obj[1], obj[2], listaReserva, estacion.NroPuesto)
+        #listaReserva.append([inicio_reserva,-1])
+        #listaReserva.append([final_reserva,1])
 
 
     # Si se hace un GET renderizamos los estacionamientos con su formulario
@@ -147,14 +148,14 @@ def estacionamiento_reserva(request, _id):
 
                 # Si esta en un rango valido, procedemos a buscar en la lista
                 # el lugar a insertar
-                x = buscar(inicio_reserva, final_reserva, listaReserva)
-                if x[2] == True :
-                    reservar(inicio_reserva, final_reserva, listaReserva)
+                exito,listaReserva = reservar(inicio_reserva, final_reserva, listaReserva, estacion.NroPuesto)
+                if exito == True :
+                    
                     #inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())
                     #final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
                     reservaFinal = ReservasModel(
                                         Estacionamiento = estacion,
-                                        Puesto = x[0],
+                                        Puesto = 2,
                                         InicioReserva = inicio_reserva,
                                         FinalReserva = final_reserva
                                     )

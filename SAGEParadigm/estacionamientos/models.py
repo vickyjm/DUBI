@@ -4,7 +4,6 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.forms import ModelForm
 
-
 class Estacionamiento(models.Model):
 	# propietario=models.ForeignKey(Propietario)
 	Propietario = models.CharField(max_length = 50, help_text = "Nombre Propio")
