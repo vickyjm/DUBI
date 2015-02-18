@@ -21,7 +21,7 @@ class Estacionamiento(models.Model):
 	Rif = models.CharField(max_length = 12)
 
 	Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2)
-	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraYFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
+	opciones_esquema = (("Por hora", " Por hora"), ("Por minuto"," Por minuto"), (("Por hora Y fraccion"), ("Hora y fracción")), ("Diferenciado por hora","Diferenciado por hora"))
 	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
