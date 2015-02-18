@@ -152,11 +152,9 @@
 	    <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
 	    <tr><td>{{estacionamiento.Cierre}}</td></tr>
       {% endif %}
-      {% if estacionamiento.Esquema %}
+      {% if estacionamiento.Esquema or estacionamiento.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
-      {% endif %}
- 	  {% if estacionamiento.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
         <tr><td>{{estacionamiento.Tarifa}} Bsf.</td></tr>
       {% endif %}
