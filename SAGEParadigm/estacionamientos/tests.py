@@ -1267,7 +1267,10 @@ class SimpleFormTestCase(TestCase):
 #################################################################
 #		Pruebas calculo de tarifa por horas 
 ################################################################
-
+	global min_tarifa, max_tarifa 
+	min_tarifa = 0
+	max_tarifa = Decimal(9999999.99)
+	
 	# El minimo tiempo de reserva es de 1 hora
 	def test_tarifaPorHoraMinTiempo(self):
 		tarifa = 15
@@ -1313,6 +1316,17 @@ class SimpleFormTestCase(TestCase):
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(7*24*20))
 	
+	def test_tarifaPorHoraMinimaTarifa(self):
+		tarifa = 0
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,6,15,0,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(0))
+		
+	def test_tarifaPorHoraMaximaTarifa(self):
+		tarifa = max_tarifa
+		inires = datetime.datetime(2015,7,5,18,25,0,0)
+		finres = datetime.datetime(2015,7,5,20,0,0,0)
+		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(9999999.99*2).quantize(Decimal(10)**-2))	
 		
 #################################################################
 #		Pruebas calculo de tarifa por minutos 

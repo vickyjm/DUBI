@@ -20,7 +20,7 @@ class Estacionamiento(models.Model):
 
 	Rif = models.CharField(max_length = 12)
 
-	Tarifa = models.DecimalField(max_digits = 12, decimal_places = 2)
+	Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2)
 	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraYFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
 	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
@@ -30,7 +30,7 @@ class Estacionamiento(models.Model):
 	NroPuesto = models.IntegerField(blank = True, null = True)
 	Pico_Ini = models.TimeField(blank = True,null = True)
 	Pico_Fin = models.TimeField(blank = True, null = True)
-	TarifaPico = models.DecimalField(max_digits = 12, decimal_places = 2)
+	TarifaPico = models.DecimalField(max_digits = 9, decimal_places = 2)
 
 
 # class ExtendedModel(models.Model):

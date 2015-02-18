@@ -112,7 +112,7 @@ def reservar(hin, hout, estacionamiento):
 def calculoTarifaHora(iniR,finR,tarifa):
 	
 	assert(finR > iniR)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
@@ -122,12 +122,12 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	if temp1<temp2:
 		temp1+=1
 		
-	return tarifa*Decimal(temp1)
+	return Decimal(tarifa*Decimal(temp1)).quantize(Decimal(10)**-2)
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
 	
 	assert(finR > iniR)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
@@ -141,7 +141,7 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	
 	assert(finR > iniR)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
@@ -161,7 +161,7 @@ def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarifapico):
 
 	assert(finr > inir)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(tarifapico > 0)
 	assert(finr >= inir + datetime.timedelta(hours = 1))
 	assert(finr <= inir + datetime.timedelta(days = 7))
