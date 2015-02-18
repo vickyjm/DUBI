@@ -156,7 +156,7 @@ def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	elif minextra <= 30 and minextra != 0:
 		fraccion = tarifa/2
 	
-	return Decimal(round(tarifa * Decimal(temp1) + Decimal(fraccion),2))
+	return Decimal(tarifa * Decimal(temp1) + Decimal(fraccion)).quantize(Decimal(10)**-2)
 	
 def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarifapico):
 
@@ -177,7 +177,7 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 		else:
 			totalTarifa+=tarifaPorMin
 		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
-	return Decimal(round(totalTarifa,2)).quantize(Decimal(10)**-2)
+	return Decimal(totalTarifa).quantize(Decimal(10)**-2)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
