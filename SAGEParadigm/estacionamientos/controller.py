@@ -136,7 +136,7 @@ def calculoTarifaMinuto (iniR, finR, tarifa):
 	minextra = temp2 - temp1
 	fraccion = tarifa*Decimal(minextra)
 	
-	return Decimal(round(tarifa * temp1 + fraccion,2))
+	return Decimal(tarifa * temp1 + fraccion).quantize(Decimal(10)**-2)
 
 def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
 	
