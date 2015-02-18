@@ -89,7 +89,10 @@ def estacionamiento_detail(request, _id):
                 estacion.Pico_Ini = form.cleaned_data['hora_picoini']
                 estacion.Pico_Fin = form.cleaned_data['hora_picofin']
                 estacion.TarifaPico = form.cleaned_data['tarifa_pico']
-
+                if estacion.Esquema=="DifHora":
+                    m_validado=validarPicos(hora_in,hora_out,estacion.Pico_Ini,estacion.Pico_Fin,estacion.Tarifa,estacion.TarifaPico)
+                    if not m_validado[0]:
+                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                 estacion.save()
     else:
         form = EstacionamientoExtendedForm()
