@@ -65,11 +65,11 @@ class EstacionamientoExtendedForm(forms.Form):
     
     opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraYFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
     esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = opciones_esquema)
-    tarifa = forms.CharField(required = True, validators = [tarifa_validator])
+    tarifa = forms.DecimalField(required = True, max_digits = 12, decimal_places = 2, min_value = 0, label = 'Tarifa')
     
     hora_picoini = forms.TimeField(required = False, label = 'Inicio Hora Pico')
     hora_picofin = forms.TimeField(required = False, label = 'Fin Hora Pico')
-    tarifa_pico = forms.CharField(required = False, validators = [tarifa_validator])
+    tarifa_pico = forms.DecimalField(required = False, max_digits = 12, decimal_places = 2, min_value = 0, label = 'Tarifa Pico')
     
 
 class EstacionamientoReserva(forms.Form):

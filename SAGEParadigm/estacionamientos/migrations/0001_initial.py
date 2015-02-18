@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Estacionamiento',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('Propietario', models.CharField(help_text='Nombre Propio', max_length=50)),
                 ('Nombre', models.CharField(max_length=50)),
                 ('Direccion', models.TextField(max_length=120)),
@@ -24,12 +24,15 @@ class Migration(migrations.Migration):
                 ('Email_2', models.EmailField(null=True, max_length=75, blank=True)),
                 ('Rif', models.CharField(max_length=12)),
                 ('Tarifa', models.CharField(null=True, max_length=50, blank=True)),
-                ('Esquema', models.CharField(choices=[('Hora', ' Por hora'), ('Minuto', ' Por minuto')], max_length=6)),
+                ('Esquema', models.CharField(choices=[('Hora', ' Por hora'), ('Minuto', ' Por minuto'), ('HoraYFraccion', 'Hora y fracción'), ('DifHora', 'Diferenciado por hora')], max_length=20)),
                 ('Apertura', models.TimeField(null=True, blank=True)),
                 ('Cierre', models.TimeField(null=True, blank=True)),
                 ('Reservas_Inicio', models.TimeField(null=True, blank=True)),
                 ('Reservas_Cierre', models.TimeField(null=True, blank=True)),
                 ('NroPuesto', models.IntegerField(null=True, blank=True)),
+                ('Pico_Ini', models.TimeField(null=True, blank=True)),
+                ('Pico_Fin', models.TimeField(null=True, blank=True)),
+                ('TarifaPico', models.CharField(null=True, max_length=50, blank=True)),
             ],
             options={
             },
@@ -38,7 +41,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReservasModel',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('Puesto', models.IntegerField()),
                 ('InicioReserva', models.DateTimeField()),
                 ('FinalReserva', models.DateTimeField()),
