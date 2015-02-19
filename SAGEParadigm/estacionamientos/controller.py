@@ -171,12 +171,12 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 	totalTarifa=0
 	tempDatetime=inir
 	while tempDatetime<finr:
+		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 		tempTime=tempDatetime.time()
-		if tempTime>=inipico and tempTime<finpico:
+		if tempTime>inipico and tempTime<=finpico:
 			totalTarifa+=tarifaPicoPorMin
 		else:
 			totalTarifa+=tarifaPorMin
-		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 	return Decimal(totalTarifa).quantize(Decimal(10)**-2)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
@@ -211,6 +211,8 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
 	return (True, '')
 
 def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
+	if not(horaPicoIni or horaPicoFin or tarifaPico):
+		return (False,'Los campos Pico son obligatorios')
 	if horaPicoIni<horaIni or horaPicoFin>horaFin:
 		return (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento')
 	if Decimal(tarifa)>=Decimal(tarifaPico):

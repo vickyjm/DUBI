@@ -9,7 +9,7 @@ from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
-from estacionamientos.models import Estacionamiento, ReservasModel
+from estacionamientos.models import *
 
 
 listaReserva = []
@@ -78,7 +78,21 @@ def estacionamiento_detail(request, _id):
                 m_validado = HorarioEstacionamiento(hora_in, hora_out, reserva_in, reserva_out)
                 if not m_validado[0]:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
-
+                tipoEsquema=form.cleaned_data['esquema']
+                tarifa = form.cleaned_data['tarifa']
+                if estacion.Esquema:
+                    eval(tipoEsquema+".objects.filter(Estacionamiento=estacion).delete()")
+                if tipoEsquema=="DifHora":
+                    picoIni = form.cleaned_data['hora_picoini']
+                    picoFin = form.cleaned_data['hora_picofin']
+                    tarifaPico = form.cleaned_data['tarifa_pico']
+                    m_validado=validarPicos(hora_in,hora_out,picoIni,picoFin,tarifa,tarifaPico)
+                    if not m_validado[0]:
+                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
+                    esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
+                else:
+                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
+                esq.save()
                 estacion.Tarifa = form.cleaned_data['tarifa']
                 estacion.Esquema = form.cleaned_data['esquema']
                 estacion.Apertura = hora_in
@@ -89,10 +103,6 @@ def estacionamiento_detail(request, _id):
                 estacion.Pico_Ini = form.cleaned_data['hora_picoini']
                 estacion.Pico_Fin = form.cleaned_data['hora_picofin']
                 estacion.TarifaPico = form.cleaned_data['tarifa_pico']
-                if estacion.Esquema=="Diferenciado por hora":
-                    m_validado=validarPicos(hora_in,hora_out,estacion.Pico_Ini,estacion.Pico_Fin,estacion.Tarifa,estacion.TarifaPico)
-                    if not m_validado[0]:
-                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                 estacion.save()
     else:
         form = EstacionamientoExtendedForm()
@@ -169,15 +179,8 @@ def estacionamiento_reserva(request, _id):
                     #final_reserva = datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
                     tarifaCosto=Decimal(estacion.Tarifa)
                     tarifaFinal=0
-                    if estacion.Esquema == 'Por hora':
-                        tarifaFinal=calculoTarifaHora(inicio_reserva,final_reserva,tarifaCosto)
-                    elif estacion.Esquema == 'Por minuto':
-                        tarifaFinal = calculoTarifaMinuto(inicio_reserva, final_reserva, tarifaCosto)
-                    elif estacion.Esquema == 'Por hora y fraccion':
-                        tarifaFinal = calculoTarifaHoraYFraccion(inicio_reserva, final_reserva, tarifaCosto)
-                    elif estacion.Esquema=='Diferenciado por hora':
-                        tarifaPico=Decimal(estacion.TarifaPico)
-                        tarifaFinal= calculoTarifaDiferenciadoPorHora(inicio_reserva, final_reserva, estacion.Pico_Ini, estacion.Pico_Fin, tarifaCosto, tarifaPico)
+                    esq=eval(estacion.Esquema+".objects.get(Estacionamiento = estacion)")
+                    tarifaFinal=esq.calcularMonto(inicio_reserva,final_reserva)
                     mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaFinal)
                     return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeTarifa})
                 else:

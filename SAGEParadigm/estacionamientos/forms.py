@@ -49,7 +49,6 @@ class EstacionamientoForm(forms.Form):
 
 class EstacionamientoExtendedForm(forms.Form):
 
-
     puestos = forms.IntegerField(min_value = 0, label = 'Número de Puestos')
 
     horarioin = forms.TimeField(required = True, label = 'Hora Apertura')
@@ -58,7 +57,7 @@ class EstacionamientoExtendedForm(forms.Form):
     horario_reserin = forms.TimeField(required = True, label = 'Hora Inicio Reserva')
     horario_reserout = forms.TimeField(required = True, label = 'Hora Fin Reserva')
     
-    opciones_esquema = (("Por hora", " Por hora"), ("Por minuto"," Por minuto"), (("Por hora y fraccion"), ("Hora y fracción")), ("Diferenciado por hora","Diferenciado por hora"))
+    opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
     esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = opciones_esquema)
     tarifa = forms.DecimalField(required = True, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa')
     
