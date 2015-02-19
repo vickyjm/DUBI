@@ -1263,71 +1263,81 @@ class SimpleFormTestCase(TestCase):
 	def test_reservar_todo_None(self):
 		x = reservar(None, None, None)
 		self.assertEqual(x, 1)
-		
+
 #################################################################
 #		Pruebas calculo de tarifa por horas 
 ################################################################
 	global min_tarifa, max_tarifa 
-	min_tarifa = 0
+	min_tarifa = Decimal(0)
 	max_tarifa = Decimal(9999999.99)
 	
 	# El minimo tiempo de reserva es de 1 hora
+	# El máximo tiempo de reserva es de 7 dias
+		
+	# Extremo
 	def test_tarifaPorHoraMinTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(15))
 		
-	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	# Extremo 
 	def test_tarifaPorHoraMaxTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(15*24*7))
 		
+	# Extremo
 	def test_tarifaPorHoraFraccion1Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,26,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(20*2))
 		
+	# Extremo
 	def test_tarifaPorHoraHorasExactasMismoDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(30*3))
 	
+	# Extremo
 	def test_tarifaPorHoraHorasExactasDiferentesDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(72*30))
 	
-		
+	# Extremo
 	def test_tarifaPorHoraFraccion59Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,24,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(20*2))
 		
+	# Extremo
 	def test_tarifaPorHora1MinMenosQueTiempoMaximo(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(7*24*20))
 	
+	# Extremo
 	def test_tarifaPorHoraMinimaTarifa(self):
 		tarifa = min_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,6,15,0,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(0))
 		
+	# Extremo
 	def test_tarifaPorHoraMaximaTarifa(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,0,0,0)
 		self.assertEqual(calculoTarifaHora(inires, finres, tarifa), Decimal(9999999.99*2).quantize(Decimal(10)**-2))
-		
+	
+	# Exquina	
 	def test_tarifaPorHoraMaxTarifaMaxTiempo(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1339,61 +1349,72 @@ class SimpleFormTestCase(TestCase):
 #################################################################
 
 	# El minimo tiempo de reserva es de 1 hora
+	# El máximo tiempo de reserva es de 7 dias
+
+	# Extremo
 	def test_tarifaPorMinutoMinTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(15))
 		
-	# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	# Extremo 
 	def test_tarifaPorMinutoMaxTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(15*24*7).quantize(Decimal(10)**-2))
 		
+	# Extremo
 	def test_tarifaPorMinutoFraccion1Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,26,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(20*2 + 20/60).quantize(Decimal(10)**-2))
-		
+	
+	# Extremo
 	def test_tarifaPorMinutoFraccion59Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(20*3 + 59 *(20/60)).quantize(Decimal(10)**-2))
 	
+	# Extremo
 	def test_tarifaPorMinutoHorasExactasMismoDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(30*3))
 	
+	# Extremo
 	def test_tarifaPorMinutoHorasExactasDiferentesDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(72*30))
 		
+	# Extremo
 	def test_tarifaPorMinuto1MinMenosQueTiempoMaximo(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(round(6*24*20 + 23*20 + 20/60*59,2)).quantize(Decimal(10)**-2))
 	
+	# Extremo
 	def test_tarifaPorMinutoMinimaTarifa(self):
 		tarifa = min_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,6,15,0,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(0))
-		
+	
+	# Extremo
 	def test_tarifaPorMinutoMaximaTarifa(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,0,0,0)
 		self.assertEqual(calculoTarifaMinuto(inires, finres, tarifa), Decimal(9999999.99+9999999.99/60*35).quantize(Decimal(10)**-2))
-		
+	
+	# Esquina
 	def test_tarifaPorMinutoMaxTarifaMaxTiempo(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1404,73 +1425,87 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas calculo de tarifa por hora y fracion
 #################################################################
 
+	# El minimo tiempo de reserva es de 1 hora
+	# El máximo tiempo de reserva es de 7 dias
+
+	# Extremo
 	def test_tarifaPorHoraYFraccionMinTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,19,25,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(15))
 			
-		# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	# Extremo 
 	def test_tarifaPorHoraYFraccionMaxTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(15*24*7).quantize(Decimal(10)**-2))
 		
+	# Extremo
 	def test_tarifaPorHoraYFraccionFraccion1Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,26,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(20*2 + 10).quantize(Decimal(10)**-2))
 	
+	#  Extremo
 	def test_tarifaPorHoraYFraccionFraccion30Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,55,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(20*2 + 10).quantize(Decimal(10)**-2))
 	
+	# Extremo
 	def test_tarifaPorHoraYFraccionFraccion31Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,56,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(20*2 + 20).quantize(Decimal(10)**-2))
 	
+	# Extremo
 	def test_tarifaPorHoraYFraccionFraccion59Min(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(20*3 + 20).quantize(Decimal(10)**-2))
 	
+	# 
 	def test_tarifaPorHoraYFraccionHorasExactasMismoDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(30*3))
 	
+	# 
 	def test_tarifaPorHoraYFraccionHorasExactasDiferentesDia(self):
 		tarifa = Decimal(30)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(72*30))
-		
+	
+	# Extremo
 	def test_tarifaPorHoraYFraccion1MinMenosQueTiempoMaximo(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,24,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(6*24*20 + 23*20 + 20).quantize(Decimal(10)**-2))
 
+	# Extremo
 	def test_tarifaPorHoraYFraccionMinimaTarifa(self):
 		tarifa = min_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,6,15,0,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(0))
 		
+	# Extremo
 	def test_tarifaPorHoraYFraccionMaximaTarifa(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,20,0,0,0)
 		self.assertEqual(calculoTarifaHoraYFraccion(inires, finres, tarifa), Decimal(9999999.99*2).quantize(Decimal(10)**-2))
 		
+	# Esquina
 	def test_tarifaPorHoraYFraccionMaxTarifaMaxTiempo(self):
 		tarifa = max_tarifa
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1483,6 +1518,12 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas calculo de tarifa diferencido por hora
 #################################################################
 
+	# El minimo tiempo de reserva es de 1 hora
+	# El máximo tiempo de reserva es de 7 dias
+	# El mínimo tiempo del horario pico es de 1 minuto
+	# El máximo tiempo del horario pico es de 24 horas
+	
+	# Extremo
 	def test_tarifaDiferenciadoPorHoraMinTiempoFueraHoraPico(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1492,7 +1533,8 @@ class SimpleFormTestCase(TestCase):
 		finpico = datetime.time(15,0,0)
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(15))
-		
+	
+	# Extremo	
 	def test_tarifaDiferenciadoPorHoraMinTiempoDentroHoraPico(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1502,8 +1544,19 @@ class SimpleFormTestCase(TestCase):
 		finpico = datetime.time(20,0,0)
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(20))
+
+	# Extremo
+	def test_tarifaDiferenciadoPorHoraReserva1MinutoAntesDeTerminarHorarioPico(self):
+		tarifa = 20	
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,5,15,59,0,0)
+		tarifapico = 25
+		iniciopico = datetime.time(14,0,0)
+		finpico = datetime.time(16,0,0)
+	
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(20+35*20/60+25+25*59/60).quantize(Decimal(10)**-2))
 			
-		# Prueba el maximo tiempo de reserva en este caso igual a 7 dias 
+	#  Extremo
 	def test_tarifaDiferenciadoPorHoraMaxTiempo(self):
 		tarifa = Decimal(15)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1514,7 +1567,7 @@ class SimpleFormTestCase(TestCase):
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(5*20*7+19*15*7).quantize(Decimal(10)**-2))
 		
-		
+	# Extremo
 	def test_tarifaDiferenciadoPorHora1MinMenosQueTiempoMaximo(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
@@ -1525,7 +1578,7 @@ class SimpleFormTestCase(TestCase):
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(5*25*7+19*20*7-25/60).quantize(Decimal(10)**-2))
 
-	
+	# Esquina
 	def test_tarifaDiferenciadoPorHoraReservaIgualQueHoraPico(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,13,25,0,0)
@@ -1536,6 +1589,29 @@ class SimpleFormTestCase(TestCase):
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(25*5).quantize(Decimal(10)**-2))
 
+	# Extremo		
+	def test_tarifaDiferenciadoPorHoraMinimoTiempoDeHoraPico(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,5,16,0,0,0)
+		tarifapico = Decimal(25)
+		iniciopico = datetime.time(15,0,0)
+		finpico = datetime.time(15,1,0)
+	
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(214*20/60+25/60).quantize(Decimal(10)**-2))
+
+	# Extremo
+	def test_tarifaDiferenciadoPorHoraMaximoTiempoDeHoraPico(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,5,16,0,0,0)
+		tarifapico = Decimal(25)
+		iniciopico = datetime.time(0,0,0)
+		finpico = datetime.time(23,59,0)
+		
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(215*25/60).quantize(Decimal(10)**-2))
+
+	# Esquina
 	def test_tarifaDiferenciadoPorHoraMaxTiempoFueraDeHoraPicoSinLimitesIncluidos(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,20,1,0,0)
@@ -1545,7 +1621,8 @@ class SimpleFormTestCase(TestCase):
 		finpico = datetime.time(20,0,0)
 		
 		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(19*20-20/60*2).quantize(Decimal(10)**-2))
-		
+	
+	# Esquina	
 	def test_tarifaDiferenciadoPorHoraMaxTiempoFueraDeHoraPicoConLimitesIncluidos(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,5,20,0,0,0)
@@ -1553,5 +1630,100 @@ class SimpleFormTestCase(TestCase):
 		tarifapico = Decimal(25)
 		iniciopico = datetime.time(15,0,0)
 		finpico = datetime.time(20,0,0)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(19*20).quantize(Decimal(10)**-2))	
+
+	# Extremo
+	def test_tarifaDiferenciadoPorHoraMinTarifaEnHorarioValle(self):
+		tarifa = min_tarifa
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,6,3,25,0,0)
+		tarifapico = Decimal(30)
+		iniciopico = datetime.time(14,0,0)
+		finpico = datetime.time(16,0,0)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(30*2).quantize(Decimal(10)**-2))
+
+	# Extremo	
+	def test_tarifaDiferenciadoPorHoraMaxTarifaEnHorarioPico(self):
+		tarifa = max_tarifa-Decimal(0.01)
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,6,3,25,0,0)
+		tarifapico = max_tarifa
+		iniciopico = datetime.time(14,0,0)
+		finpico = datetime.time(16,0,0)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(9999999.99*2+9999999.98*95/60+9999999.98*11+9999999.98*25/60).quantize(Decimal(10)**-2))
+
+	# Esquina maliciosa
+	def test_tarifaDiferenciadoPorHoraMaxTiempoDeHoraPicoMaximoTiempoReserva(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,12,25,0,0)
+		finres = datetime.datetime(2015,7,12,12,25,0,0)
+		tarifapico = Decimal(30)
+		iniciopico = datetime.time(0,0,0)
+		finpico = datetime.time(23,59,0)
+		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(24*7*30).quantize(Decimal(10)**-2))
+
+###################################################################
+#		Pruebas para validar horario pico
+###################################################################
+
+	def test_validarPicosHorarioPicoValido(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
 		
-		self.assertEqual(calculoTarifaDiferenciadoPorHora(inires, finres,iniciopico, finpico, tarifa, tarifapico), Decimal(19*20).quantize(Decimal(10)**-2))
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (True, ''))
+		
+	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
+
+		horaPicoIni = datetime.time(14,0,0)
+		horaPicoFin = datetime.time(12,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
+			
+	def test_validarPicosTarifaPicoIgualTarifaValle(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(30)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
+		
+	
+	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(5,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento'))
+	
+	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(19,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento'))
+	

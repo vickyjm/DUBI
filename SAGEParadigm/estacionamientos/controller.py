@@ -162,22 +162,22 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 
 	assert(finr > inir)
 	assert(tarifa >= 0)
-	assert(tarifapico > 0)
+	assert(tarifapico > tarifa)
 	assert(finr >= inir + datetime.timedelta(hours = 1))
 	assert(finr <= inir + datetime.timedelta(days = 7))
 	
-	tarifaPorMin=tarifa/60
-	tarifaPicoPorMin=tarifapico/60
-	totalTarifa=0
 	tempDatetime=inir
+	minpico = 0
+	minvalle = 0
 	while tempDatetime<finr:
-		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 		tempTime=tempDatetime.time()
-		if tempTime>inipico and tempTime<=finpico:
-			totalTarifa+=tarifaPicoPorMin
+		if (tempTime>=inipico and tempTime<finpico) or( finpico == datetime.time(23,59) and inipico == datetime.time(0,0) and tempTime == finpico):
+			minpico += 1 
 		else:
-			totalTarifa+=tarifaPorMin
-	return Decimal(totalTarifa).quantize(Decimal(10)**-2)
+			minvalle += 1
+		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
+
+	return Decimal(tarifa*minvalle/60 + tarifapico*minpico/60).quantize(Decimal(10)**-20)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
@@ -211,10 +211,10 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
 	return (True, '')
 
 def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
-	if not(horaPicoIni or horaPicoFin or tarifaPico):
-		return (False,'Los campos Pico son obligatorios')
 	if horaPicoIni<horaIni or horaPicoFin>horaFin:
-		return (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento')
-	if Decimal(tarifa)>=Decimal(tarifaPico):
+		return (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento')
+	if Decimal(tarifa)>= Decimal(tarifaPico):
 		return (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle')
+	if horaPicoIni > horaPicoFin:
+		return (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico')
 	return (True, '')
