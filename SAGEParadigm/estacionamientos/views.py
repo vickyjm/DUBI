@@ -89,7 +89,7 @@ def estacionamiento_detail(request, _id):
                     picoIni = form.cleaned_data['hora_picoini']
                     picoFin = form.cleaned_data['hora_picofin']
                     tarifaPico = form.cleaned_data['tarifa_pico']
-                    m_validado=validarPicos(hora_in,hora_out,picoIni,picoFin,tarifa,tarifaPico)
+                    m_validado=validarPicos(reserva_in,reserva_out,picoIni,picoFin,tarifa,tarifaPico)
                     if not m_validado[0]:
                         return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                     esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
