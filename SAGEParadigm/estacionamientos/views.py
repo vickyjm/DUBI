@@ -59,6 +59,9 @@ def estacionamiento_detail(request, _id):
     # Verificamos que el objeto exista antes de continuar
     try:
         estacion = Estacionamiento.objects.get(id = _id)
+        esq = Esquema(Estacionamiento = estacion, Tarifa = Decimal(0))
+        if estacion.Esquema:
+            esq=eval(estacion.Esquema+".objects.get(Estacionamiento=estacion)")            
     except ObjectDoesNotExist:
         return render(request, '404.html')
 
@@ -93,21 +96,21 @@ def estacionamiento_detail(request, _id):
                 else:
                     esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
                 esq.save()
-                estacion.Tarifa = form.cleaned_data['tarifa']
+                #estacion.Tarifa = form.cleaned_data['tarifa']
                 estacion.Esquema = form.cleaned_data['esquema']
                 estacion.Apertura = hora_in
                 estacion.Cierre = hora_out
                 estacion.Reservas_Inicio = reserva_in
                 estacion.Reservas_Cierre = reserva_out
                 estacion.NroPuesto = form.cleaned_data['puestos']
-                estacion.Pico_Ini = form.cleaned_data['hora_picoini']
-                estacion.Pico_Fin = form.cleaned_data['hora_picofin']
-                estacion.TarifaPico = form.cleaned_data['tarifa_pico']
+                #estacion.Pico_Ini = form.cleaned_data['hora_picoini']
+                #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
+                #estacion.TarifaPico = form.cleaned_data['tarifa_pico']
                 estacion.save()
     else:
         form = EstacionamientoExtendedForm()
 
-    return render(request, 'estacionamiento.html', {'form': form, 'estacionamiento': estacion})
+    return render(request, 'estacionamiento.html', {'form': form, 'estacionamiento': estacion, 'esquema': esq})
 
 
 def estacionamiento_reserva(request, _id):
@@ -115,6 +118,7 @@ def estacionamiento_reserva(request, _id):
     # Verificamos que el objeto exista antes de continuar
     try:
         estacion = Estacionamiento.objects.get(id = _id)
+        esq=eval(estacion.Esquema+".objects.get(Estacionamiento = estacion)")
     except ObjectDoesNotExist:
         return render(request, '404.html')
 
@@ -139,7 +143,7 @@ def estacionamiento_reserva(request, _id):
     # Si se hace un GET renderizamos los estacionamientos con su formulario
     if request.method == 'GET':
         form = EstacionamientoReserva()
-        return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
+        return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion, 'esquema': esq})
 
     # Si es un POST estan mandando un request
     elif request.method == 'POST':
@@ -177,9 +181,7 @@ def estacionamiento_reserva(request, _id):
                     reservaFinal.save()
                     #inicio_reserva = datetime.datetime(2015,7,5,inicio_reserva.hour,inicio_reserva.minute)
                     #final_reserva = datetime.datetime(2015,7,5,final_reserva.hour,final_reserva.minute)
-                    tarifaCosto=Decimal(estacion.Tarifa)
-                    tarifaFinal=0
-                    esq=eval(estacion.Esquema+".objects.get(Estacionamiento = estacion)")
+                    #tarifaCosto=Decimal(estacion.Tarifa)
                     tarifaFinal=esq.calcularMonto(inicio_reserva,final_reserva)
                     mensajeTarifa='Se realizó la reserva exitosamente. El costo ha sido de ' + str(tarifaFinal)
                     return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeTarifa})
@@ -188,5 +190,5 @@ def estacionamiento_reserva(request, _id):
     else:
         form = EstacionamientoReserva()
 
-    return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion})
+    return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion, 'esquema': esq})
 

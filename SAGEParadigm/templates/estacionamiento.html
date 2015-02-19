@@ -152,19 +152,19 @@
 	    <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
 	    <tr><td>{{estacionamiento.Cierre}}</td></tr>
       {% endif %}
-      {% if estacionamiento.Esquema or estacionamiento.Tarifa %}
+      {% if estacionamiento.Esquema or esquema.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
-        <tr><td>{{estacionamiento.Tarifa}} Bsf.</td></tr>
+        <tr><td>{{esquema.Tarifa}} Bsf.</td></tr>
       {% endif %}
-      {% if estacionamiento.Pico_Ini or estacionamiento.Pico_Fin or estacionamiento.TarifaPico %}
+      {% if esquema.PicoIni or esquema.PicoFin or esquema.TarifaPico %}
 	    <tr><td><b><i class="fa fa-clock-o"></i> Inicio Hora Pico:</b></td></tr>
-	    <tr><td>{{estacionamiento.Pico_Ini}}</td></tr>
+	    <tr><td>{{esquema.PicoIni}}</td></tr>
 	    <tr><td><b><i class="fa fa-clock-o"></i> Fin Hora Pico:</b></td></tr>
-	    <tr><td>{{estacionamiento.Pico_Fin}}</td></tr>
+	    <tr><td>{{esquema.PicoFin}}</td></tr>
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa Horario Pico:</b></td></tr>
-        <tr><td>{{estacionamiento.TarifaPico}} Bsf.</td></tr>
+        <tr><td>{{esquema.TarifaPico}} Bsf.</td></tr>
       {% endif %}
       
         </tbody>
@@ -192,7 +192,9 @@
               	<div class="control-group">
                   <div class="controls">
                 	{% ifnotequal field.name "esquema" %}
-                
+                	{% ifequal field.name "hora_picoini"%}
+                		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
+                	{% endifequal%}
                     <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
                     
                   {% else %}

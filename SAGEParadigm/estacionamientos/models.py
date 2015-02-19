@@ -21,7 +21,7 @@ class Estacionamiento(models.Model):
 
 	Rif = models.CharField(max_length = 12)
 
-	Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
+	#Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
 	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
 	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
@@ -29,9 +29,9 @@ class Estacionamiento(models.Model):
 	Reservas_Inicio = models.TimeField(blank = True,null = True)
 	Reservas_Cierre = models.TimeField(blank = True, null = True)
 	NroPuesto = models.IntegerField(blank = True, null = True)
-	Pico_Ini = models.TimeField(blank = True,null = True)
-	Pico_Fin = models.TimeField(blank = True, null = True)
-	TarifaPico = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
+	#Pico_Ini = models.TimeField(blank = True,null = True)
+	#Pico_Fin = models.TimeField(blank = True, null = True)
+	#TarifaPico = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
 
 
 # class ExtendedModel(models.Model):
@@ -61,9 +61,6 @@ class ReservasModel(models.Model):
 class Esquema(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
 	Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2)
-	
-	def calcularMonto(self):
-		pass
 	
 	# class Meta:
 	# abstract = True
