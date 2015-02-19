@@ -83,7 +83,7 @@ def binaria(valor, inicio, fin, lista):
 #   else:
 #       return (index, False)
 
-def marzullo(tabla):
+def marzullo(tabla,puestos):
     best = 0
     cnt = 0
     listaOut = []
@@ -100,7 +100,7 @@ def marzullo(tabla):
             best = cnt
             beststart=tabla[i][0]
             bestend = tabla[i+1][0]
-        elif (best == cnt) and (best == self.puestos) :
+        elif (best == cnt) and (best == puestos) :
             if (listaOut.count([tabla[i][0],tabla[i+1][0]]) == 0) and (tabla[i][0] != tabla[i+1][0]) :
                 listaOut.append([tabla[i][0],tabla[i+1][0]])
         
@@ -141,7 +141,7 @@ def reservar(horaIni,horaFin,tabla,puestos) :
 
     reservaOrdenada = reservaIni + reservaFin
          
-    listaIntervalo = marzullo(reservaOrdenada) # Devuelve la lista de todos los intervalos maximos
+    listaIntervalo = marzullo(reservaOrdenada,puestos) # Devuelve la lista de todos los intervalos maximos
     best = listaIntervalo[len(listaIntervalo)-1][0] # Aqui esta el best 
         
     if (best == puestos):
