@@ -132,13 +132,12 @@ def estacionamiento_reserva(request, _id):
                 # Antes de entrar en la reserva, si la lista esta vacia, agregamos los valores predefinidos
                 if len(listaReserva) < 1:          
                     puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
-                    
                     for obj in puestos:
-                        exito = reservar(obj[0], obj[1], listaReserva, estacion.NroPuesto)           
-            
+                        listaReserva.append([obj[0],-1])
+                        listaReserva.append([obj[1],1])                        
                 # Si esta en un rango valido, procedemos a buscar en la lista el lugar a insertar
                 exito = reservar(inicio_reserva, final_reserva, listaReserva, estacion.NroPuesto)
-                print(listaReserva)
+                
                 if exito == True :
                     
                     #inicio_reserva = timezone.make_aware(inicio_reserva,timezone.get_current_timezone())

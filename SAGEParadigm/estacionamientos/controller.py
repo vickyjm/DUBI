@@ -42,9 +42,8 @@ def marzullo(tabla,puestos):
     listaOut = []
     beststart = 0
     bestend = 0
-        
     for i in range(len(tabla)-1) :
-        if (tabla[i][1] == -1) : 
+        if (tabla[i][1] == -1) :  
             cnt = cnt+1
         else :
             cnt = cnt-1
@@ -62,36 +61,16 @@ def marzullo(tabla,puestos):
     return listaOut
 
 def reservar(horaIni,horaFin,tabla,puestos) :
-        
+
     # Verificacion de entrada
     if ((horaIni.date == horaFin.date) and (horaFin.hour-horaIni.hour <= 0)):
         return False
-      
-    if len(tabla) < 1:
-        tabla.append([horaIni,-1])
-        tabla.append([horaFin,1])
-        return True
 
     reservaOrdenada = tabla
-    i = 0
-    reservaIni = []
-    reservaFin = []
-    while i < len(reservaOrdenada):
-        if reservaOrdenada[i][1] == -1:
-            reservaIni.append(reservaOrdenada[i][0])
-        else:
-            reservaFin.append(reservaOrdenada[i][0])
-        i+=1
-    reservaIni.sort()
-    reservaFin.sort()
-    i = 0
-    while i < len(reservaIni):
-        reservaIni[i] = [reservaIni[i],-1]
-        reservaFin[i] = [reservaFin[i],1]
-        i+=1
 
-    reservaOrdenada = reservaIni + reservaFin
-         
+    reservaOrdenada.sort()
+    reservaOrdenada.sort(key=lambda k: (k[0],-k[1]))
+    
     listaIntervalo = marzullo(reservaOrdenada,puestos) # Devuelve la lista de todos los intervalos maximos
     best = listaIntervalo[len(listaIntervalo)-1][0] # Aqui esta el best 
         
