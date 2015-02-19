@@ -215,6 +215,8 @@ def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 		return (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento')
 	if Decimal(tarifa)>= Decimal(tarifaPico):
 		return (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle')
-	if horaPicoIni > horaPicoFin:
+	if horaPicoIni >= horaPicoFin:
 		return (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico')
+	if horaPicoIni == horaIni and horaPicoFin == horaFin:
+		return (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle')
 	return (True, '')
