@@ -20,7 +20,6 @@ from math import floor
 # chequeo de horarios de extended
 
 
-
 def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
 
     if HoraInicio >= HoraFin:
@@ -36,7 +35,6 @@ def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
     if ReservaFin > HoraFin:
         return (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalizacion de reservas')
     return (True, '')
-
 
 def marzullo(tabla,puestos):
     best = 0
@@ -65,14 +63,14 @@ def marzullo(tabla,puestos):
 
 def reservar(horaIni,horaFin,tabla,puestos) :
         
-        # Verificacion de entrada
-    if (horaFin.hour-horaIni.hour <= 0) or ((horaFin.hour == 18) and (horaFin.minute != 0)):
-        return False,tabla  
+    # Verificacion de entrada
+    if ((horaIni.date == horaFin.date) and (horaFin.hour-horaIni.hour <= 0)):
+        return False
+      
     if len(tabla) < 1:
         tabla.append([horaIni,-1])
         tabla.append([horaFin,1])
-        return True,tabla
-
+        return True
 
     reservaOrdenada = tabla
     #reservaOrdenada.sort()
@@ -103,11 +101,11 @@ def reservar(horaIni,horaFin,tabla,puestos) :
         i = 0
         while (i<len(listaIntervalo)-1):
             if (((listaIntervalo[i][0] <= horaIni < listaIntervalo[i][1]) or (listaIntervalo[i][0] <  horaFin <= listaIntervalo[i][1])) or ((horaIni < listaIntervalo[i][0]) and (horaFin > listaIntervalo[i][1]))):
-                return False,tabla
+                return False
             i = i + 1
     tabla.append([horaIni,-1]) # Se agregan las horas aceptadas a la lista de las reservas
     tabla.append([horaFin,1])
-    return True,tabla
+    return True
     
 def calculoTarifaHora(iniR,finR,tarifa):
     
