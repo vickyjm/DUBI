@@ -568,103 +568,6 @@ class SimpleFormTestCase(TestCase):
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
-# Binaria, Pruebas Unitarias
-
-	# caso borde
-	def test_Binaria_lista_vacia(self):
-		valor = datetime.time(hour = 10, minute = 0, second = 0)
-		lista = []
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 0)
-
-	# caso borde
-	def test_Binaria_lista_un_elem(self):
-		valor = datetime.time(hour = 10, minute = 0, second = 0)
-		Hora1In = datetime.time(hour = 8, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 9, minute = 0, second = 0)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 1)
-
-	# caso borde
-	def test_Binaria_horas_borde(self):
-		valor = datetime.time(hour = 10, minute = 0, second = 0)
-		Hora1In = datetime.time(hour = 0, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora2Out = datetime.time(hour = 23, minute = 59, second = 59)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 1)
-
-	# caso borde
-	def test_Binaria_horas_borde2(self):
-		valor = datetime.time(hour = 0, minute = 0, second = 0)
-		Hora1In = datetime.time(hour = 0, minute = 0, second = 1)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 1)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora2Out = datetime.time(hour = 23, minute = 59, second = 59)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 0)
-
-	# caso borde
-	def test_Binaria_horas_borde3(self):
-		valor = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora1In = datetime.time(hour = 0, minute = 0, second = 0)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 0)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 58)
-		Hora2Out = datetime.time(hour = 23, minute = 59, second = 58)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 2)
-
-	# malicia
-	def test_Binaria_horas_mal_orden(self):
-		valor = datetime.time(hour = 20, minute = 10, second = 13)
-		Hora1In = datetime.time(hour = 0, minute = 1, second = 0)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 30)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora2Out = datetime.time(hour = 23, minute = 59, second = 58)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 1)
-
-	# malicia
-	def test_Binaria_horas_mal_orden2(self):
-		valor = datetime.time(hour = 20, minute = 10, second = 13)
-		Hora1In = datetime.time(hour = 0, minute = 1, second = 0)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 30)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora2Out = datetime.time(hour = 19, minute = 59, second = 58)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 1)
-
-	# malicia
-	def test_Binaria_horas_mal_orden3(self):
-		valor = datetime.time(hour = 20, minute = 10, second = 13)
-		Hora1In = datetime.time(hour = 0, minute = 1, second = 0)
-		Hora1Out = datetime.time(hour = 0, minute = 0, second = 30)
-		Hora2In = datetime.time(hour = 23, minute = 59, second = 59)
-		Hora2Out = datetime.time(hour = 19, minute = 59, second = 58)
-		lista = []
-		lista.append([Hora1In, Hora1Out])
-		lista.append([Hora2In, Hora2Out])
-		x = binaria(valor, 0, len(lista), lista)
-		self.assertEqual(x, 1)
-
 # busquedaBin, Pruebas Integracion, funcion 'binaria' con 'busquedaBin'
 
 	# caso borde
@@ -736,11 +639,11 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora2Out, 1])
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 18, minute = 0, second = 0)
-		x,lista = reservar(HoraIn, HoraOut, lista,3)
+		x,lista = reservar(HoraIn, HoraOut, lista, 3)
 		self.assertEqual(x,True)
 
 	# caso borde
-	def test_BusquedaBin_horasIguales_Inicio(self):
+	def test_BusquedaBin_horasIguales_Inicio(self):	# por que false? no entiendo
 		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		Hora1Out = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		Hora2In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 18, minute = 0, second = 0)
@@ -752,8 +655,8 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora2Out, 1])
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
-		x,lista = reservar(HoraIn, HoraOut, lista,3)
-		self.assertEqual(x, False)
+		x,lista = reservar(HoraIn, HoraOut, lista, 3)
+		self.assertEqual(x, (False, lista))
 
 	# caso borde
 	def test_BusquedaBin_horasIguales_Fin(self):
@@ -820,7 +723,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1Out, 1])
 		lista.append([Hora2In, -1])
 		lista.append([Hora2Out, 1])
-		estacionamiento = tabla
+		estacionamiento = lista
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 12, minute = 0, second = 0)
 		x,estacionamiento = reservar(HoraIn, HoraOut, estacionamiento, 4)
@@ -837,7 +740,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora1Out, 1])
 		lista.append([Hora2In, -1])
 		lista.append([Hora2Out, 1])
-		estacionamiento = tabla
+		estacionamiento = lista
 		HoraIn = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.datetime(year = 2015,month = 10,day = 5,hour = 7, minute = 0, second = 0)
 		x,estacionamiento = reservar(HoraIn, HoraOut, estacionamiento, 4)
@@ -858,7 +761,7 @@ class SimpleFormTestCase(TestCase):
 		lista.append([Hora3Out, 1])
 		lista.append([Hora2In, -1])
 		lista.append([Hora2Out, 1])
-		estacionamiento = tabla
+		estacionamiento = lista
 		HoraIn = datetime.time(hour = 6, minute = 0, second = 0)
 		HoraOut = datetime.time(hour = 12, minute = 0, second = 0)
 		x,estacionamiento = reservar(HoraIn, HoraOut, estacionamiento,3)
@@ -978,7 +881,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1001,8 +904,8 @@ class SimpleFormTestCase(TestCase):
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora3In, Hora3Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
-		x = reservar(Hora3In, Hora3Out, estacionamiento)
+		estacionamiento = [lista for _ in range(2)]
+		x = reservar(Hora3In, Hora3Out, estacionamiento,3)
 		self.assertEqual(x, 1)
 
 	# caso frontera
@@ -1034,7 +937,7 @@ class SimpleFormTestCase(TestCase):
 		Hora3In = datetime.time(hour = 6, minute = 0, second = 0)
 		Hora3Out = datetime.time(hour = 22, minute = 0, second = 0)
 		estacionamiento = None
-		x = reservar(Hora3In, Hora3Out, estacionamiento)
+		x = reservar(Hora3In, Hora3Out, estacionamiento,0)
 		self.assertEqual(x, 1)
 
 	# malicia
@@ -1046,7 +949,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(x, 1)
 
 	# malicia
-	def test_reservar_horaIngreso_None(self):
+	def test_reservar_horaIngreso_None(self):	# NO entiendo este caso
 		Hora1In = datetime.time(hour = 6, minute = 0, second = 0)
 		Hora1Out = datetime.time(hour = 6, minute = 0, second = 0)
 		Hora3In = None
@@ -1056,7 +959,7 @@ class SimpleFormTestCase(TestCase):
 		lista = []
 		lista.append((Hora1In, Hora1Out))
 		lista.append((Hora2In, Hora2Out))
-		estacionamiento = [lista for x in range(2)]
+		estacionamiento = [lista for _ in range(2)]
 		lista2 = []
 		lista2.append((Hora1In, Hora1Out))
 		lista2.append((Hora3In, Hora3Out))
@@ -1135,8 +1038,10 @@ class SimpleFormTestCase(TestCase):
 
 	# malicia
 	def test_reservar_todo_None(self):
-		x = reservar(None, None, None)
-		self.assertEqual(x, 1)
+		x = reservar(None, None, None, None)
+		print("prueba")
+		print(x)
+		self.assertEqual(x, (False, []))
 		
 #################################################################
 #		Pruebas calculo de tarifa por horas 

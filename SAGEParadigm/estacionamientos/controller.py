@@ -38,51 +38,6 @@ def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
     return (True, '')
 
 
-# busca un puesta en el estacionamiento
-def buscar(hin, hout, estacionamiento,puestos):
-    if not isinstance(estacionamiento, list):
-        return (-1, -1, False)
-    if len(estacionamiento) == 0:
-        return (-1, -1, False)
-    if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
-        return (-1, -1, False)
-    for i in range(len(estacionamiento)):
-        exito,reservas = reservar(hin, hout, estacionamiento,puestos)
-        if exito == True:
-            return (i, 1, exito)
-    return (-1, -1, False)
-
-def binaria(valor, inicio, fin, lista):
-    if inicio == fin:
-        return inicio
-    centro = (inicio + fin) // 2
-    if lista[centro][0] > valor:
-        return binaria(valor, inicio, centro, lista)
-    if lista[centro][0] < valor:
-        return binaria(valor, centro + 1, fin, lista)
-    return centro
-
-# Busca en una lista ordenada la posicion en la que una nueva tupla
-# puede ser insertado, y ademas devuelve un booleano que dice si la
-# tupla puede ser insertada, es decir que sus valores no solapen alguno
-# ya existente.
-# Precondicion: la lista debe tener ya la mayor y menor posible tupla
-#def busquedaBin(hin, hout, listaTuplas):
-    # ln = len(listaTuplas)
-#   if not isinstance(listaTuplas, list):
-#       return (0, False)
-#   if len(listaTuplas) == 0:
-#       return (0, True)
-#   if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
-#       return (0, False)
-#   index = binaria(hin, 0, len(listaTuplas), listaTuplas)
-#   if index == 0:
-#       index = index + 1
-#   if listaTuplas[index][0] >= hout and listaTuplas[index - 1][1] <= hin:
-#       return (index, True)
-#   else:
-#       return (index, False)
-
 def marzullo(tabla,puestos):
     best = 0
     cnt = 0
@@ -111,7 +66,7 @@ def marzullo(tabla,puestos):
 def reservar(horaIni,horaFin,tabla,puestos) :
         
         # Verificacion de entrada
-    if ((horaIni.hour < 6) or (horaFin.hour > 18)) or (horaFin.hour-horaIni.hour <= 0) or ((horaFin.hour == 18) and (horaFin.minute != 0)):
+    if (horaFin.hour-horaIni.hour <= 0) or ((horaFin.hour == 18) and (horaFin.minute != 0)):
         return False,tabla  
     if len(tabla) < 1:
         tabla.append([horaIni,-1])
@@ -147,41 +102,12 @@ def reservar(horaIni,horaFin,tabla,puestos) :
     if (best == puestos):
         i = 0
         while (i<len(listaIntervalo)-1):
-            print listaIntervalo
             if (((listaIntervalo[i][0] <= horaIni < listaIntervalo[i][1]) or (listaIntervalo[i][0] <  horaFin <= listaIntervalo[i][1])) or ((horaIni < listaIntervalo[i][0]) and (horaFin > listaIntervalo[i][1]))):
                 return False,tabla
             i = i + 1
     tabla.append([horaIni,-1]) # Se agregan las horas aceptadas a la lista de las reservas
     tabla.append([horaFin,1])
     return True,tabla
-
-# inserta ordenadamente por hora de inicio
-def insertarReserva(hin, hout, puesto, listaReserva):
-    # no verifica precondicion, se supone que se hace buscar antes para ver si se puede agregar
-    if not isinstance(listaReserva, list):
-        return None
-    if len(listaReserva) == 0:
-        return listaReserva
-    if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
-        return listaReserva
-    tupla = (hin, hout)
-    listaReserva.insert(puesto, tupla)
-    # estacionamiento[puesto].sort()
-    return listaReserva
-
-#def reservar(hin, hout, estacionamiento):
-#   if not isinstance(estacionamiento, list):
-#       return 1
-#   if len(estacionamiento) == 0:
-#       return 1
-#   if not isinstance(hin, datetime.datetime) or not isinstance(hout, datetime.datetime):
-#       return 1
-#   puesto = buscar(hin, hout, estacionamiento)
-#   if puesto[2] != False:
-#       estacionamiento[puesto[0]] = insertarReserva(hin, hout, puesto[1], estacionamiento[puesto[0]])
-#       return estacionamiento
-#   else:
-#       return 1
     
 def calculoTarifaHora(iniR,finR,tarifa):
     

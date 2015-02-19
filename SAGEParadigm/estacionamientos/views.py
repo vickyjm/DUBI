@@ -106,17 +106,18 @@ def estacionamiento_reserva(request, _id):
 
     # Antes de entrar en la reserva, si la lista esta vacia, agregamos los
     # valores predefinidos
-    if len(listaReserva) < 1:
+#    if len(listaReserva) < 1:
 
-        Puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('Puesto', 'InicioReserva', 'FinalReserva')
+#        puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
+        
         #elem1 = (estacion.Apertura, estacion.Apertura)
         #elem2 = (estacion.Cierre, estacion.Cierre)
         #elem1 = (datetime.datetime.min, datetime.datetime.min)
         #elem2 = (datetime.datetime.max,datetime.datetime.max)
         #listaReserva = [[elem1, elem2] for _ in range(estacion.NroPuesto)]
         
-        for obj in Puestos:
-            exito,listaReserva = reservar(obj[1], obj[2], listaReserva, estacion.NroPuesto)
+#        for obj in puestos:
+#            exito,listaReserva = reservar(obj[1], obj[2], listaReserva, estacion.NroPuesto)
         #listaReserva.append([inicio_reserva,-1])
         #listaReserva.append([final_reserva,1])
 
@@ -146,8 +147,15 @@ def estacionamiento_reserva(request, _id):
                 if not m_validado[0]:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
 
-                # Si esta en un rango valido, procedemos a buscar en la lista
-                # el lugar a insertar
+
+                if len(listaReserva) < 1:          
+                    puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
+                    
+                    for obj in puestos:
+                        print(obj[0])
+                        exito,listaReserva = reservar(obj[0], obj[1], listaReserva, estacion.NroPuesto)
+                        print(listaReserva)            
+                # Si esta en un rango valido, procedemos a buscar en la lista el lugar a insertar
                 exito,listaReserva = reservar(inicio_reserva, final_reserva, listaReserva, estacion.NroPuesto)
                 if exito == True :
                     
@@ -155,7 +163,6 @@ def estacionamiento_reserva(request, _id):
                     #final_reserva = timezone.make_aware(final_reserva,timezone.get_current_timezone())
                     reservaFinal = ReservasModel(
                                         Estacionamiento = estacion,
-                                        Puesto = 2,
                                         InicioReserva = inicio_reserva,
                                         FinalReserva = final_reserva
                                     )
