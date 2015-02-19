@@ -73,8 +73,6 @@ def reservar(horaIni,horaFin,tabla,puestos) :
         return True
 
     reservaOrdenada = tabla
-    #reservaOrdenada.sort()
-    #reservaOrdenada.sort(key=lambda k: (k[0],-k[1]), reverse=True)
     i = 0
     reservaIni = []
     reservaFin = []
