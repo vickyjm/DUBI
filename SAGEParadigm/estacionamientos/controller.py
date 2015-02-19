@@ -177,7 +177,7 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 			minvalle += 1
 		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 
-	return Decimal(tarifa*minvalle/60 + tarifapico*minpico/60).quantize(Decimal(10)**-20)
+	return Decimal(tarifa*minvalle/60 + tarifapico*minpico/60).quantize(Decimal(10)**-2)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
