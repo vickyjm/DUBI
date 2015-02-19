@@ -134,15 +134,15 @@ class DifHora(Esquema):
 		assert(finR >= iniR + datetime.timedelta(hours = 1))
 		assert(finR <= iniR + datetime.timedelta(days = 7))
 		
-		tarifaPorMin=self.Tarifa/60
-		tarifaPicoPorMin=self.TarifaPico/60
-		totalTarifa=0
 		tempDatetime=iniR
+		minpico = 0
+		minvalle = 0
 		while tempDatetime<finR:
 			tempTime=tempDatetime.time()
-			if tempTime>=self.PicoIni and tempTime<self.PicoFin:
-				totalTarifa+=tarifaPicoPorMin
+			if (tempTime>=self.PicoIni and tempTime<self.PicoFin):
+				minpico += 1 
 			else:
-				totalTarifa+=tarifaPorMin
+				minvalle += 1
 			tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
-		return Decimal(totalTarifa).quantize(Decimal(10)**-2)
+	
+		return Decimal(self.Tarifa*minvalle/60 + self.TarifaPico*minpico/60).quantize(Decimal(10)**-2)

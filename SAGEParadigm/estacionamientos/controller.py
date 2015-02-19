@@ -171,7 +171,7 @@ def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarif
 	minvalle = 0
 	while tempDatetime<finr:
 		tempTime=tempDatetime.time()
-		if (tempTime>=inipico and tempTime<finpico) or( finpico == datetime.time(23,59) and inipico == datetime.time(0,0) and tempTime == finpico):
+		if (tempTime>=inipico and tempTime<finpico):
 			minpico += 1 
 		else:
 			minvalle += 1
