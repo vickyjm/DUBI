@@ -24,7 +24,7 @@ def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
 	if HoraInicio >= HoraFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	if ReservaInicio >= ReservaFin:
-		return (False, 'El horario de inicio de reserva debe ser menor al horario de cierre')
+		return (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva')
 	if ReservaInicio < HoraInicio:
 		return (False, 'El horario de inicio de reserva debe mayor o igual al horario de apertura del estacionamiento')
 	if ReservaInicio > HoraFin:
@@ -112,7 +112,7 @@ def reservar(hin, hout, estacionamiento):
 def calculoTarifaHora(iniR,finR,tarifa):
 	
 	assert(finR > iniR)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
@@ -122,21 +122,62 @@ def calculoTarifaHora(iniR,finR,tarifa):
 	if temp1<temp2:
 		temp1+=1
 		
-	return tarifa*temp1
+	return Decimal(tarifa*Decimal(temp1)).quantize(Decimal(10)**-2)
 
 def calculoTarifaMinuto (iniR, finR, tarifa):
 	
 	assert(finR > iniR)
-	assert(tarifa > 0)
+	assert(tarifa >= 0)
 	assert(finR >= iniR + datetime.timedelta(hours = 1))
 	assert(finR <= iniR + datetime.timedelta(days = 7))
 	
 	temp1 = (finR-iniR).days*24 + (finR - iniR).seconds//3600
 	temp2 = (finR-iniR).days*24 + (finR - iniR).seconds/3600
 	minextra = temp2 - temp1
-	fraccion = tarifa*minextra
+	fraccion = tarifa*Decimal(minextra)
 	
-	return round(tarifa * temp1 + fraccion,2) 
+	return Decimal(tarifa * temp1 + fraccion).quantize(Decimal(10)**-2)
+
+def calculoTarifaHoraYFraccion(iniR,finR,tarifa):
+	
+	assert(finR > iniR)
+	assert(tarifa >= 0)
+	assert(finR >= iniR + datetime.timedelta(hours = 1))
+	assert(finR <= iniR + datetime.timedelta(days = 7))
+	
+	fraccion = 0
+	segundosdif =(finR - iniR).total_seconds()
+	temp1 = segundosdif//3600
+	temp2 = segundosdif/3600
+	minextra = round((temp2 - temp1)*60,2)
+
+	if minextra > 30:
+		fraccion = tarifa
+	elif minextra <= 30 and minextra != 0:
+		fraccion = tarifa/2
+	
+	return Decimal(tarifa * Decimal(temp1) + Decimal(fraccion)).quantize(Decimal(10)**-2)
+	
+def calculoTarifaDiferenciadoPorHora(inir, finr, inipico, finpico, tarifa, tarifapico):
+
+	assert(finr > inir)
+	assert(tarifa >= 0)
+	assert(tarifapico > tarifa)
+	assert(finr >= inir + datetime.timedelta(hours = 1))
+	assert(finr <= inir + datetime.timedelta(days = 7))
+	
+	tempDatetime=inir
+	minpico = 0
+	minvalle = 0
+	while tempDatetime<finr:
+		tempTime=tempDatetime.time()
+		if (tempTime>=inipico and tempTime<finpico):
+			minpico += 1 
+		else:
+			minvalle += 1
+		tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
+
+	return Decimal(tarifa*minvalle/60 + tarifapico*minpico/60).quantize(Decimal(10)**-2)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
 	hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
@@ -169,3 +210,13 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
 		return (False, 'La reserva puede ser máximo hasta dentro de 7 días')			
 	return (True, '')
 
+def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
+	if horaPicoIni<horaIni or horaPicoFin>horaFin:
+		return (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento')
+	if Decimal(tarifa)>= Decimal(tarifaPico):
+		return (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle')
+	if horaPicoIni >= horaPicoFin:
+		return (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico')
+	if horaPicoIni == horaIni and horaPicoFin == horaFin:
+		return (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle')
+	return (True, '')
