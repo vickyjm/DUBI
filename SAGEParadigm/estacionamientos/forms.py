@@ -57,10 +57,11 @@ class EstacionamientoExtendedForm(forms.Form):
     horario_reserin = forms.TimeField(required = True, label = 'Hora Inicio Reserva')
     horario_reserout = forms.TimeField(required = True, label = 'Hora Fin Reserva')
     
-    opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
+    opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"),("DifFin","Diferenciado por fin de semana"))
     esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = opciones_esquema)
     tarifa = forms.DecimalField(required = True, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa')
     
+    tarifa_fin = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa Fin de Semana')
     hora_picoini = forms.TimeField(required = False, label = 'Inicio Hora Pico')
     hora_picofin = forms.TimeField(required = False, label = 'Fin Hora Pico')
     tarifa_pico = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa Pico')

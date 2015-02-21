@@ -95,8 +95,14 @@ def estacionamiento_detail(request, _id):
                     if not m_validado[0]:
                         return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                     esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
+                elif tipoEsquema=="DifFin":
+                    tarifaFin = form.cleaned_data['tarifa_fin']
+                    m_validado=validarFin(tarifa,tarifaFin)
+                    if not m_validado[0]:
+                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
+                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, TarifaFin = tarifaFin)")
                 else:
-                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
+                    esq=eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
                 esq.save()
                 #estacion.Tarifa = form.cleaned_data['tarifa']
                 estacion.Esquema = form.cleaned_data['esquema']

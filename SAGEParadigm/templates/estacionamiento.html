@@ -166,6 +166,10 @@
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa Horario Pico:</b></td></tr>
         <tr><td>{{esquema.TarifaPico}} Bsf.</td></tr>
       {% endif %}
+      {% if esquema.TarifaFin %}
+        <tr><td><b><i class="fa fa-money"></i></i> Tarifa Fin de Semana:</b></td></tr>
+        <tr><td>{{esquema.TarifaFin}} Bsf.</td></tr>
+      {% endif %}
       
         </tbody>
       </table>
@@ -205,6 +209,7 @@
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fraccion</option>
 						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
+						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
 						
 					</select>                	
                 	</h></tr>

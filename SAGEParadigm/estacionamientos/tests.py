@@ -1243,6 +1243,10 @@ class SimpleFormTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 	
+#################################################################
+#		Pruebas de tipo Decimal 
+#################################################################
+	
 	
 	def test_esDecimalTarifaDiferenciadoPorHora(self):
 		tarifa = Decimal(20)
@@ -1286,3 +1290,97 @@ class SimpleFormTestCase(TestCase):
 		monto = esq.calcularMonto(inires, finres)
 		
 		self.assertEqual(monto.__class__.__name__, 'Decimal')
+	
+##########################################################################################
+#		Pruebas calculo de tarifa diferenciado por fin de semana (hora y fracción)
+##########################################################################################
+		
+	#extremo
+	def test_tarifaDiferenciadoPorFinDeSemanaEnDiaDeSemanaMinTiempo(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,6,7,0,0,0)
+		finres = datetime.datetime(2015,7,6,8,0,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(20).quantize(Decimal(10)**-2))
+		
+	#extremo	
+	def test_tarifaDiferenciadoPorFinDeSemanaEnDiaDeFinDeSemanaHoraYMedia(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,7,0,0,0)
+		finres = datetime.datetime(2015,7,5,8,30,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(60).quantize(Decimal(10)**-2))
+		
+	#extremo
+	def test_tarifaDiferenciadoPorFinDeSemanaDeViernesASabadoMinTiempo(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,3,23,30,0,0)
+		finres = datetime.datetime(2015,7,4,0,30,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(30).quantize(Decimal(10)**-2))
+
+	#extremo
+	def test_tarifaDiferenciadoPorFinDeSemanaDeDomingoALunesHoraY1Minuto(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,23,30,0,0)
+		finres = datetime.datetime(2015,7,6,0,31,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(40).quantize(Decimal(10)**-2))
+		
+	#esquina maliciosa
+	def test_tarifaDiferenciadoPorFinDeSemanaDeViernesAlPrimerMinutoDelSabado(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,3,23,0,0,0)
+		finres = datetime.datetime(2015,7,4,0,0,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(30).quantize(Decimal(10)**-2))
+		
+	#esquina	
+	def test_tarifaDiferenciadoPorFinDeSemanaDelUltimoMinutoDelDomingoALunesHoraYFraccion(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,5,23,59,0,0)
+		finres = datetime.datetime(2015,7,6,1,28,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(40).quantize(Decimal(10)**-2))
+		
+	#esquina
+	def test_tarifaDiferenciadoPorFinDeSemanaMaxTiempo(self):
+		tarifa = Decimal(10)
+		inires = datetime.datetime(2015,7,5,0,0,0,0)
+		finres = datetime.datetime(2015,7,12,0,0,0,0)
+		tarifafin = Decimal(20)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(10*24*4+10*23+20+20*24*2).quantize(Decimal(10)**-2))
+		
+	#esquina	
+	def test_tarifaDiferenciadoPorFinDeSemanaMinTarifa(self):
+		tarifa = Decimal(min_tarifa)
+		inires = datetime.datetime(2015,7,6,17,0,0,0)
+		finres = datetime.datetime(2015,7,6,18,0,0,0)
+		tarifafin = Decimal(min_tarifa+Decimal(0.01))
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(0).quantize(Decimal(10)**-2))
+		
+	#esquina
+	def test_tarifaDiferenciadoPorFinDeSemanaMaxTarifaHoraY59Min(self):
+		tarifa = Decimal(max_tarifa-Decimal(0.01))
+		inires = datetime.datetime(2015,7,5,17,0,0,0)
+		finres = datetime.datetime(2015,7,5,18,59,0,0)
+		tarifafin = Decimal(max_tarifa)
+		esq=DifFinDeSem(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(max_tarifa*2).quantize(Decimal(10)**-2))	
