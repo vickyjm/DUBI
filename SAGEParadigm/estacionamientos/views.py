@@ -107,7 +107,7 @@ def estacionamiento_detail(request, _id):
                     esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, TarifaFin = tarifaFin)")
                 else:
                     esq=eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
-                    esq.save()
+                esq.save()
                 #estacion.Tarifa = form.cleaned_data['tarifa']
                 estacion.Esquema = esquemaform.cleaned_data['esquema']
                 estacion.Apertura = hora_in
