@@ -219,8 +219,8 @@ def estacionamiento_pagar_reserva(request, _id):
                             )
             pago.save()
             
-            mensajeExito = 'La reserva fue realizada con éxito. El número de su transacción es: '+str(pago.id)
-            return render(request, 'templateMensaje.html', {'color':'green', 'mensaje': mensajeExito})
+            mensajeExito = 'Su reserva ha sido exitosa. Este es su recibo de pago :'
+            return render(request, 'mostrarRecibo.html', {'recibo': pago,'reserva': reservaFinal,'color': 'green','mensaje' : mensajeExito})
     else : 
         form = PagoReserva()
     return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
