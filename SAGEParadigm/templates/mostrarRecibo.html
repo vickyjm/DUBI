@@ -86,14 +86,24 @@
 	          
 	        </thead>
 	        <tbody>
-	        	<tr><td><i class="fa fa-info-circle"></i> Numero de transaccion</td></tr>
+				<tr><td><i class="fa fa-info-circle"></i> Numero de transaccion</td></tr>
 				<tr><td>{{recibo.id}}</td></tr>
+				
+				<tr><td><i class="fa fa-calendar"></i> Fecha de la transaccion</td></tr>
+				<tr><td>{{recibo.fechaTransaccion}}</td></tr>
+				
+				<tr><td><i class="fa fa-user"></i> Cedula de identidad</td></tr>
+				<tr><td>{{recibo.cedula}}</td></tr>
+				
 				<tr><td><i class="fa fa-calendar"></i> Fecha de inicio de la reserva</td></tr>
-				<tr><td>{{reserva.InicioReserva}}</td></tr>
+				<tr><td>{{recibo.Reserva.InicioReserva}}</td></tr>
 	
 				<tr><td><i class="fa fa-calendar"></i> Fecha de fin de la reserva</td></tr>
-				<tr><td>{{reserva.FinalReserva}}</td></tr>
-	
+				<tr><td>{{recibo.Reserva.FinalReserva}}</td></tr>
+				
+				<tr><td><i class="fa fa-credit-card"></i> Tipo de tarjeta</td></tr>
+				<tr><td>{{recibo.TipoTarjeta}}</td></tr>
+				
 				<tr><td><i class="fa fa-money"></i> Monto pagado</td></tr>
 				<tr><td>{{recibo.MontoPago}}</td></tr>
 				

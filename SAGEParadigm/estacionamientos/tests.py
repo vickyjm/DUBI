@@ -705,42 +705,63 @@ class SimpleFormTestCase(TestCase):
 
 		
 	def test_PagoReserva_CamposBien(self):
-		form_data = { 	'tipoTarjeta': 'Mister',
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
+						'tipoTarjeta' : 'Xpres',
 						'numTarjeta': '1234-1234-1234-1234',
-								}
+							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
-		
-	
+			
 	def test_PagoReserva_TarjetaMayor16Digitos(self):
-		form_data = { 	'tipoTarjeta': 'Vista',
-						'numTarjeta': '1234-1234-1234-1234-5',
-								}
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
+						'numTarjeta': '1234-1234-1234-12345',
+							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
 	def test_PagoReserva_TarjetaMenor16Digitos(self):
-		form_data = { 	'tipoTarjeta': 'Xpres',
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
 						'numTarjeta': '1234-1234-1234-123',
-								}
+							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 		
 	def test_PagoReserva_SinTipo(self):
-		form_data = {	'numTarjeta': '1234-1234-1234-1234',
-								}
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
+						'numTarjeta': '1234-1234-1234-1234',
+							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
 	def test_PagoReserva_NumTarjetaSinGuiones(self):
-		form_data = { 	'tipoTarjeta': 'Mister',
-						'numTarjeta': '1234123412341234',
-								}
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
+						'tipoTarjeta': 'Mister',
+						'numTarjeta': '1234-1234-1234-1234',
+							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
 	def test_PagoReserva_NumTarjetaConLetras(self):
-		form_data = { 	'tipoTarjeta': 'Mister',
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'E-',
+						'cedula' : '12654378',
+						'tipoTarjeta': 'Mister',
 						'numTarjeta': '1234-1234-1234-abcd',
 							}
 		form = PagoReserva(data = form_data)
@@ -749,6 +770,49 @@ class SimpleFormTestCase(TestCase):
 #################################################################
 #		Pruebas calculo de tarifa por horas 
 ################################################################
+	
+	def test_PagoReserva_SinNacionalidad(self):
+		form_data = { 	'nombre' : 'Juan',
+				'apellidos' : 'Perez',
+				'cedula' : '12654378',
+				'tipoTarjeta' : 'Xpres',
+				'numTarjeta': '1234-1234-1234-1234',
+					}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+		
+	def test_PagoReserva_DosApellidos(self):
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez Linares',
+						'nacionalidad' : 'V-',
+						'cedula' : '12654378',
+						'tipoTarjeta' : 'Xpres',
+						'numTarjeta': '1234-1234-1234-1234',
+					}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), True)
+	
+	def test_PagoReserva_CedulaConLetras(self):
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'V-',
+						'cedula' : 'B12654378',
+						'tipoTarjeta' : 'Xpres',
+						'numTarjeta': '1234-1234-1234-1234',
+					}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+
+	def test_PagoReserva_CedulaVacia(self):
+		form_data = { 	'nombre' : 'Juan',
+						'apellidos' : 'Perez',
+						'nacionalidad' : 'V-',
+						'cedula' : '',
+						'tipoTarjeta' : 'Xpres',
+						'numTarjeta': '1234-1234-1234-1234',
+					}
+		form = PagoReserva(data = form_data)
+		self.assertEqual(form.is_valid(), False)
 	
 	global min_tarifa, max_tarifa, estacionamiento, esq15, esq20, esq30, esqmin, esqmax
 	global esq15M,esq20M,esq30M,esqminM,esqmaxM,esq15HF,esq20HF,esq30HF,esqminHF,esqmaxHF

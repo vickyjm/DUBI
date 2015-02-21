@@ -102,7 +102,7 @@ class PagoReserva(forms.Form):
                     label = "Cédula de Identidad",
                     validators = [
                         RegexValidator(
-                            regex = '^[VE]-([1-9]|[1-9][0-9])(\.?[0-9]{3}){0,2}$',
+                            regex = '^([1-9]|[1-9][0-9])(\.?[0-9]{3}){0,2}$',
                             message = 'Formato erróneo'
                         )
                     ]

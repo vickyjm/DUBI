@@ -36,14 +36,15 @@ class Estacionamiento(models.Model):
 
 class ReservasModel(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
-	InicioReserva = models.DateTimeField()
-	FinalReserva = models.DateTimeField()
+	InicioReserva = models.DateTimeField(blank = True, null = True)
+	FinalReserva = models.DateTimeField(blank = True, null = True)
 
-class PagoReservaModel(models.Model):
+class ReciboPagoModel(models.Model):
 	Reserva = models.ForeignKey(ReservasModel)
+	cedula = models.CharField(blank = True, null = True,max_length = 13)
+	fechaTransaccion = models.DateTimeField(blank = True, null = True)
 	opciones_tarjeta = (('Vista','Vista'), ('Mister','Mister'), ('Xpres','Xpres'))
 	TipoTarjeta = models.CharField(max_length = 6, choices = opciones_tarjeta)
-	NumTarjeta = models.CharField(max_length = 19)
 	MontoPago = models.DecimalField(max_digits = 12, decimal_places = 2)
 
 class Esquema(models.Model):

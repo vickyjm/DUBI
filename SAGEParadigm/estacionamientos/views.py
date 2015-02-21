@@ -200,6 +200,10 @@ def estacionamiento_pagar_reserva(request, _id):
         
         # Verificamos si es valido con los validadores del formulario
         if form.is_valid():
+            nombreCliente = form.cleaned_data['nombre']
+            apellidoCliente = form.cleaned_data['apellidos']
+            nacionalidadCliente = form.cleaned_data['nacionalidad']
+            cedulaCliente = form.cleaned_data['cedula']
             tipoTarjeta = form.cleaned_data['tipoTarjeta']
             numTarjeta = form.cleaned_data['numTarjeta']
             
@@ -211,16 +215,17 @@ def estacionamiento_pagar_reserva(request, _id):
                             )
             reservaFinal.save()
             
-            pago = PagoReservaModel(
+            pago = ReciboPagoModel(
                                Reserva = reservaFinal,
+                               cedula = nacionalidadCliente + cedulaCliente,
+                               fechaTransaccion = datetime.datetime.now(),
                                TipoTarjeta = tipoTarjeta,
-                               NumTarjeta = numTarjeta,
                                MontoPago = Decimal(monto)
                             )
             pago.save()
             
             mensajeExito = 'Su reserva ha sido exitosa. Este es su recibo de pago :'
-            return render(request, 'mostrarRecibo.html', {'recibo': pago,'reserva': reservaFinal,'color': 'green','mensaje' : mensajeExito})
+            return render(request, 'mostrarRecibo.html', {'recibo': pago,'color': 'green','mensaje' : mensajeExito})
     else : 
         form = PagoReserva()
     return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
