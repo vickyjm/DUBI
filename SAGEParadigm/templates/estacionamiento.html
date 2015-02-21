@@ -193,9 +193,15 @@
               {% for field in form %}
               	<div class="control-group">
                   <div class="controls">
-					<h5>{{field.label}}</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
-                     
+					<h5>{{field.label}} (*)</h5>
+					{% if field.name == "puestos" %}
+                   		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                   	
+                   	{% else %}
+       
+                    
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+                    {% endif %} 
               {{ field.errors }}
                </div>
                	</div>
@@ -207,19 +213,11 @@
                 {% for field in esquemaform %}
                 <div class="control-group">
                   <div class="controls">
-                  
-                   	{% ifequal field.name "hora_picoini"%}
-                		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
-                	{% endifequal%}
-                	<h5>{{field.label}}</h5>
-                   	{% ifnotequal field.name "esquema" %}
-                   	 <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
-                   	
-
-                	{% else %}
-                	
+                  	
+                  	{% ifequal field.name "esquema" %}
+                		<h5>{{field.label}} (*)</h5>
                 		<select id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
-						<option value ="" select disable style="display:none;">Esquema</option>
+						<option value ="" select disable style="display:none;">Seleccione una opcion</option>
 						<option value="Hora" style = "color:#000;">Por hora</option>
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fraccion</option>
@@ -227,8 +225,29 @@
 						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
 						</select> 
 						
-					{%endifnotequal%}
-					
+					{%endifequal%}
+                  
+                   	{% ifequal field.name "tarifa" %}
+                   	 <h5>{{field.label}} (*)</h5>
+                   	 <input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                   	{%endifequal%}
+                   	
+                   	{% ifequal field.name "hora_picoini"%}
+                		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
+                		  <h5>{{field.label}} </h5>
+                		 <input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+                	{% endifequal%}
+                	
+                	{% ifequal field.name "hora_picofin"%}
+                	
+                		<h5>{{field.label}} </h5>
+                		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+                	{% endifequal%}
+                	
+                	{% if field.name == "tarifa_fin" or field.name == "tarifa_pico"%}
+                   		<h5>{{field.label}} </h5>
+                		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+             		{% endif %}
 					{{ field.errors }}
 					
                 {% endfor %}
