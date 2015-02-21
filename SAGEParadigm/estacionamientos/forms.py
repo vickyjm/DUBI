@@ -73,6 +73,40 @@ class EstacionamientoReserva(forms.Form):
     horaFinal = forms.TimeField(label = 'Horario Final Reserva')
     
 class PagoReserva(forms.Form):
+    nombre = forms.CharField(
+                    max_length = 100,
+                    required = True,
+                    label = "Nombre",
+                    validators = [
+                          RegexValidator(
+                                regex = '^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$',
+                                message = 'Sólo debe contener letras.'
+                        )
+                    ]
+                )
+    apellidos = forms.CharField(
+                    max_length = 100,
+                    required = True,
+                    label = "Apellidos",
+                    validators = [
+                          RegexValidator(
+                                regex = '^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$',
+                                message = 'Sólo debe contener letras.'
+                        )
+                    ]
+                ) 
+    nacionalidad = forms.ChoiceField(required = True, widget = forms.Select(), choices = (("V-","V-"),("E-","E-")))
+    cedula = forms.CharField(
+                    max_length = 11,
+                    required = True,
+                    label = "Cédula de Identidad",
+                    validators = [
+                        RegexValidator(
+                            regex = '^[VE]-([1-9]|[1-9][0-9])(\.?[0-9]{3}){0,2}$',
+                            message = 'Formato erróneo'
+                        )
+                    ]
+            )
     numTarjeta_validator = RegexValidator(
                                 regex = '^\d{4}-?\d{4}-?\d{4}-?\d{4}$',
                                 message = 'Formato erróneo'          
