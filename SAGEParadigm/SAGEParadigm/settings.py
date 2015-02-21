@@ -70,7 +70,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es-ve'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Caracas'
 
 
 
