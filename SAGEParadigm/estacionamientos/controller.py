@@ -4,7 +4,6 @@
 
 from decimal import Decimal
 import datetime
-from math import floor
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
