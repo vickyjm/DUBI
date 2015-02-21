@@ -151,8 +151,6 @@
 	    <tr><td>{{estacionamiento.Apertura}}</td></tr>
 	    <tr><td><b><i class="fa fa-clock-o"></i> Hora cierre:</b></td></tr>
 	    <tr><td>{{estacionamiento.Cierre}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Esquema or esquema.Tarifa %}
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
@@ -195,31 +193,45 @@
               {% for field in form %}
               	<div class="control-group">
                   <div class="controls">
-                	{% ifnotequal field.name "esquema" %}
+
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
+                     
+              {{ field.errors }}
+               </div>
+               	</div>
+			
+			
+			<esquemaform action="." method="post" class="form form-vertical">
+                {% csrf_token %}
+                {% endfor %}
+                {% for field in esquemaform %}
+                <div class="control-group">
+                  <div class="controls">
+                   	{% ifnotequal field.name "esquema" %}
+                   	 <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
+                   	
                 	{% ifequal field.name "hora_picoini"%}
                 		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
                 	{% endifequal%}
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
-                    
-                  {% else %}
-                  	
-					<select id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
+                	{% else %}
+                	
+                		<select id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 						<option value ="" select disable style="display:none;">Esquema</option>
 						<option value="Hora" style = "color:#000;">Por hora</option>
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fraccion</option>
 						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
 						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
-						
-					</select>                	
-                	</h></tr>
-                	<br></br>
-                {%endifnotequal%} 
-              {{ field.errors }}
-                  </div>
-                </div>
+						</select> 
+						<br></br> 
+					{%endifnotequal%}
+					
+					{{ field.errors }}
+					
                 {% endfor %}
-                
+             
+                </div>
+                	</div>
                 <div class="control-group">
                   <label>
                   </label>
@@ -229,9 +241,11 @@
                     </button>
                   </div>
                 </div>
+                 </h></tr>
+
+                </esquemaform>
                 
-                
-              </form>
+             </form>
               
               
             </div>

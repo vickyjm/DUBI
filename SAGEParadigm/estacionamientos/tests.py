@@ -1194,6 +1194,7 @@ class SimpleFormTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
 		
+		
 	
 	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
 
