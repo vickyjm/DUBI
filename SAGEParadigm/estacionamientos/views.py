@@ -168,9 +168,12 @@ def estacionamiento_reserva(request, _id):
                     tarifaFinal=float(tarifaFinal)
                     request.session['monto'] = tarifaFinal
                     mensajeTarifa='La solicitud es factible. El costo es de ' + str(tarifaFinal)+" BsF"
-                    return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa})
+                
+                    calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto)
+                    return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa})                
                 else:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario'})
+                
     else:
         form = EstacionamientoReserva()
 
