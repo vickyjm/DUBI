@@ -193,7 +193,7 @@
               {% for field in form %}
               	<div class="control-group">
                   <div class="controls">
-
+					<h5>{{field.label}}</h5>
                     <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
                      
               {{ field.errors }}
@@ -207,9 +207,11 @@
                 {% for field in esquemaform %}
                 <div class="control-group">
                   <div class="controls">
+                  
                    	{% ifequal field.name "hora_picoini"%}
                 		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
                 	{% endifequal%}
+                	<h5>{{field.label}}</h5>
                    	{% ifnotequal field.name "esquema" %}
                    	 <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
                    	
@@ -224,7 +226,7 @@
 						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
 						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
 						</select> 
-						<br></br> 
+						
 					{%endifnotequal%}
 					
 					{{ field.errors }}
