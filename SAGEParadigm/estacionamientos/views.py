@@ -215,7 +215,10 @@ def estacionamiento_pagar_reserva(request, _id):
                             )
             reservaFinal.save()
             
+            numRecibo = obtenerNumRecibo(estacion)
+            
             pago = ReciboPagoModel(
+                               numeroRecibo = numRecibo,
                                Reserva = reservaFinal,
                                cedula = nacionalidadCliente + cedulaCliente,
                                fechaTransaccion = datetime.datetime.now(),

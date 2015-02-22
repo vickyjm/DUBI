@@ -5,6 +5,7 @@ from django.db import models
 from django.forms import ModelForm
 import datetime
 from decimal import Decimal
+from django.db.models.fields import IntegerField
 
 class Estacionamiento(models.Model):
 	# propietario=models.ForeignKey(Propietario)
@@ -41,6 +42,7 @@ class ReservasModel(models.Model):
 
 class ReciboPagoModel(models.Model):
 	Reserva = models.ForeignKey(ReservasModel)
+	numeroRecibo = IntegerField(blank = True, null = True)
 	cedula = models.CharField(blank = True, null = True,max_length = 13)
 	fechaTransaccion = models.DateTimeField(blank = True, null = True)
 	opciones_tarjeta = (('Vista','Vista'), ('Mister','Mister'), ('Xpres','Xpres'))
