@@ -1,18 +1,4 @@
 $(function(){
-	$('#id_cedula').keyup(function(){
-		var _this = $('#id_cedula');
-		var _valor = $('#id_cedula').val();
-		var regEx = /^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$/;
-		var valid = regEx.test(_valor)
-
-        
-		if (valid && _valor<12){
-			_this.attr('style', 'background:white');
-		} else {
-			_this.attr('style', 'background:#FF4A4A');
-		}
-	});
-
 	$('#id_nombre').keyup(function(){
 		var _this = $('#id_nombre');
 		var _valor = $('#id_nombre').val();
@@ -39,6 +25,20 @@ $(function(){
 			_this.attr('style', 'background:#FF4A4A');
 		}
 		
+	});
+	
+	$('#id_cedula').keyup(function(){
+		var _this = $('#id_cedula');
+		var _valor = $('#id_cedula').val();
+		var regEx = /^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$/;
+		var valid = regEx.test(_valor)
+
+        
+		if (valid){
+			_this.attr('style', 'background:white');
+		} else {
+			_this.attr('style', 'background:#FF4A4A');
+		}
 	});
 	
 	$('#id_numTarjeta').keyup(function(){
