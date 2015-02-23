@@ -213,7 +213,7 @@ background-color: #FFBABA;
 
 .errorValid {
 	background-color: #BC1010;
-	padding: 6px 50px;
+	padding: 6px 30px;
 	border-radius: 4px;
 	color: white;
 	font-weight: bold;
@@ -231,3 +231,4 @@ background-color: #FFBABA;
 	position: absolute;
 	top: 8px;
 }
+
