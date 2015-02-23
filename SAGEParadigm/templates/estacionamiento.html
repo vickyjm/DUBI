@@ -219,9 +219,7 @@
                   	{% ifequal field.name "esquema" %}
                   	
                   		<div  id = "myesquema">
-                		<div id = "HOLA">
-						 <input type="text" class="form-control" name="{{field.name}}" placeholder="PRUEBA" for="id_{{field.name}}"><p>
-						</div>
+                		
                 		<h5>{{field.label}} (*)</h5>
                 		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 						<option value ="" select disable style="display:none;">Seleccione una opcion</option>
@@ -232,23 +230,35 @@
 						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
 						</select> 
 						
-				
-				<script>
+						<script>
 				
 						$("#id_esquema").change(function(){ 
-							if ($("#id_esquema").val() == "Hora"){
-    						
-    						$("#HOLA").hide();
-    						alert($("#id_esquema").val());
+							if ($("#id_esquema").val() == "Hora" || $("#id_esquema").val() == "Minuto" || $("#id_esquema").val() == "HoraFraccion"){
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").hide();
+	    						$("#HOLA").hide();
+
     						}
-    						else{
-    						$("#HOLA").show();
-    						}
+    						else if ($("#id_esquema").val() == "DifHora"){
+	    						$("#IniHorarioPico").show();
+	 							$("#FinHorarioPico").show();
+	 							$("#TarifaPico").show();
+	 							$("#TarifaFin").hide();
+	 						}
+	 						else if ($("#id_esquema").val() == "DifFin"){
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").show();
+	 						}
 						});
 			
-				</script>
-						
-			</div>
+						</script>
+
+					
+						</div>
 						
 						
 					{%endifequal%}
@@ -259,23 +269,44 @@
                    	 <input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
                    	{%endifequal%}
                    	
-                   	<div id = "HoraPico" >
-                   	{% ifequal field.name "hora_picoini"%}
-                		<h5 style = "color:#000;">Parámetros solo para el esquema 'Diferenciado por hora':</h1>
-                		  <h5>{{field.label}} </h5>
-                		 <input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
-                	{% endifequal%}
-                	
-                	{% ifequal field.name "hora_picofin"%}
-                	
-                		<h5>{{field.label}} </h5>
+                   	
+                   	{% if field.name == "hora_picoini" %}
+                		<div id = "IniHorarioPico" >
+                		<h5>{{field.label}} (*)</h5>
                 		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
-                	{% endifequal%}
-                	</div>
-                	{% if field.name == "tarifa_fin" or field.name == "tarifa_pico"%}
-                   		<h5>{{field.label}} </h5>
+                		</div>
+                		
+                	{% endif%}
+                	
+                	{% if field.name == "hora_picofin"%}
+                		<div id = "FinHorarioPico" >
+                		<h5>{{field.label}} (*)</h5>
+                		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
+                		</div>
+                	{% endif%}
+                	
+                	{% if field.name == "tarifa_pico"%}
+                   		<div id = "TarifaPico" >
+                   		<h5>{{field.label}} (*)</h5>
                 		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                		</div>
              		{% endif %}
+             		
+             		{% if field.name == "tarifa_fin"%}
+                   		<div id = "TarifaFin" >
+                   		<h5>{{field.label}} (*)</h5>
+                		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                		</div>
+             		{% endif %}
+        			<script>
+                		if ($("#id_esquema").val() != "Hora" && $("#id_esquema").val() != "Minuto" && $("#id_esquema").val() != "HoraFraccion" && $("#id_esquema").val() != "DifHora" && $("#id_esquema").val() != "DifFin"){
+                			$("#IniHorarioPico").hide();
+                			$("#FinHorarioPico").hide();
+                			$("#TarifaPico").hide();
+                			$("#TarifaFin").hide();
+                			}
+                			
+                	</script>
 					{{ field.errors }}
 					
                 {% endfor %}
