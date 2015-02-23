@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 class EstacionamientoForm(forms.Form):
 
     phone_validator = RegexValidator(
-                            regex = '^((0212)|(0412)|(0416)|(0414)|(0424)|(0426))-?\d{7}',
+                            regex = '^((0212)|(0412)|(0416)|(0414)|(0424)|(0426))-\d{7}',
                             message = 'Debe introducir un formato válido.'
                         )
 
@@ -26,7 +26,7 @@ class EstacionamientoForm(forms.Form):
 
     nombre = forms.CharField(max_length=50,required = True, label = "Nombre")
 
-    direccion = forms.CharField(max_length = 120,required = True)
+    direccion = forms.CharField(max_length = 120,required = True, label = "Dirección")
 
     telefono_1 = forms.CharField(max_length = 30,required = False, validators = [phone_validator])
     telefono_2 = forms.CharField(max_length = 30,required = False, validators = [phone_validator])
@@ -41,7 +41,7 @@ class EstacionamientoForm(forms.Form):
                     label = "RIF",
                     validators = [
                           RegexValidator(
-                                regex = '^[JVD]-?\d{8}-?\d$',
+                                regex = '^[JVD]-\d{8}-\d$',
                                 message = 'Introduzca un RIF con un formato válido.'
                         )
                     ]
