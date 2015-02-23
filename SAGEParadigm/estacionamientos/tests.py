@@ -1364,4 +1364,24 @@ class SimpleFormTestCase(TestCase):
 		tarifafin = Decimal(max_tarifa)
 		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
 		res=esq.calcularMonto(inires, finres)
-		self.assertEqual(res, Decimal(max_tarifa*2).quantize(Decimal(10)**-2))	
+		self.assertEqual(res, Decimal(max_tarifa*2).quantize(Decimal(10)**-2))
+		
+	#esquina	
+	def test_tarifaDiferenciadoPorFinDeSemanaMaxTiempoDiasDeSemana(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,6,0,0,0,0)
+		finres = datetime.datetime(2015,7,10,23,29,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(20*24*5-10).quantize(Decimal(10)**-2))
+		
+	#esquina
+	def test_tarifaDiferenciadoPorFinDeSemanaMaxTiempoDiasDeFinDeSemana(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,11,0,0,0,0)
+		finres = datetime.datetime(2015,7,12,23,29,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(30*24*2-15).quantize(Decimal(10)**-2))
