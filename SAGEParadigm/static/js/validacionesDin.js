@@ -6,9 +6,9 @@ $(function(){
 		var valid = regEx.test(_valor)
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$(".errorValid").fadeOut("fast");
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			_this.after("<span class='errorValid'>Solo letras</span>");
 		}
 		
 	});
@@ -20,9 +20,9 @@ $(function(){
 		var valid = regEx.test(_valor)
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$(".errorValid").fadeOut("fast");
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			_this.after("<span class='errorValid'>Sólo letras</span>");
 		}
 		
 	});
@@ -35,9 +35,9 @@ $(function(){
 
         
 		if (valid){
-			_this.attr('style', 'background:white');
+			$(".errorValid").fadeOut("fast");
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			_this.after("<span class='errorValid'>Sólo números</span>");
 		} 
 	});
 	
@@ -48,9 +48,9 @@ $(function(){
 		var valid = regEx.test(_valor)
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$(".errorValid").fadeOut("fast");
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			_this.after("<span class='errorValid'>Solo números</span>");
 		}
 		
 	});
