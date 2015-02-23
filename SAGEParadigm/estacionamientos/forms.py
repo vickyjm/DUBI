@@ -67,7 +67,7 @@ class EsquemaForm(forms.Form):
     tarifa_fin = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa de Fin de Semana')
     hora_picoini = forms.TimeField(required = False, label = 'Inicio de Horario Pico')
     hora_picofin = forms.TimeField(required = False, label = 'Fin de Horario Pico')
-    tarifa_pico = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa de Horario Pico')
+    tarifa_pico = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0.01, label = 'Tarifa de Horario Pico')
     
 
 class EstacionamientoReserva(forms.Form):

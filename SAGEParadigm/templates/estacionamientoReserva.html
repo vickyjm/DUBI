@@ -36,7 +36,7 @@
   
   <!-- upper section -->
   <div class="row">
-  <div class="col-sm-2">
+  <div class="col-sm-2" style = "width: 17.3%;">
       <!-- left -->
                 <h3>
             <i class="glyphicon glyphicon-briefcase">
@@ -53,15 +53,28 @@
               </a>
             </li>
           </ul>
-          <br>
-          <ul class="nav nav-stacked">
-            <li>
-              <a href="./reserva">
-                <i class="fa fa-pencil-square-o"></i>
-                Reservar
-              </a>
-            </li>
-          </ul>
+      <hr>
+      
+             <ul class="nav nav-stacked">
+              <li>
+          		{% if estacionamiento.NroPuesto %}
+                <p style="position:relative; display: block;padding: 10px 15px;">
+                  <i class="fa fa-pencil-square-o" ></i>
+                                  
+                  Reservar
+                
+                </p>
+                
+                {% endif %}
+                {% if estacionamiento.Propietario %}
+                <a href="./ocupacion">
+                  <i class="fa fa-area-chart"></i>
+                  Tasa de ocupación
+                </a>
+                {% endif %}
+              </li>
+            </ul>
+          
       <hr>
       
     </div><!-- /span-3 -->

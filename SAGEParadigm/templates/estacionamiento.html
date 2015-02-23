@@ -56,21 +56,24 @@
           </ul>
 		<hr>
           
-          {% if estacionamiento.NroPuesto %}
+          
             <ul class="nav nav-stacked">
               <li>
+          		{% if estacionamiento.NroPuesto %}
                 <a href="./reserva">
                   <i class="fa fa-pencil-square-o"></i>
                   Reservar
                 </a>
+                {% endif %}
+                {% if estacionamiento.Propietario %}
                 <a href="./ocupacion">
                   <i class="fa fa-area-chart"></i>
                   Tasa de ocupación
                 </a>
-                
+                {% endif %}
               </li>
             </ul>
-          {% endif %}
+          
       <hr>
       
     </div><!-- /span-3 -->
@@ -145,7 +148,7 @@
           
         </thead>
         <tbody>
-      {% if estacionamiento.NroPuesto %}
+      {% if estacionamiento.Esquema %}
         <tr><td><b><i class="fa fa-car"></i> Puestos:</b></td></tr>
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
