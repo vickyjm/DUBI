@@ -233,14 +233,7 @@
 						<script>
 				
 						$("#id_esquema").change(function(){ 
-							if ($("#id_esquema").val() == "Hora" || $("#id_esquema").val() == "Minuto" || $("#id_esquema").val() == "HoraFraccion"){
-	 							$("#IniHorarioPico").hide();
-	 							$("#FinHorarioPico").hide();
-	 							$("#TarifaPico").hide();
-	 							$("#TarifaFin").hide();
-
-    						}
-    						else if ($("#id_esquema").val() == "DifHora"){
+							 if ($("#id_esquema").val() == "DifHora"){
 	    						$("#IniHorarioPico").show();
 	 							$("#FinHorarioPico").show();
 	 							$("#TarifaPico").show();
@@ -251,6 +244,12 @@
 	 							$("#FinHorarioPico").hide();
 	 							$("#TarifaPico").hide();
 	 							$("#TarifaFin").show();
+	 						}
+	 						else{
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").hide();
 	 						}
 						});
 			
@@ -306,6 +305,7 @@
                 			}
                 			
                 	</script>
+        			
 					{{ field.errors }}
 					
                 {% endfor %}
