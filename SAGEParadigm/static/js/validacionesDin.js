@@ -38,7 +38,7 @@ $(function(){
 			_this.attr('style', 'background:white');
 		} else {
 			_this.attr('style', 'background:#FF4A4A');
-		}
+		} 
 	});
 	
 	$('#id_numTarjeta').keyup(function(){
