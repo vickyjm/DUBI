@@ -51,11 +51,11 @@ class EstacionamientoExtendedForm(forms.Form):
 
     puestos = forms.IntegerField(min_value = 0, label = 'Número de Puestos')
 
-    horarioin = forms.TimeField(required = True, label = 'Hora Apertura')
-    horarioout = forms.TimeField(required = True, label = 'Hora Cierre')
+    horarioin = forms.TimeField(required = True, label = 'Hora de Apertura')
+    horarioout = forms.TimeField(required = True, label = 'Hora de Cierre')
 
-    horario_reserin = forms.TimeField(required = True, label = 'Hora Inicio Reserva')
-    horario_reserout = forms.TimeField(required = True, label = 'Hora Fin Reserva')
+    horario_reserin = forms.TimeField(required = True, label = 'Hora de Inicio de Reservas')
+    horario_reserout = forms.TimeField(required = True, label = 'Hora de Fin de Reservas')
     
     
 class EsquemaForm(forms.Form):
@@ -64,10 +64,10 @@ class EsquemaForm(forms.Form):
     esquema= forms.ChoiceField(required = True, widget = forms.Select(), choices = opciones_esquema, label = 'Esquema')
     tarifa = forms.DecimalField(required = True, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa')
     
-    tarifa_fin = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa Fin de Semana')
-    hora_picoini = forms.TimeField(required = False, label = 'Inicio Hora Pico')
-    hora_picofin = forms.TimeField(required = False, label = 'Fin Hora Pico')
-    tarifa_pico = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa Pico')
+    tarifa_fin = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa de Fin de Semana')
+    hora_picoini = forms.TimeField(required = False, label = 'Inicio de Horario Pico')
+    hora_picofin = forms.TimeField(required = False, label = 'Fin de Horario Pico')
+    tarifa_pico = forms.DecimalField(required = False, max_digits = 9, decimal_places = 2, min_value = 0, label = 'Tarifa de Horario Pico')
     
 
 class EstacionamientoReserva(forms.Form):
