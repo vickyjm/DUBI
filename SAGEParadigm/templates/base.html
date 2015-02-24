@@ -125,8 +125,28 @@
               {% for field in form %}
                 <div class="control-group">
                   <div class="controls">
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="{{field.label}}" for="id_{{field.name}}"><p>
-                    {{ field.errors }}
+                  {% if field.name == "propietario" or field.name == "nombre" or field.name == "direccion" %} 
+                    <h5>{{field.label}} (*)</h5>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                  {% endif %}
+                  
+                  {% if field.name == "telefono_1" or field.name == "telefono_2" or field.name == "telefono_3" %} 
+                    <h5>{{field.label}}</h5>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="0000-0000000" for="id_{{field.name}}"><p>
+                  {% endif %}
+                  
+                  {% if field.name == "email_1" or field.name == "email_2"%} 
+                    <h5>{{field.label}}</h5>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="ejemplo@email.com" for="id_{{field.name}}"><p>
+                  {% endif %}
+                  
+                  {% ifequal field.name "rif" %} 
+                    <h5>{{field.label}} (*)</h5>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" for="id_{{field.name}}"><p>
+                  {% endifequal %}
+                  
+                  
+                  {{ field.errors }}
                   </div>
                 </div> 
               {% endfor %}
