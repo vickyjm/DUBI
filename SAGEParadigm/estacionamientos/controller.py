@@ -129,8 +129,6 @@ def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	return (True, '')
 
 def validarFin(tarifa,tarifaFin):
-	if not tarifaFin:
+	if tarifaFin is None:
 		return (False,'La tarifa para el fin de semana es obligatoria')
-	if Decimal(tarifa)>= Decimal(tarifaFin):
-		return (False, 'La tarifa para el fin de semana debe ser mayor que la tarifa normal')
 	return (True,'')

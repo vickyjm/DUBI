@@ -131,28 +131,28 @@ class DifFin(Esquema):
 			if tempDatetime>finR:
 				difMin=(tempDatetime-finR).seconds//60
 				if difMin>=1 and difMin<=30:
-					if tempDatetime.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
 						tiempoFin+=1
-					elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 						tiempoNoFin+=1
 					else:
-						if tempDatetime2.weekday() in range(idSabado,idDomingo+1):
-							tiempoFin+=1
-						else:
+						if self.Tarifa>=self.TarifaFin:
 							tiempoNoFin+=1
+						else:
+							tiempoFin+=1
 				elif difMin>30:
-					if tempDatetime.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
 						tiempoFin+=0.5
-					elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 						tiempoNoFin+=0.5
 					else:
-						if tempDatetime2.weekday() in range(idSabado,idDomingo+1):
-							tiempoFin+=0.5
-						else:
+						if self.Tarifa>=self.TarifaFin:
 							tiempoNoFin+=0.5
+						else:
+							tiempoFin+=0.5
 			else:				
 				if tempDatetime.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
-						tiempoFin+=1
+					tiempoFin+=1
 				elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 					tiempoNoFin+=1
 				else:
