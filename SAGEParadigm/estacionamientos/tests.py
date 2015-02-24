@@ -1509,4 +1509,85 @@ class SimpleFormTestCase(TestCase):
 		for i in range(0,23):
 			res.append([i,99])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
-		self.assertEqual(res,estad)	
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaLlenarhoraahora(self):	
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,1,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,1,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,2,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,2,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,4,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,4,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,5,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,5,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,8,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,8,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,12,0,0,0)
+		for i in range(0,12):
+			res.append([i,100])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,1)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaLlenar3horas(self):	
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,12,0,0,0)
+		for i in range(0,12):
+			res.append([i,100])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaEstmaximoSolaparIniFin(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		res.append([6,0])
+		for i in range(7,18):
+			res.append([i,33])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)
