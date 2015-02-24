@@ -9,7 +9,8 @@ from estacionamientos.controller import *
 from estacionamientos.forms import *
 from estacionamientos.forms import *
 from estacionamientos.models import *
-
+import django
+django.setup()
 
 ###################################################################
 #                    ESTACIONAMIENTO VISTA DISPONIBLE
@@ -1286,3 +1287,106 @@ class SimpleFormTestCase(TestCase):
 		monto = esq.calcularMonto(inires, finres)
 		
 		self.assertEqual(monto.__class__.__name__, 'Decimal')
+		
+	
+###################################################################
+#		Pruebas para Verificacion de tasa de cada hora
+###################################################################
+
+	def test_calcularTasaReservaHorasSinReservas(self):
+		tabla = []
+		res = []
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		for i in range(6,18):
+			res.append([i,0])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaHorasLleno(self):
+		tabla = []
+		res = []
+		for i in range(0,3):
+			tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+			tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		for i in range(6,18):
+			res.append([i,99])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaReservaMinima(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		res.append([6,33])
+		res.append([7,1])
+		for i in range(8,18):
+			res.append([i,0])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaFunciona(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		res.append([6,66])
+		res.append([7,2])
+		for i in range(8,10):
+			res.append([i,0])
+		res.append([10,33])
+		for i in range(11,14):
+			res.append([i,0])
+		for i in range(14,17):
+			res.append([i,99])
+		res.append([17,3])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaEstminimo(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,7,0,0,0)
+		res.append([6,99])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)	
+		
+	def test_calcularTasaReservaEstmaximo(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,23,59,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,23,59,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,23,59,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
+		for i in range(0,23):
+			res.append([i,99])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
+		self.assertEqual(res,estad)	

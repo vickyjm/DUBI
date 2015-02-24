@@ -89,8 +89,11 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto):
     estad = []
     for i in range(ReservaInicio.hour,ReservaFin.hour):
         estad.append([i,0])
-
-    for i in range(len(tabla)):
+    if ReservaFin.hour == 23 and ReservaFin.minute != 0:
+        longitud = len(tabla)+1
+    else:
+        longitud = len(tabla)	
+    for i in range(longitud):
         if (tabla[i][1] == 1):
             print(tabla[i-1][0],tabla[i][0])
             for j in range(len(estad)):
