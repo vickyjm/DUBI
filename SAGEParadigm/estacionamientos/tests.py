@@ -71,7 +71,7 @@ class SimpleFormTestCase(TestCase):
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
 			'direccion': 'Caracas',
-			'rif': 'V123456789'
+			'rif': 'V-12345678-9'
 		}
 		form = EstacionamientoForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
@@ -126,10 +126,10 @@ class SimpleFormTestCase(TestCase):
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
 			'direccion': 'Caracas',
-			'rif': 'V123456789',
-			'telefono_1': '02129322878',
-			'telefono_2': '04149322878',
-			'telefono_3': '04129322878'
+			'rif': 'V-12345678-9',
+			'telefono_1': '0212-9322878',
+			'telefono_2': '0414-9322878',
+			'telefono_3': '0412-9322878'
 		}
 		form = EstacionamientoForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
@@ -164,10 +164,10 @@ class SimpleFormTestCase(TestCase):
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
 			'direccion': 'Caracas',
-			'rif': 'V123456789',
-			'telefono_1': '02129322878',
-			'telefono_2': '04149322878',
-			'telefono_3': '04129322878',
+			'rif': 'V-12345678-9',
+			'telefono_1': '0212-9322878',
+			'telefono_2': '0414-9322878',
+			'telefono_3': '0412-9322878',
 			'email_1': 'adminsitrador@admin.com',
 			'email_2': 'usua_rio@users.com'
 		}
