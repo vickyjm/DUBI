@@ -36,7 +36,7 @@ class EstacionamientoForm(forms.Form):
     email_2 = forms.EmailField(required = False)
 
     rif = forms.CharField(
-                    max_length = 12,
+                    max_length = 13,
                     required = True,
                     label = "RIF",
                     validators = [
