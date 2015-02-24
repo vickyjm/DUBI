@@ -22,7 +22,7 @@ class Estacionamiento(models.Model):
 	Rif = models.CharField(max_length = 12)
 
 	#Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
-	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"))
+	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"),("DifFin","Diferenciado por fin de semana"))
 	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
@@ -114,3 +114,50 @@ class DifHora(Esquema):
 			tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 	
 		return Decimal(self.Tarifa*minvalle/60 + self.TarifaPico*minpico/60).quantize(Decimal(10)**-2)
+	
+class DifFin(Esquema):
+	
+	TarifaFin=models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
+	
+	def calcularMonto(self,iniR,finR):
+		idSabado=5
+		idDomingo=6
+		tempDatetime=iniR
+		tiempoFin=0
+		tiempoNoFin=0
+		while tempDatetime<finR:	
+			tempDatetime2=tempDatetime
+			tempDatetime=tempDatetime+datetime.timedelta(hours=1)
+			if tempDatetime>finR:
+				difMin=(tempDatetime-finR).seconds//60
+				if difMin>=1 and difMin<=30:
+					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+						tiempoFin+=1
+					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+						tiempoNoFin+=1
+					else:
+						if self.Tarifa>=self.TarifaFin:
+							tiempoNoFin+=1
+						else:
+							tiempoFin+=1
+				elif difMin>30:
+					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+						tiempoFin+=0.5
+					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+						tiempoNoFin+=0.5
+					else:
+						if self.Tarifa>=self.TarifaFin:
+							tiempoNoFin+=0.5
+						else:
+							tiempoFin+=0.5
+			else:				
+				if tempDatetime.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+					tiempoFin+=1
+				elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+					tiempoNoFin+=1
+				else:
+					if self.Tarifa>=self.TarifaFin:
+						tiempoNoFin+=1
+					else:
+						tiempoFin+=1					
+		return Decimal(self.Tarifa*Decimal(tiempoNoFin) + self.TarifaFin*Decimal(tiempoFin)).quantize(Decimal(10)**-2)			
