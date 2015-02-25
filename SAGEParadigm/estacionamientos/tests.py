@@ -1336,8 +1336,18 @@ class SimpleFormTestCase(TestCase):
 		res=esq.calcularMonto(inires, finres)
 		self.assertEqual(res, Decimal(45).quantize(Decimal(10)**-2))
 		
-	#esquina maliciosa
+	#esquina	
 	def test_tarifaDiferenciadoPorFinDeSemanaDeViernesAlPrimerMinutoDelSabado(self):
+		tarifa = Decimal(20)
+		inires = datetime.datetime(2015,7,3,23,0,0,0)
+		finres = datetime.datetime(2015,7,4,0,1,0,0)
+		tarifafin = Decimal(30)
+		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(35).quantize(Decimal(10)**-2))	
+		
+	#esquina maliciosa
+	def test_tarifaDiferenciadoPorFinDeSemanaDeViernesALaMedianocheDelSabado(self):
 		tarifa = Decimal(20)
 		inires = datetime.datetime(2015,7,3,23,0,0,0)
 		finres = datetime.datetime(2015,7,4,0,0,0,0)
@@ -1358,6 +1368,16 @@ class SimpleFormTestCase(TestCase):
 		
 	#esquina
 	def test_tarifaDiferenciadoPorFinDeSemanaMaxTiempo(self):
+		tarifa = Decimal(10)
+		inires = datetime.datetime(2015,7,5,0,30,0,0)
+		finres = datetime.datetime(2015,7,12,0,30,0,0)
+		tarifafin = Decimal(20)
+		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
+		res=esq.calcularMonto(inires, finres)
+		self.assertEqual(res, Decimal(10*24*4+10*23+20+20*24*2).quantize(Decimal(10)**-2))	
+		
+	#esquina maliciosa
+	def test_tarifaDiferenciadoPorFinDeSemanaMaxTiempoDesde0(self):
 		tarifa = Decimal(10)
 		inires = datetime.datetime(2015,7,5,0,0,0,0)
 		finres = datetime.datetime(2015,7,12,0,0,0,0)
