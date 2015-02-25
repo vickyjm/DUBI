@@ -118,7 +118,7 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,day):
                             HoraFin -= 1
                         porcentaje = (TiempoOcup*100/60)/NroPuesto
                         estad[j][1] += Decimal('%.1f' % porcentaje)
-                        j += 1          
+                        j += 1
     ListaPorcentajes = []
     for i in range(len(estad)):
     	ListaPorcentajes.append(estad[i][1])
