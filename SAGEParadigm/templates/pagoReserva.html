@@ -113,7 +113,7 @@
 						{%elif field.name == "cedula"%}
 							<input type="text" class="form-control" name="{{field.name}}" placeholder="Máximo 9 dígitos" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Máximo 9 dígitos"><p>
                     	{%else%}
-                    		<input type="text" class="form-control" name="{{field.name}}" placeholder={{field.label}} id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo caracteres del Castellano. No puede comenzar con espacios en blanco"><p>
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder={{field.label}} id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo caracteres del Castellano"><p>
                 
                     	{%endif%}
                     		
