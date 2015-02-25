@@ -1344,7 +1344,7 @@ class SimpleFormTestCase(TestCase):
 		tarifafin = Decimal(30)
 		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
 		res=esq.calcularMonto(inires, finres)
-		self.assertEqual(res, Decimal(30).quantize(Decimal(10)**-2))
+		self.assertEqual(res, Decimal(20).quantize(Decimal(10)**-2))
 		
 	#esquina	
 	def test_tarifaDiferenciadoPorFinDeSemanaDelUltimoMinutoDelDomingoALunesHoraYFraccion(self):
@@ -1364,7 +1364,7 @@ class SimpleFormTestCase(TestCase):
 		tarifafin = Decimal(20)
 		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
 		res=esq.calcularMonto(inires, finres)
-		self.assertEqual(res, Decimal(10*24*4+10*23+20+20*24*2).quantize(Decimal(10)**-2))
+		self.assertEqual(res, Decimal(10*24*4+10*24+20*24*2).quantize(Decimal(10)**-2))
 		
 	#esquina	
 	def test_tarifaDiferenciadoPorFinDeSemanaMinTarifa(self):
