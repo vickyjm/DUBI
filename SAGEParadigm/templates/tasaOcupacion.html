@@ -97,17 +97,33 @@
     	</table>
     	   		
     	 <h4>Reporte de nivel de reservación por grano de horas</h4>
+    	 <h5>
+    	 Se reporta la tasa de ocupación de los siguientes 7 días, a partir de la fecha actual:
+    	 <b>{{fechaActual}}</b>
+    	 </h5>
+    	 <br>
 	    <table class="table table-striped">
-      
-        <thead>
-          <tr><th></th><th>Horario</th><th>Lunes</th><th>Martes</th>
-          <th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sabado</th><th>Domingo</th></tr>
-        </thead>
-        <tbody>
-        {% for obj in estacionamientos %}
-          <tr><td>{{forloop.counter}}</td><td>{{estacionamiento.Apertura}}</td></tr>
-        {% endfor %}
-        </tbody>
+      	
+          <tr>
+          <td></td> 
+          {% for h in horas %}
+          	<th>{{h}}</th>
+          {% endfor %}
+          </tr>
+        
+        <tr>
+         <!-- <td>{{forloop.counter}}</td><td>{{estacionamiento.Apertura}}</td> -->
+        {% for x in estadisticas %}
+	        <tr class="{% cycle dias.0 dias.1 dias.2 dias.3 dias.4 dias.5 dias.6 as dia %}">
+       			<td><b>{{dia}}</b></td>
+	        {% for y in x %}	        	
+	        	<td>
+	        	{{y}}	        	
+	        	</td>
+	        {% endfor %}
+	        </tr>	
+        {% endfor %} 
+        </tr>
         
       
      

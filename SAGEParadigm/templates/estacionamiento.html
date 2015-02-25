@@ -71,19 +71,23 @@
         
                   Reservar
                 	</p>
+                 <p style="position:relative; display: block;padding: 10px 15px;color: #aaa">
+                    <i class="fa fa-area-chart" ></i>
+                   Tasa de ocupación
+                 </p>
                 {% endif %}
           		{% if estacionamiento.NroPuesto %}
                 <a href="./reserva">
                   <i class="fa fa-pencil-square-o"></i>
                   Reservar
                 </a>
-                {% endif %}
-                {% if estacionamiento.Propietario %}
                 <a href="./ocupacion">
                   <i class="fa fa-area-chart"></i>
                   Tasa de ocupación
                 </a>
+                
                 {% endif %}
+               
               </li>
             </ul>
           

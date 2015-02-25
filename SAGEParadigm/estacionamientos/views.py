@@ -276,5 +276,6 @@ def estacionamiento_tasa_ocupacion(request, _id):
         longFin = estacion.Reservas_Cierre.hour
     for i in range(estacion.Reservas_Inicio.hour,longFin):
         horasApertura.append(i)
-    
-    return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'estacionamientos': estacionamientos})
+    now=datetime.datetime.now()
+    fechaActual=str(now.day)+"-"+str(now.month)+"-"+str(now.year)
+    return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': tasasEstad, 'fechaActual': fechaActual})
