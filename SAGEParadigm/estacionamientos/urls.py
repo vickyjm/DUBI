@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^(?P<_id>\d+)/$', views.estacionamiento_detail, name = 'estacionamiento_detail'),
     url(r'^(?P<_id>\d+)/reserva$', views.estacionamiento_reserva, name = 'estacionamiento_reserva'),
     url(r'^(?P<_id>\d+)/pagar$',views.estacionamiento_pagar_reserva, name = 'estacionamiento_pagar_reserva'),
+    url(r'^(?P<_id>\d+)/ocupacion$',views.estacionamiento_tasa_ocupacion, name = 'estacionamiento_tasa_ocupacion'),
 )

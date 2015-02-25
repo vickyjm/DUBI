@@ -238,3 +238,15 @@ def estacionamiento_pagar_reserva(request, _id):
         form = PagoReserva()
     return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
     
+def estacionamiento_tasa_ocupacion(request, _id):
+    
+    _id = int(_id)
+    # Verificamos que el objeto exista antes de continuar
+    estacionamientos = Estacionamiento.objects.all()
+    try:
+        estacion = Estacionamiento.objects.get(id = _id)
+    except ObjectDoesNotExist:
+        return render(request, '404.html')
+    
+    
+    return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'estacionamientos': estacionamientos})
