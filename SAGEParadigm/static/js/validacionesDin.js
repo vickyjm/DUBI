@@ -2,6 +2,7 @@ $(function(){
 	$('[data-toggle="popover"]').popover({
         trigger: 'manual',
         'placement': 'right',
+        container: 'body',
         'show': true
     });
 	
