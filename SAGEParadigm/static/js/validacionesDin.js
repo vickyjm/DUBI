@@ -1,14 +1,20 @@
 $(function(){
+	$('[data-toggle="popover"]').popover({
+        trigger: 'manual',
+        'placement': 'top',
+        'show': true
+    });
+	
 	$('#id_nombre').keyup(function(){
 		var _this = $('#id_nombre');
 		var _valor = $('#id_nombre').val();
 		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
-		var valid = regEx.test(_valor)
+		var valid = regEx.test(_valor);
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$('#id_nombre').popover('hide');
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			$('#id_nombre').popover('show');
 		}
 		
 	});
@@ -17,12 +23,12 @@ $(function(){
 		var _this = $('#id_apellidos');
 		var _valor = $('#id_apellidos').val();
 		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
-		var valid = regEx.test(_valor)
+		var valid = regEx.test(_valor);
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$('#id_apellidos').popover('hide');
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			$('#id_apellidos').popover('show');
 		}
 		
 	});
@@ -31,13 +37,13 @@ $(function(){
 		var _this = $('#id_cedula');
 		var _valor = $('#id_cedula').val();
 		var regEx = /^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$/;
-		var valid = regEx.test(_valor)
+		var valid = regEx.test(_valor);
 
         
 		if (valid){
-			_this.attr('style', 'background:white');
+			$('#id_cedula').popover('hide');
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			$('#id_cedula').popover('show');
 		} 
 	});
 	
@@ -45,12 +51,12 @@ $(function(){
 		var _this = $('#id_numTarjeta');
 		var _valor = $('#id_numTarjeta').val();
 		var regEx = /^\d{4}-?\d{4}-?\d{4}-?\d{4}$/;
-		var valid = regEx.test(_valor)
+		var valid = regEx.test(_valor);
 		
 		if (valid){
-			_this.attr('style', 'background:white');
+			$('#id_numTarjeta').popover('hide');
 		} else {
-			_this.attr('style', 'background:#FF4A4A');
+			$('#id_numTarjeta').popover('show');
 		}
 		
 	});
