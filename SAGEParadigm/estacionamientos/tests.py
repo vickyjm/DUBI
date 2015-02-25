@@ -1476,7 +1476,7 @@ class SimpleFormTestCase(TestCase):
 			res.append([i,0])
 		for i in range(14,17):
 			res.append([i,Decimal('99.9')])
-		res.append([17,Decimal('5.0')])
+		res.append([17,Decimal('5.1')])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
 		self.assertEqual(res,estad)
 		
@@ -1508,7 +1508,7 @@ class SimpleFormTestCase(TestCase):
 		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
 		for i in range(0,23):
 			res.append([i,Decimal('99.9')])
-		res.append([23,Decimal('98.3')])
+		res.append([23,Decimal('98.4')])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3)
 		self.assertEqual(res,estad)
 		
