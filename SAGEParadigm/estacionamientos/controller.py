@@ -98,7 +98,6 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,day):
 
     for i in range(len(tabla)):	
         if (tabla[i][1] == 1):
-            print(tabla[i-1][0],tabla[i][0])
             for j in range(len(estad)):
                 if (tabla[i-1][0].hour == estad[j][0]) & (tabla[i-1][0].day == day):
                     HoraFin = tabla[i][0].hour
@@ -120,12 +119,16 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,day):
                         porcentaje = (TiempoOcup*100/60)/NroPuesto
                         estad[j][1] += Decimal('%.1f' % porcentaje)
                         j += 1
+<<<<<<< HEAD
                         
     ListaPorcentajes = []
     for i in range(len(estad)):
     	ListaPorcentajes.append(estad[i][1])
     print(ListaPorcentajes)
     return ListaPorcentajes
+=======
+    return estad
+>>>>>>> branch 'TasaReservaHoras' of https://github.com/vickyjm/DUBI
 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
