@@ -139,3 +139,8 @@ def obtenerNumRecibo(estacionamiento):
                 maxId = recibo.numeroRecibo
     maxId= maxId+1
     return maxId		
+
+def validarFin(tarifa,tarifaFin):
+	if tarifaFin is None:
+		return (False,'La tarifa para el fin de semana es obligatoria')
+	return (True,'')
