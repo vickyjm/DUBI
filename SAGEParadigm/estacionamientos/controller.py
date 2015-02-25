@@ -85,7 +85,7 @@ def reservar(horaIni,horaFin,tabla,puestos) :
     return True
 
 # Devuelve una lista con el porcentaje de reservas por horas
-def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto):
+def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,day):
     estad = []
 
     if ReservaFin.hour == 23 and ReservaFin.minute > 0:
@@ -100,7 +100,7 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto):
         if (tabla[i][1] == 1):
             print(tabla[i-1][0],tabla[i][0])
             for j in range(len(estad)):
-                if (tabla[i-1][0].hour == estad[j][0]):
+                if (tabla[i-1][0].hour == estad[j][0]) & (tabla[i-1][0].day == day):
                     HoraFin = tabla[i][0].hour
                     MinFin = tabla[i][0].minute
                     entrar = True
@@ -120,8 +120,12 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto):
                         porcentaje = (TiempoOcup*100/60)/NroPuesto
                         estad[j][1] += Decimal('%.1f' % porcentaje)
                         j += 1
-    print(estad)
-    return estad
+                        
+    ListaPorcentajes = []
+    for i in range(len(estad)):
+    	ListaPorcentajes.append(estad[i][1])
+    print(ListaPorcentajes)
+    return ListaPorcentajes
 
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):

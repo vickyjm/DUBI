@@ -14,6 +14,8 @@ from estacionamientos.forms import PagoReserva
 from estacionamientos.forms import EsquemaForm
 from time import strptime
 from estacionamientos.models import *
+from django.db.models.lookups import Day
+from _datetime import date
 
 listaReserva = []
 
@@ -179,7 +181,6 @@ def estacionamiento_reserva(request, _id):
                     request.session['monto'] = tarifaFinal
                     mensajeTarifa='La solicitud es factible. El costo es de ' + str(tarifaFinal)+" BsF"
                 
-                    calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto)
                     return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa})                
                 else:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario'})
@@ -239,7 +240,6 @@ def estacionamiento_pagar_reserva(request, _id):
     return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
     
 def estacionamiento_tasa_ocupacion(request, _id):
-    
     _id = int(_id)
     # Verificamos que el objeto exista antes de continuar
     estacionamientos = Estacionamiento.objects.all()
@@ -247,6 +247,34 @@ def estacionamiento_tasa_ocupacion(request, _id):
         estacion = Estacionamiento.objects.get(id = _id)
     except ObjectDoesNotExist:
         return render(request, '404.html')
+ 
+    global listaReserva
+    if len(listaReserva) < 1:          
+        puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
+        for obj in puestos:
+            listaReserva.append([obj[0],-1])
+            listaReserva.append([obj[1],1]) 
+            
+    ActDate = datetime.datetime.now()
+    weekDay = ActDate.weekday()
+    dias = {0:'Lunes',1:'Martes',2:'Miércoles',3:'Jueves',4:'Viernes',5:'Sábado',6:'Domingo'}
+    tasasDia = []
+    tasasEstad = []
+    horasApertura = []    
+    for day in range(ActDate.day,(ActDate.day)+8):
+        tasasDia.append(dias[weekDay])
+        if weekDay == 6: weekDay = -1
+        weekDay += 1
+        estadistica = calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto,day)
+        for i in range(len(estadistica)):
+            estadistica[i] = float(estadistica[i])
+        tasasEstad.append(estadistica)
     
+    if estacion.Reservas_Cierre.hour == 23 and estacion.Reservas_Cierre.minute > 0:
+        longFin = 24
+    else:
+        longFin = estacion.Reservas_Cierre.hour
+    for i in range(estacion.Reservas_Inicio.hour,longFin):
+        horasApertura.append(i)
     
     return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'estacionamientos': estacionamientos})
