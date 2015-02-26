@@ -1418,8 +1418,8 @@ class SimpleFormTestCase(TestCase):
 		res = []
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		for i in range(6,18):
-			res.append(0)
+		for i in range(0,6):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1431,8 +1431,9 @@ class SimpleFormTestCase(TestCase):
 			tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		for i in range(6,18):
-			res.append(Decimal('99.9'))
+		res.append([Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1443,10 +1444,9 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('33.3'))
-		res.append(Decimal('1.7'))
-		for i in range(8,18):
-			res.append(0)
+		res.append([Decimal('33.3'),Decimal('1.7'),0,0,0,0,0,0,0,0,0,0])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1467,16 +1467,9 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('66.6'))
-		res.append(Decimal('3.4'))
-		for i in range(8,10):
-			res.append(0)
-		res.append(Decimal('33.3'))
-		for i in range(11,14):
-			res.append(0)
-		for i in range(14,17):
-			res.append(Decimal('99.9'))
-		res.append(Decimal('5.1'))
+		res.append([Decimal('66.6'),Decimal('3.4'),0,0,Decimal('33.3'),0,0,0,Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('5.1')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1492,6 +1485,8 @@ class SimpleFormTestCase(TestCase):
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,7,0,0,0)
 		res.append(Decimal('99.9'))
+		for i in range(0,5):
+			res.append([0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)	
 		
@@ -1506,9 +1501,13 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,23,59,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
-		for i in range(0,23):
-			res.append(Decimal('99.9'))
+		res.append([Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),
+				Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),
+				Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),
+				Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('98.4')])
 		res.append(Decimal('98.4'))
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1541,8 +1540,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,12,0,0,0)
-		for i in range(0,12):
-			res.append(Decimal('100.0'))
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,1,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1567,8 +1568,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,12,0,0,0)
-		for i in range(0,12):
-			res.append(Decimal('100.0'))
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1585,8 +1588,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		for i in range(6,18):
-			res.append(Decimal('33.3'))
+		res.append([Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),
+				Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1609,18 +1614,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(0)
-		res.append(Decimal('66.6'))
-		res.append(Decimal('99.9'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
+		res.append([Decimal('33.3'),Decimal('66.6'),Decimal('66.6'),Decimal('33.3'),0,Decimal('66.6'),
+				Decimal('99.9'),Decimal('66.6'),Decimal('66.6'),Decimal('33.3'),Decimal('33.3'),Decimal('66.6')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
 		self.assertEqual(res,estad)
 		
@@ -1647,18 +1644,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,15,0,0,0),1])
 		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
 		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('99.9'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('99.9'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
+		res.append([Decimal('33.3'),Decimal('66.6'),Decimal('66.6'),Decimal('33.3'),Decimal('33.3'),Decimal('66.6'),
+				Decimal('99.9'),Decimal('66.6'),Decimal('99.9'),Decimal('66.6'),Decimal('66.6'),Decimal('66.6')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
@@ -1681,18 +1670,10 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
 		tabla.append([datetime.datetime(2015,7,5,15,0,0,0),-1])
 		tabla.append([datetime.datetime(2015,7,5,16,0,0,0),1])
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('66.6'))
-		res.append(0)
-		res.append(Decimal('66.6'))
-		res.append(Decimal('33.3'))
-		res.append(Decimal('33.3'))
+		res.append([Decimal('33.3'),Decimal('66.6'),Decimal('66.6'),Decimal('33.3'),Decimal('66.6'),Decimal('33.3'),
+				Decimal('33.3'),Decimal('66.6'),0,Decimal('66.6'),Decimal('33.3'),Decimal('33.3')])
+		for i in range(0,5):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini.day)
@@ -1723,18 +1704,13 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('100.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(0)
-		res.append(Decimal('50.0'))
-		res.append(0)
-		res.append(0)
-		res.append(Decimal('50.0'))
-		res.append(0)
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
+		res.append([Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),0,
+				0,Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),0,0,0,0])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,Decimal('100.0'),Decimal('50.0'),Decimal('50.0')])
+		for i in range(0,4):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,5)
 		self.assertEqual(res,estad)
 		
@@ -1763,18 +1739,13 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,7,7,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(0)
-		res.append(0)
-		res.append(0)
-		res.append(0)
-		res.append(0)
-		res.append(0)
-		res.append(Decimal('100.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
+		res.append([Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),0,
+				0,Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),0,0,0,0])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,Decimal('100.0'),Decimal('50.0'),Decimal('50.0')])
+		for i in range(0,4):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,7)
 		self.assertEqual(res,estad)
 		
@@ -1803,17 +1774,130 @@ class SimpleFormTestCase(TestCase):
 		tabla.append([datetime.datetime(2015,7,12,7,0,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append(Decimal('100.0'))
-		res.append(Decimal('100.0'))
-		res.append(Decimal('100.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(0)
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
-		res.append(Decimal('50.0'))
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),0,0,
+				Decimal('50.0'),0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,Decimal('100.0'),Decimal('50.0'),Decimal('50.0')])
+		for i in range(0,3):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,12)
+		self.assertEqual(res,estad)
+
+	def test_calcularTasaReservaComenzarenunahoraconminutos(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,15,45,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,10,30,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('50.0'),0,0,Decimal('100.0'),0,Decimal('25.0'),Decimal('100.0'),Decimal('100.0')])
+		for i in range(0,6):
+			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
+		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,1,5)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaReservaAbarcaVariosdias(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,11,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,11,10,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,7,18,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,11,10,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,11,14,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,11,7,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,11,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,7,16,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,11,15,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,11,18,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,11,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,11,7,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,8,6,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,10,2,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),0,0,
+				Decimal('50.0'),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),
+				0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,11)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaVariasReservasAbarcaVariosdias(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,7,6,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,7,13,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,9,14,0,0,0),1])
+		tabla.append([datetime.datetime(2015,7,9,15,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,10,15,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				0,0,0,0,0,0,0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,11)
+		self.assertEqual(res,estad)
+		
+	def test_calcularTasaReservaVariasReservaAbarca7dias(self):
+		tabla = []
+		res = []
+		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
+		tabla.append([datetime.datetime(2015,7,13,0,0,0,0),1])
+		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
+		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
+		for i in range(0,8):
+			res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
+				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,11)
 		self.assertEqual(res,estad)
