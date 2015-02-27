@@ -4,7 +4,8 @@
 
 from decimal import Decimal
 import datetime
-from math import floor
+from estacionamientos.models import ReciboPagoModel
+from estacionamientos.models import ReservasModel
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -127,3 +128,19 @@ def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	if horaPicoIni == horaIni and horaPicoFin == horaFin:
 		return (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle')
 	return (True, '')
+
+def obtenerNumRecibo(estacionamiento):
+    #listaRecibo = ReciboPagoModel.objects.values_list('Reserva','numeroRecibo')
+    listaRecibo = ReciboPagoModel.objects.all()
+    maxId = 0	
+    for recibo in listaRecibo :
+        if recibo.Reserva.Estacionamiento.id == estacionamiento.id :
+            if maxId < recibo.numeroRecibo :
+                maxId = recibo.numeroRecibo
+    maxId= maxId+1
+    return maxId		
+
+def validarFin(tarifa,tarifaFin):
+	if tarifaFin is None:
+		return (False,'La tarifa para el fin de semana es obligatoria')
+	return (True,'')
