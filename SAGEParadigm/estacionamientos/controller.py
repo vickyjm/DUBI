@@ -85,6 +85,82 @@ def reservar(horaIni,horaFin,tabla,puestos) :
     tabla.append([horaFin,1])
     return True
 
+# Devuelve una matriz con el porcentaje de ocupación por horas del día actual
+# y de los próximos 7 días válidos de reserva a partir de él
+def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,DiaActual):
+    estadistica = []
+    horas = []
+
+    if ReservaFin.hour == 23 and ReservaFin.minute > 0:
+        longFin = 24
+    else:
+        longFin = ReservaFin.hour
+    for i in range(ReservaInicio.hour,longFin):
+        horas.append(i)    
+    aux = []
+    for dia in range(0,8):
+        for i in range(ReservaInicio.hour,longFin):
+            aux.append(0)
+        estadistica.append(aux)
+        aux = []
+    entrar = False
+    for i in range(len(tabla)):	
+        if (tabla[i][1] == 1) & (tabla[i-1][0] >= DiaActual):
+            diaEstad = (tabla[i-1][0] - DiaActual).days
+            if tabla[i-1][0].hour + tabla[i-1][0].minute + tabla[i-1][0].second < DiaActual.hour+DiaActual.minute+DiaActual.second:
+                diaEstad += 1
+            rango = (tabla[i][0]-tabla[i-1][0]).days+1
+            if (tabla[i][0].hour*60 + tabla[i][0].minute + tabla[i][0].second) < (tabla[i-1][0].hour*60 + tabla[i-1][0].minute + tabla[i-1][0].second):
+                rango += 1
+
+            for dia in range(0,rango):
+                # Cuando hay una reserva de más de dos días,
+                # se llenan directamente los puestos de los días intermedidos
+                if dia != 0 and dia != rango-1:
+                    for hora in range(len(estadistica[dia])):
+                        porcentaje = 100/NroPuesto
+                        estadistica[diaEstad][hora] += Decimal('%.1f' % porcentaje)
+                else:
+                    # Se asignan los valores iniciales para hacer el cálculo de los porcentajes
+                    if dia == 0:		
+                        HoraIni = tabla[i-1][0].hour
+                        MinIni = tabla[i-1][0].minute
+                        if rango > 1:					# es una reserva de más de un dia					     
+                            HoraFin = 24
+                            MinFin = 0
+                        else:
+                            HoraFin = tabla[i][0].hour
+                            MinFin = tabla[i][0].minute
+                        entrar = True
+                    elif dia == rango-1: 					
+                        HoraIni = 0
+                        MinIni = 0
+                        HoraFin = tabla[i][0].hour
+                        MinFin = tabla[i][0].minute
+                    
+                    # Se llenan las horas de reserva para el día "DiaEstad"    
+                    for j in range(len(horas)):
+                        if (HoraIni == horas[j]):
+                            while ( (HoraFin*60+MinFin) - (HoraIni*60+MinIni) > 0 ):
+                                minutosDif = (HoraFin*60+MinFin) - (HoraIni*60+MinIni)
+                                if minutosDif >= 60:
+                                    if (MinIni != 0) and (entrar):
+                                        TiempoOcup = 60 - MinIni
+                                        MinFin -= 60 - MinIni
+                                        entrar = False
+                                    else:
+                                        TiempoOcup = 60
+                                        HoraFin -= 1
+                                else:
+                                    TiempoOcup = minutosDif
+                                    HoraFin -= 1
+                                porcentaje = (TiempoOcup*100/60)/NroPuesto
+                                estadistica[diaEstad][j] += Decimal('%.1f' % porcentaje)
+                                j += 1
+                diaEstad += 1
+    return estadistica
+
+
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
     hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
     hFin = datetime.time(ReservaFin.hour,ReservaFin.minute)
