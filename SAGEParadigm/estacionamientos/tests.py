@@ -1288,54 +1288,6 @@ class SimpleFormTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 	
-#################################################################
-#		Pruebas de tipo Decimal 
-#################################################################
-	
-	
-	def test_esDecimalTarifaDiferenciadoPorHora(self):
-		tarifa = Decimal(20)
-		inires = datetime.datetime(2015,7,5,20,0,0,0)
-		finres = datetime.datetime(2015,7,6,15,0,0,0)
-		tarifapico = Decimal(25)
-		iniciopico = datetime.time(15,0,0)
-		finpico = datetime.time(20,0,0)
-		esq=DifHora(Estacionamiento=estacionamiento,Tarifa=tarifa,PicoIni=iniciopico,PicoFin=finpico,TarifaPico=tarifapico)
-		
-		monto = esq.calcularMonto(inires, finres)
-		
-		self.assertEqual(monto.__class__.__name__, 'Decimal')
-		
-	def test_esDecimalTarifaPorHora(self):
-		tarifa = Decimal(20)
-		inires = datetime.datetime(2015,7,5,20,0,0,0)
-		finres = datetime.datetime(2015,7,6,15,0,0,0)
-		esq=Hora(Estacionamiento=estacionamiento,Tarifa=tarifa)
-		
-		monto = esq.calcularMonto(inires, finres)
-		
-		self.assertEqual(monto.__class__.__name__, 'Decimal')	
-		
-	def test_esDecimalPorMinuto(self):
-		tarifa = Decimal(20)
-		inires = datetime.datetime(2015,7,5,20,0,0,0)
-		finres = datetime.datetime(2015,7,6,15,0,0,0)
-		esq=Minuto(Estacionamiento=estacionamiento,Tarifa=tarifa)
-		
-		monto = esq.calcularMonto(inires, finres)
-		
-		self.assertEqual(monto.__class__.__name__, 'Decimal')
-		
-	def test_esDecimalPorHoraYFraccion(self):
-		tarifa = Decimal(20)
-		inires = datetime.datetime(2015,7,5,20,0,0,0)
-		finres = datetime.datetime(2015,7,6,15,0,0,0)
-		esq=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=tarifa)
-		
-		monto = esq.calcularMonto(inires, finres)
-		
-		self.assertEqual(monto.__class__.__name__, 'Decimal')
-	
 ##########################################################################################
 #		Pruebas calculo de tarifa diferenciado por fin de semana (hora y fracción)
 ##########################################################################################
@@ -1489,3 +1441,25 @@ class SimpleFormTestCase(TestCase):
 		esq=DifFin(Estacionamiento=estacionamiento,Tarifa=tarifa,TarifaFin=tarifafin)
 		res=esq.calcularMonto(inires, finres)
 		self.assertEqual(res, Decimal(30*24*2).quantize(Decimal(10)**-2))
+
+###################################################################
+#		Pruebas diferencia entre Decimal y Float
+###################################################################
+
+	def test_diferenciaEntreDecimalYFloat(self):
+		tarifa = Decimal(0.5)
+		inires = datetime.datetime(2015,7,12,10,0,0,0)
+		finres = datetime.datetime(2015,7,12,15,21,0,0)
+		esq=Minuto(Estacionamiento=estacionamiento,Tarifa=tarifa)
+		res=esq.calcularMonto(inires, finres)
+		
+		def calcularMontoFloat(tarifa,iniR,finR):
+			tarifa=float(tarifa)
+			temp1 = (finR-iniR).days*24 + (finR - iniR).seconds//3600
+			temp2 = (finR-iniR).days*24 + (finR - iniR).seconds/3600
+			minextra = temp2 - temp1
+			fraccion = tarifa*minextra
+			return round(tarifa*temp1+fraccion,2)
+			
+		resFloat=calcularMontoFloat(tarifa,inires,finres)
+		self.assertNotEqual(res,resFloat)

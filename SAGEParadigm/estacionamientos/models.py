@@ -61,24 +61,24 @@ class Hora(Esquema):
 	def calcularMonto(self,iniR,finR):
 		
 		
-		temp1=(finR-iniR).days*24 + (finR - iniR).seconds//3600
-		temp2=(finR-iniR).days*24 + (finR - iniR).seconds/3600
+		temp1=Decimal(str((finR-iniR).days*24 + (finR - iniR).seconds//3600))
+		temp2=Decimal(str((finR-iniR).days*24 + (finR - iniR).seconds/3600))
 		
 		if temp1<temp2:
 			temp1+=1
 			
-		return Decimal(self.Tarifa*Decimal(temp1)).quantize(Decimal(10)**-2)
+		return round(Decimal(str(self.Tarifa*Decimal(temp1))),2)
 	
 class Minuto(Esquema):
 	
 	def calcularMonto(self,iniR,finR):
 			
-		temp1 = (finR-iniR).days*24 + (finR - iniR).seconds//3600
-		temp2 = (finR-iniR).days*24 + (finR - iniR).seconds/3600
+		temp1 = Decimal(str((finR-iniR).days*24 + (finR - iniR).seconds//3600))
+		temp2 = Decimal(str((finR-iniR).days*24 + (finR - iniR).seconds/3600))
 		minextra = temp2 - temp1
-		fraccion = self.Tarifa*Decimal(minextra)
+		fraccion = self.Tarifa*minextra
 		
-		return Decimal(self.Tarifa * temp1 + fraccion).quantize(Decimal(10)**-2)
+		return round(Decimal(str(self.Tarifa * temp1 + fraccion)),2)
 	
 class HoraFraccion(Esquema):
 	
@@ -86,16 +86,16 @@ class HoraFraccion(Esquema):
 		
 		fraccion = 0
 		segundosdif =(finR - iniR).total_seconds()
-		temp1 = segundosdif//3600
-		temp2 = segundosdif/3600
+		temp1 = Decimal(str(segundosdif//3600))
+		temp2 = Decimal(str(segundosdif/3600))
 		minextra = round((temp2 - temp1)*60,2)
 	
 		if minextra > 30:
-			fraccion = self.Tarifa
+			fraccion = Decimal(str(self.Tarifa))
 		elif minextra <= 30 and minextra != 0:
-			fraccion = self.Tarifa/2
+			fraccion = Decimal(str(self.Tarifa/2))
 		
-		return Decimal(self.Tarifa * Decimal(temp1) + Decimal(fraccion)).quantize(Decimal(10)**-2)
+		return round(Decimal(str(self.Tarifa * temp1 + fraccion)),2)
 	
 class DifHora(Esquema):
 	
@@ -116,7 +116,7 @@ class DifHora(Esquema):
 				minvalle += 1
 			tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 	
-		return Decimal(self.Tarifa*minvalle/60 + self.TarifaPico*minpico/60).quantize(Decimal(10)**-2)
+		return round(Decimal(str(Decimal(str(self.Tarifa*minvalle/60)) + Decimal(str(self.TarifaPico*minpico/60)))),2)
 	
 class DifFin(Esquema):
 	
@@ -181,4 +181,4 @@ class DifFin(Esquema):
 							tiempoNoFin+=1
 						else:
 							tiempoFin+=1					
-		return Decimal(self.Tarifa*Decimal(tiempoNoFin) + self.TarifaFin*Decimal(tiempoFin)).quantize(Decimal(10)**-2)			
+		return round(Decimal(str(self.Tarifa*Decimal(tiempoNoFin) + self.TarifaFin*Decimal(tiempoFin))),2)		

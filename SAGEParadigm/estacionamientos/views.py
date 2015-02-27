@@ -201,7 +201,6 @@ def estacionamiento_pagar_reserva(request, _id):
     monto = request.session.get('monto')
     inicio_reserva=datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
     final_reserva=datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
-    print(inicio_reserva)
     if request.method == 'GET':
         form = PagoReserva()
         return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
