@@ -277,7 +277,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
     
     estadistica = calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto,datetime.datetime.now())
     for dia in range(0,8):
-        for i in range(len(estadistica)):
+        for i in range(len(estadistica[dia])):
             estadistica[dia][i] = float(estadistica[dia][i])
         tasasDia.append(diasSemana[weekDay])
         if weekDay == 6: weekDay = -1
