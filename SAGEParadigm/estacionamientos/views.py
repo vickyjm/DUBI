@@ -17,6 +17,10 @@ from estacionamientos.models import *
 from django.db.models.lookups import Day
 from _datetime import date
 
+import plotly.plotly as py
+from plotly.graph_objs import *
+py.sign_in('monica.figuera', 'z6pyvhq79s')
+
 listaReserva = []
 
 # Usamos esta vista para procesar todos los estacionamientos
@@ -283,6 +287,111 @@ def estacionamiento_tasa_ocupacion(request, _id):
         if weekDay == 6: weekDay = -1
         weekDay += 1
             
+    construirGrafico(horasApertura,estadistica[1],diasSemana[datetime.datetime.now().weekday()],estacion.Reservas_Inicio.hour,estacion.Reservas_Cierre.hour)
     now = datetime.datetime.now()
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
     return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+
+def construirGrafico(horasApertura,estadistica,dia,inicio_reserva,final_reserva):
+    aux = []
+    for hora in range(len(horasApertura)):
+        aux.append(float(horasApertura[hora]) + 0.5)
+
+    data = Data([
+        Bar(
+            x = aux,
+            y = estadistica,
+        
+            type = "bar",
+            #uid = "1df313",
+            xbins = XBins(
+                start = -0.5,
+                end = 23.5,
+                size = 1
+            ),
+            ybins = YBins(
+                start = -0.5,
+                end = 2.5,
+                size = 1
+            ),
+            #zmin = 0,
+            #zmax = 1,
+            visible = True,
+            showlegend = True,
+            orientation = "v",
+            marker = Marker(
+                line = Line(
+                    width = 1
+                )
+            )
+        )
+    ])
+
+
+    layout = Layout(
+        xaxis = XAxis(
+            type = "linear",
+            range = [
+            inicio_reserva,  # cambiar esto
+            final_reserva  # cambiar esto
+            ],
+            autorange = False,
+            showgrid = True,
+            showline = True,
+            rangemode = "nonnegative",
+            title = "Horas de reserva",
+            linewidth = 1,
+            mirror = False,
+            gridwidth = 1,
+            zeroline = True,
+            zerolinewidth = 0.1,
+            nticks = 25,
+            ticks = "inside",
+            domain = [
+            0,
+            1
+            ],
+            anchor = "y"
+        ),
+        yaxis = YAxis(
+            type = "linear",
+            range = [
+            0,
+            100
+            ],
+            autorange = False,
+            showgrid = True,
+            showline = True,
+            rangemode = "nonnegative",
+            title = "Porcentaje",
+            linewidth = 1,
+            mirror = False,
+            gridwidth = 1,
+            zeroline = True,
+            zerolinewidth = 0.1,
+            nticks = 20,
+            dtick = 5,
+            autotick = True,
+            ticks = "inside",
+            ticklen = 5,
+            tickwidth = 1
+        ),
+        height = 477,
+        width = 811,
+        autosize = True,
+        showlegend = False,
+        separators = ".,",
+        margin = Margin(
+            autoexpand = False
+        ),
+        plot_bgcolor = "rgb(255, 255, 255)",
+        barmode = "stack",
+        #barnorm = "",
+        bargap = 0.1,
+        bargroupgap = 0,
+        paper_bgcolor = "rgb(255, 255, 255)",
+        title = dia       # Cambiarlo por el nombre del día que es
+    )
+
+    fig = Figure(data=data, layout=layout)
+    py.plot(fig, filename='tasaOcupacion') 
