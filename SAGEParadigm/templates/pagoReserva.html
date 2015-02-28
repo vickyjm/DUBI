@@ -101,7 +101,7 @@
               	<div class="control-group">
               
                 	{% ifnotequal field.name "tipoTarjeta" %}
-                		<label>{{field.label}}</label>
+                		<label>{{field.label}} (*)</label>
                 		{%if field.name == "numTarjeta"%}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="Número" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Debe ingresar 16 dígitos. Puede separar cada 4 dígitos con un guión si lo desea"><p>
                     	{%elif field.name == "nacionalidad"%}
@@ -119,7 +119,7 @@
                     		
                     
                   	{% else %}
-                  		<label> Tipo de Tarjeta</label>
+                  		<label> Tipo de Tarjeta (*)</label>
 						<select id="id_tarjeta" name="tipoTarjeta" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 							<option value ="" select disable style="display:none;">Tipos</option>
 							<option value="Mister" style = "color:#000;">Mister</option>
