@@ -21,20 +21,10 @@ from estacionamientos.models import ReservasModel
 # chequeo de horarios de extended
 
 
-def HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin):
+def HorarioEstacionamiento(HoraInicio, HoraFin):
 
 	if HoraInicio >= HoraFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
-	if ReservaInicio >= ReservaFin:
-		return (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva')
-	if ReservaInicio < HoraInicio:
-		return (False, 'El horario de inicio de reserva debe mayor o igual al horario de apertura del estacionamiento')
-	if ReservaInicio > HoraFin:
-		return (False, 'El horario de comienzo de reserva debe ser menor al horario de cierre del estacionamiento')
-	if ReservaFin < HoraInicio:
-		return (False, 'El horario de apertura de estacionamiento debe ser menor al horario de finalizacion de reservas')
-	if ReservaFin > HoraFin:
-		return (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalizacion de reservas')
 	return (True, '')
 
 def marzullo(tabla,puestos):
@@ -173,11 +163,11 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
         return (False, 'El tiempo de reserva debe ser al menos de 1 hora')
     else:
         if (ReservaInicio >= ReservaFin):
-            return (False, 'El horario de inicio de reserva debe ser menor que le horario de fin de reserva')
+            return (False, 'La hora de inicio de la reserva debe ser menor que la hora de fin de la reserva')
     if hFin > HorarioCierre:
-        return (False, 'El horario de inicio de reserva debe estar en un horario valido')
+        return (False, 'La hora de fin de la reserva debe estar en un horario valido')
     if hIni < HorarioApertura:
-        return (False, 'El horario de cierre de reserva debe estar en un horario valido')
+        return (False, 'La hora de inicio de la reserva debe estar en un horario valido')
     if ((delta.days == 7) and (delta.seconds > 0)) or (delta.days > 7):
         return (False, 'El tiempo de reserva no puede ser mayor a 7 días')
     elif (delta.days > 0) and ((HorarioApertura != inicioBorde) or (HorarioCierre != finBorde)): # Mayor a un dia y no 24h
@@ -196,7 +186,7 @@ def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	if not(horaPicoIni and horaPicoFin and tarifaPico):
 		return (False,'Los campos Picos son obligatorios')
 	if horaPicoIni<horaIni or horaPicoFin>horaFin:
-		return (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento')
+		return (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento')
 	if Decimal(tarifa)>= Decimal(tarifaPico):
 		return (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle')
 	if horaPicoIni >= horaPicoFin:

@@ -156,17 +156,11 @@
         <tr><td><b><i class="fa fa-car"></i> Puestos:</b></td></tr>
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
-      {% if estacionamiento.Reservas_Inicio or estacionamiento.Reservas_Cierre or estacionamiento.Apertura or estacionamiento.Cierre%}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora de inicio de reservas:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora de fin de reservas:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
+      {% if estacionamiento.Apertura or estacionamiento.Cierre or estacionamiento.Esquema or esquema.Tarifa%}
         <tr><td><b><i class="fa fa-clock-o"></i> Hora de apertura:</b></td></tr>
         <tr><td>{{estacionamiento.Apertura}}</td></tr>
         <tr><td><b><i class="fa fa-clock-o"></i> Hora de cierre:</b></td></tr>
-        <tr><td>{{estacionamiento.Cierre}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Esquema or esquema.Tarifa%}
+        <tr><td>{{estacionamiento.Cierre}}</td></tr>        
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
@@ -214,7 +208,7 @@
                   	<h5>{{field.label}} (*)</h5>
                   	{% if field.label == "Fecha Inicio Reserva" or field.label == "Fecha Final Reserva" %}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" for="id_{{field.name}}"><p>            
-                    {% elif field.label == "Horario Inicio Reserva" or field.label == "Horario Final Reserva"%}
+                    {% elif field.label == "Hora Inicio Reserva" or field.label == "Hora Final Reserva"%}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
                     {% endif %}
                     {{ field.errors }}

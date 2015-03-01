@@ -168,11 +168,7 @@
         <tr><td><b><i class="fa fa-car"></i> Puestos:</b></td></tr>
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
-      {% if estacionamiento.Reservas_Inicio or estacionamiento.Reservas_Cierre or estacionamiento.Apertura or estacionamiento.Cierre%}
-	    <tr><td><b><i class="fa fa-clock-o"></i> Hora de inicio de reservas:</b></td></tr>
-	    <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
-	    <tr><td><b><i class="fa fa-clock-o"></i> Hora de fin de reservas:</b></td></tr>
-	    <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
+      {% if estacionamiento.Apertura or estacionamiento.Cierre%}
 	    <tr><td><b><i class="fa fa-clock-o"></i> Hora de apertura:</b></td></tr>
 	    <tr><td>{{estacionamiento.Apertura}}</td></tr>
 	    <tr><td><b><i class="fa fa-clock-o"></i> Hora de cierre:</b></td></tr>

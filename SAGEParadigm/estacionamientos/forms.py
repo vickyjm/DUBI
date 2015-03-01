@@ -54,8 +54,8 @@ class EstacionamientoExtendedForm(forms.Form):
     horarioin = forms.TimeField(required = True, label = 'Hora de Apertura')
     horarioout = forms.TimeField(required = True, label = 'Hora de Cierre')
 
-    horario_reserin = forms.TimeField(required = True, label = 'Hora de Inicio de Reservas')
-    horario_reserout = forms.TimeField(required = True, label = 'Hora de Fin de Reservas')
+    #horario_reserin = forms.TimeField(required = True, label = 'Hora de Inicio de Reservas')
+    #horario_reserout = forms.TimeField(required = True, label = 'Hora de Fin de Reservas')
     
     
 class EsquemaForm(forms.Form):
@@ -72,9 +72,9 @@ class EsquemaForm(forms.Form):
 
 class EstacionamientoReserva(forms.Form):
     fechaInicio = forms.DateField(label = 'Fecha Inicio Reserva')
-    horaInicio = forms.TimeField(label = 'Horario Inicio Reserva')
+    horaInicio = forms.TimeField(label = 'Hora Inicio Reserva')
     fechaFinal = forms.DateField(label = 'Fecha Final Reserva')
-    horaFinal = forms.TimeField(label = 'Horario Final Reserva')
+    horaFinal = forms.TimeField(label = 'Hora Final Reserva')
     
 class PagoReserva(forms.Form):
     nombre = forms.CharField(

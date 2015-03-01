@@ -81,10 +81,10 @@ def estacionamiento_detail(request, _id):
             if form.is_valid():
                 hora_in = form.cleaned_data['horarioin']
                 hora_out = form.cleaned_data['horarioout']
-                reserva_in = form.cleaned_data['horario_reserin']
-                reserva_out = form.cleaned_data['horario_reserout']
+                #reserva_in = form.cleaned_data['horario_reserin']
+                #reserva_out = form.cleaned_data['horario_reserout']
 
-                m_validado = HorarioEstacionamiento(hora_in, hora_out, reserva_in, reserva_out)
+                m_validado = HorarioEstacionamiento(hora_in, hora_out)
                 if not m_validado[0]:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                 
@@ -97,7 +97,7 @@ def estacionamiento_detail(request, _id):
                     picoIni = esquemaform.cleaned_data['hora_picoini']
                     picoFin = esquemaform.cleaned_data['hora_picofin']
                     tarifaPico = esquemaform.cleaned_data['tarifa_pico']
-                    m_validado=validarPicos(reserva_in,reserva_out,picoIni,picoFin,tarifa,tarifaPico)
+                    m_validado=validarPicos(estacion.Apertura,estacion.Cierre,picoIni,picoFin,tarifa,tarifaPico)
                     if not m_validado[0]:
                         return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                     esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
@@ -114,8 +114,8 @@ def estacionamiento_detail(request, _id):
                 estacion.Esquema = esquemaform.cleaned_data['esquema']
                 estacion.Apertura = hora_in
                 estacion.Cierre = hora_out
-                estacion.Reservas_Inicio = reserva_in
-                estacion.Reservas_Cierre = reserva_out
+                #estacion.Reservas_Inicio = reserva_in
+                #estacion.Reservas_Cierre = reserva_out
                 estacion.NroPuesto = form.cleaned_data['puestos']
                 #estacion.Pico_Ini = form.cleaned_data['hora_picoini']
                 #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
@@ -157,7 +157,7 @@ def estacionamiento_reserva(request, _id):
                 final_reserva = datetime.datetime.combine(fechaFin,horaFin)
 
                 # Validamos los horarios con los horario de salida y entrada
-                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,datetime.datetime.now())
+                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Apertura, estacion.Cierre,datetime.datetime.now())
 
                 # Si no es valido devolvemos el request
                 if not m_validado[0]:
@@ -265,17 +265,17 @@ def estacionamiento_tasa_ocupacion(request, _id):
             
     tasasDia = []
     horasApertura = []    
-    if estacion.Reservas_Cierre.hour == 23 and estacion.Reservas_Cierre.minute > 0:
+    if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
         longFin = 24
     else:
-        longFin = estacion.Reservas_Cierre.hour
-    for i in range(estacion.Reservas_Inicio.hour,longFin):
+        longFin = estacion.Cierre.hour
+    for i in range(estacion.Apertura.hour,longFin):
         horasApertura.append(i)
     
     diasSemana = {0:'Lunes',1:'Martes',2:'Miércoles',3:'Jueves',4:'Viernes',5:'Sábado',6:'Domingo'}
     weekDay = datetime.datetime.now().weekday()
     
-    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto,datetime.datetime.now())
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,datetime.datetime.now())
     for dia in range(0,8):
         for i in range(len(estadistica[dia])):
             estadistica[dia][i] = float(estadistica[dia][i])
