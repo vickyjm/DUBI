@@ -9,7 +9,7 @@ from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
-
+from estacionamientos.forms import ConsultarIngreso
 from estacionamientos.forms import PagoReserva
 from estacionamientos.forms import EsquemaForm
 from time import strptime
@@ -287,15 +287,26 @@ def estacionamiento_tasa_ocupacion(request, _id):
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
     return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
 
-def estacionamiento_tasa_ocupacion(request):
-    listEst = []
-    estacion = []
-    ingr = []
-    listEst = Ingreso(rif)
-    for est in listEst:
-        estacion.append(est[0])
-        ingr.append(est[1])
-    return render(request, 'Ingreso.html', {'estacionamiento': estacion, 'ingreso':ingr})
+def estacionamiento_ingreso(request):
+    if request.method == 'GET':
+        form = ConsultarIngreso()
+        return render(request,'ConsultarIngreso.html', {'form': form})
+    elif request.method == 'POST':
+        form = ConsultarIngreso(request.POST)
+        if form.is_valid():
+            Rif = form.cleaned_data['rif']
+            listEst = []
+            estacion = []
+            ingr = []
+            listEst = Ingreso(Rif)
+            for est in listEst:
+                estacion.append(est[0])
+                ingr.append(est[1])
+            print(listEst)
+            return render(request, 'Ingreso.html', {'estacionamiento': estacion, 'ingreso':ingr})
+        else:
+            form = ConsultarIngreso()
+    return render(request,'ConsultarIngreso.html', {'form': form})
         
     
     

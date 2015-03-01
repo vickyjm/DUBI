@@ -226,11 +226,11 @@ def Ingreso(rif):
 	estacion = Estacionamiento.objects.filter(Rif = rif)
 	listEst = []
 	for obj in estacion:
-		listaReservas = ReservasModel.objects.filter(Estacionamiento = estacion)
+		listaReservas = ReservasModel.objects.filter(Estacionamiento = obj)
 		ingr = 0
 		for reservas in listaReservas:
-			monto = ReciboPagoModel.objects.filter(Reserva = reserva).values_list('MontoPago')
-			ingr += monto
+			monto = ReciboPagoModel.objects.filter(Reserva = reservas).values_list('MontoPago')
+			ingr += monto[0][0]
 		listEst.append([obj.Nombre,ingr])
 	return listEst
 	
