@@ -58,23 +58,14 @@
              <ul class="nav nav-stacked">
               <li>
               	<a href="./" >
-                  <i class="glyphicon glyphicon-wrench"></i>
-                  Parametrizar
-                </a>
+                  <i class="glyphicon glyphicon-wrench"></i> Parametrizar </a>
               
           		{% if estacionamiento.NroPuesto %}
-                <p style="position:relative; display: block;padding: 10px 15px;">
-                  <i class="fa fa-pencil-square-o" ></i>
-                                  
-                  Reservar
+                	<p style="position:relative; display: block;padding: 10px 15px;">
+                  	<i class="fa fa-pencil-square-o" ></i> Reservar </p>
                 
-                </p>
-                
-                
-                <a href="./ocupacion">
-                  <i class="fa fa-area-chart"></i>
-                  Tasa de ocupación
-                </a>
+                    <a href="./ocupacion">
+                 	<i class="fa fa-area-chart"></i> Tasa de ocupación </a>
                 {% endif %}
               </li>
             </ul>
@@ -174,7 +165,7 @@
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa de Horario Pico:</b></td></tr>
         <tr><td>{{esquema.TarifaPico}} Bsf.</td></tr>
       {% endif %}
-      {% if esquema.TarifaFin %}
+      {% if estacionamiento.Esquema == "DifFin"  %}
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa de Fin de Semana:</b></td></tr>
         <tr><td>{{esquema.TarifaFin}} Bsf.</td></tr>
       {% endif %}
