@@ -58,7 +58,7 @@
             <li>
               <a href="./consultarR">
                 <i class="fa fa-calendar"></i>
-              	 Mis reservas
+                Mis reservas
               </a>
             </li>
           </ul>
@@ -81,7 +81,7 @@
 <div class="col-sm-10">
         
       <!-- column 2 --> 
-       <h3><i class="fa fa-bus"></i> Estacionamientos</h3>  
+       <h3><i class="fa fa-calendar"></i> Mis reservas</h3>  
             
        <hr>
       
@@ -91,34 +91,16 @@
          
             <!--center-right-->
           <!--/col-span-6-->
-     
-       <div class="col-md-8"> 
-      <table class="table table-striped">
-      {% if estacionamientos %}
-
-        <thead>
-          <tr><th></th><th>Dueño</th><th>Nombre</th><th>RIF</th></tr>
-        </thead>
-        <tbody>
-        {% for obj in estacionamientos %}
-          <tr><td>{{forloop.counter}}</td><td>{{obj.Propietario}}</td><td>{{obj.Nombre}}</td><td>{{obj.Rif}}</td><td><a href="./{{obj.id}}"><i class="fa fa-search"></i></a> </td></tr>
-        {% endfor %}
-        </tbody>
-        {% else %}
-       <h3>No hay estacionamientos</h3>
-      {% endif %}
-      </table>
-      <hr>              
-    </div><div class="col-md-4">
+     <div class="col-md-4">
 
     
           <div class="panel panel-default">
             <div class="panel-heading">
               <div class="panel-title">
-                <i class="glyphicon glyphicon-wrench pull-right">
+                <i class="glyphicon glyphicon-search pull-right">
                 </i>
                 <h4>
-                  Crear estacionamiento
+                  Consultar Reservas
                 </h4>
               </div>
             </div>
@@ -126,32 +108,23 @@
 
       
               
-              <form action="." method="post" class="form form-vertical">
+              <form action="./consultarR" method="post" class="form form-vertical">
               {% csrf_token %}
               {% for field in form %}
                 <div class="control-group">
                   <div class="controls">
-                  {% if field.name == "propietario" or field.name == "nombre" or field.name == "direccion" %} 
+		           {%if field.name == "nacionalidad"%}
+		           <h5>{{field.label}} (*)</h5>
+					<select id="id_{{field.name}}" name="nacionalidad" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
+						<option value ="" select disable style="display:none;">Nacionalidad</option>
+						<option value="V-" style = "color:#000;">Venezolano</option>
+						<option value="E-" style = "color:#000;">Extranjero</option>
+					</select>
+                  {% elif field.name == "cedula" %} 
                     <h5>{{field.label}} (*)</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="Máximo 9 dígitos" id="id_{{field.name}}" data-toggle="popover" title="Atento!" data-content="Máximo 9 dígitos"><p>
                   {% endif %}
-                  
-                  {% if field.name == "telefono_1" or field.name == "telefono_2" or field.name == "telefono_3" %} 
-                    <h5>{{field.label}}</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="0000-0000000" for="id_{{field.name}}"><p>
-                  {% endif %}
-                  
-                  {% if field.name == "email_1" or field.name == "email_2"%} 
-                    <h5>{{field.label}}</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="ejemplo@email.com" for="id_{{field.name}}"><p>
-                  {% endif %}
-                  
-                  {% ifequal field.name "rif" %} 
-                    <h5>{{field.label}} (*)</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" for="id_{{field.name}}"><p>
-                  {% endifequal %}
-                  
-                  
+                     
                   {{ field.errors }}
                   </div>
                 </div> 
@@ -162,7 +135,7 @@
                   </label>
                   <div class="controls">
                     <button type="submit" class="btn btn-primary">
-                      Crear estacionamiento
+                      Consultar Reservas
                     </button>
                   </div>
                 </div>

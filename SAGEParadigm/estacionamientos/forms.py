@@ -116,4 +116,18 @@ class PagoReserva(forms.Form):
                                 message = 'Formato erróneo'          
                                           )
     tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), choices = (("Vista","Vista"),("Mister","Mister"),("Xpres","Xpres")))
-    numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",validators = [numTarjeta_validator])                                
+    numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",validators = [numTarjeta_validator])  
+    
+class ConsultarReservasForm(forms.Form):    
+    nacionalidad = forms.ChoiceField(required = True, widget = forms.Select(), choices = (("V-","V-"),("E-","E-")))       
+    cedula = forms.CharField(
+                max_length = 11,
+                required = True,
+                label = "Cédula de Identidad",
+                validators = [
+                    RegexValidator(
+                        regex = '^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$',
+                        message = 'Formato erróneo'
+                    )
+                ]
+        )

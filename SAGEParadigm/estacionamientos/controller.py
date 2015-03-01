@@ -220,3 +220,4 @@ def validarFin(tarifa,tarifaFin):
 	if tarifaFin is None:
 		return (False,'La tarifa para el fin de semana es obligatoria')
 	return (True,'')
+	
