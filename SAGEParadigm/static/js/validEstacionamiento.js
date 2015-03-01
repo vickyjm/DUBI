@@ -37,7 +37,7 @@ $(function(){
 	$('#id_rif').keyup(function(){
 		var _this = $('#id_rif');
 		var _valor = $('#id_rif').val();
-		var regEx = /'^[JVD]-\d{8}-\d$'/;
+		var regEx = /^[JVD]-\d{8}-\d$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){
@@ -93,7 +93,7 @@ $(function(){
 	$('#id_email_1').keyup(function(){
 		var _this = $('#id_email_1');
 		var _valor = $('#id_email_1').val();
-		var regEx = /'^[JVD]-\d{8}-\d$'/;
+		var regEx = /^$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){
@@ -107,7 +107,7 @@ $(function(){
 	$('#id_email_2').keyup(function(){
 		var _this = $('#id_email_2');
 		var _valor = $('#id_email_2').val();
-		var regEx = /'^[JVD]-\d{8}-\d$'/;
+		var regEx = /^[JVD]-\d{8}-\d$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){

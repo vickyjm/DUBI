@@ -264,12 +264,8 @@
                 		
                 		<h5>{{field.label}} (*)</h5>
                 		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
-                		{% if estacionamiento.Esquema %}
-							<option value="{{estacionamiento.Esquema}}" select disable style="display:none;">Seleccione una opción</option>
-						{% else %}
-							<option value="" select disable style="display:none;">Seleccione una opción</option>
-						{% endif %}
-						<option value="Hora" style = "color:#000;">Por hora</option>
+						<option value ="" select disable style="display:none;">Seleccione una opción</option>
+						<option value="Hora" style ="color:#000;">Por hora</option>
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
 						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
