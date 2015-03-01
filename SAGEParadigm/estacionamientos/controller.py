@@ -107,10 +107,10 @@ def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,DiaActual
     for i in range(len(tabla)):	
         if (tabla[i][1] == 1) & (tabla[i-1][0] >= DiaActual):
             diaEstad = (tabla[i-1][0] - DiaActual).days
-            if tabla[i-1][0].hour*60 + tabla[i-1][0].minute + tabla[i-1][0].second < DiaActual.hour*60+DiaActual.minute+DiaActual.second:
+            if tabla[i-1][0].hour*3600 + tabla[i-1][0].minute*60 + tabla[i-1][0].second < DiaActual.hour*3600+DiaActual.minute*60+DiaActual.second:
                 diaEstad += 1
             rango = (tabla[i][0]-tabla[i-1][0]).days+1
-            if (tabla[i][0].hour*60 + tabla[i][0].minute + tabla[i][0].second) < (tabla[i-1][0].hour*60 + tabla[i-1][0].minute + tabla[i-1][0].second):
+            if (tabla[i][0].hour*3600 + tabla[i][0].minute*60 + tabla[i][0].second) < (tabla[i-1][0].hour*3600 + tabla[i-1][0].minute*60 + tabla[i-1][0].second):
                 rango += 1
 
             for dia in range(0,rango):

@@ -240,7 +240,7 @@ def estacionamiento_pagar_reserva(request, _id):
                                cedula = nacionalidadCliente + cedulaCliente,
                                fechaTransaccion = datetime.datetime.now(),
                                TipoTarjeta = tipoTarjeta,
-                               MontoPago = Decimal(monto)
+                               MontoPago = Decimal(monto).quantize(Decimal(10)**-2)
                             )
             pago.save()
             
