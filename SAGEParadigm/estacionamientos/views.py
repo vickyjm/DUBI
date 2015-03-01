@@ -280,78 +280,86 @@ def estacionamiento_tasa_ocupacion(request, _id):
     weekDay = datetime.datetime.now().weekday()
     
     estadistica = calcularTasaReservaHoras(listaReserva, estacion.Reservas_Inicio, estacion.Reservas_Cierre,estacion.NroPuesto,datetime.datetime.now())
+    porcentaje = 0
+    diasReserva = []
     for dia in range(0,8):
         for i in range(len(estadistica[dia])):
             estadistica[dia][i] = float(estadistica[dia][i])
+            porcentaje += estadistica[dia][i]
         tasasDia.append(diasSemana[weekDay])
         if weekDay == 6: weekDay = -1
         weekDay += 1
+        diasReserva.append(porcentaje/len(horasApertura)) 
+        porcentaje = 0
             
-    construirGrafico(horasApertura,estadistica[1],diasSemana[datetime.datetime.now().weekday()],estacion.Reservas_Inicio.hour,estacion.Reservas_Cierre.hour)
     now = datetime.datetime.now()
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
+
+    construirGrafico(tasasDia, diasReserva,fechaActual,estacion.Reservas_Inicio.hour,estacion.Reservas_Cierre.hour)
+
     return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
 
-def construirGrafico(horasApertura,estadistica,dia,inicio_reserva,final_reserva):
-    aux = []
-    for hora in range(len(horasApertura)):
-        aux.append(float(horasApertura[hora]) + 0.5)
-
+def construirGrafico(tasasDia,estadistica,dia,inicio_reserva,final_reserva):
+    print(tasasDia)
+    print(estadistica)
+    print(len(tasasDia),len(estadistica))
+    tasasDia[0] = dia
     data = Data([
         Bar(
-            x = aux,
+            x = tasasDia,
             y = estadistica,
         
-            type = "bar",
+            #type = "bar",
             #uid = "1df313",
-            xbins = XBins(
-                start = -0.5,
-                end = 23.5,
-                size = 1
-            ),
-            ybins = YBins(
-                start = -0.5,
-                end = 2.5,
-                size = 1
-            ),
+            #xbins = XBins(
+            #    start = -0.5,
+            #    end = 23.5,
+            #    size = 1
+            #),
+            #ybins = YBins(
+            #    start = -0.5,
+            #    end = 2.5,
+            #    size = 1
+            #),
             #zmin = 0,
             #zmax = 1,
-            visible = True,
-            showlegend = True,
-            orientation = "v",
-            marker = Marker(
-                line = Line(
-                    width = 1
-                )
-            )
+            #visible = True,
+            #showlegend = True,
+            #orientation = "v",
+            #marker = Marker(
+            #    line = Line(
+            #        width = 1
+            #    )
+            #)
         )
     ])
 
 
     layout = Layout(
         xaxis = XAxis(
-            type = "linear",
-            range = [
-            inicio_reserva,  # cambiar esto
-            final_reserva  # cambiar esto
-            ],
-            autorange = False,
-            showgrid = True,
+        #    type = "linear",
+            #range = [
+            #inicio_reserva,  # cambiar esto
+            #final_reserva  # cambiar esto
+            #],
+        #    autorange = False,
+        #    showgrid = True,
             showline = True,
             rangemode = "nonnegative",
-            title = "Horas de reserva",
+            title = "Días de reserva",
             linewidth = 1,
             mirror = False,
             gridwidth = 1,
             zeroline = True,
             zerolinewidth = 0.1,
-            nticks = 25,
-            ticks = "inside",
-            domain = [
-            0,
-            1
-            ],
-            anchor = "y"
+        #    nticks = 15,
+        #    ticks = "inside",
+            #domain = [
+            #0,
+            #1
+            #],
+            #anchor = "y"
+            gridcolor = "rgb(204, 204, 204)"
         ),
         yaxis = YAxis(
             type = "linear",
@@ -374,7 +382,8 @@ def construirGrafico(horasApertura,estadistica,dia,inicio_reserva,final_reserva)
             autotick = True,
             ticks = "inside",
             ticklen = 5,
-            tickwidth = 1
+            tickwidth = 1,
+            gridcolor = "rgb(204, 204, 204)"
         ),
         height = 477,
         width = 811,
@@ -390,8 +399,8 @@ def construirGrafico(horasApertura,estadistica,dia,inicio_reserva,final_reserva)
         bargap = 0.1,
         bargroupgap = 0,
         paper_bgcolor = "rgb(255, 255, 255)",
-        title = dia       # Cambiarlo por el nombre del día que es
+        #title = dia       # Cambiarlo por el nombre del día que es
     )
 
-    fig = Figure(data=data, layout=layout)
+    fig = Figure(data=data,layout = layout)
     py.plot(fig, filename='tasaOcupacion') 
