@@ -6,6 +6,7 @@ from decimal import Decimal
 import datetime
 from estacionamientos.models import ReciboPagoModel
 from estacionamientos.models import ReservasModel
+from estacionamientos.models import Estacionamiento
 
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
@@ -220,3 +221,16 @@ def validarFin(tarifa,tarifaFin):
 	if tarifaFin is None:
 		return (False,'La tarifa para el fin de semana es obligatoria')
 	return (True,'')
+
+def Ingreso(rif):
+	estacion = Estacionamiento.objects.filter(Rif = rif)
+	listEst = []
+	for obj in estacion:
+		listaReservas = ReservasModel.objects.filter(Estacionamiento = estacion)
+		ingr = 0
+		for reservas in listaReservas:
+			monto = ReciboPagoModel.objects.filter(Reserva = reserva).values_list('MontoPago')
+			ingr += monto
+		listEst.append([obj.Nombre,ingr])
+	return listEst
+	

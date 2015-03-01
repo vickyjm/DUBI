@@ -286,3 +286,16 @@ def estacionamiento_tasa_ocupacion(request, _id):
     now = datetime.datetime.now()
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
     return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+
+def estacionamiento_tasa_ocupacion(request):
+    listEst = []
+    estacion = []
+    ingr = []
+    listEst = Ingreso(rif)
+    for est in listEst:
+        estacion.append(est[0])
+        ingr.append(est[1])
+    return render(request, 'Ingreso.html', {'estacionamiento': estacion, 'ingreso':ingr})
+        
+    
+    
