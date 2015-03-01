@@ -9,7 +9,7 @@ $(function(){
 	$('#id_fechaInicio').keyup(function(){
 		var _this = $('#id_fechaInicio');
 		var _valor = $('#id_fechaInicio').val();
-		var regEx = /^[1-9999]\-((2\-([1-28]|0[1-9]))|([469]\-([1-30]|0[1-9]))|([13578]\-([1-31]|0[1-9])))$/;
+		var regEx = /^[1-9][0-9]{0,3}-(2-([1-2][0-8]|0[1-9]|[1-9]))$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){

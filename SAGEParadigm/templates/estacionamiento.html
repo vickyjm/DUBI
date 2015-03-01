@@ -224,8 +224,24 @@
                   <div class="controls">
 					<h5>{{field.label}} (*)</h5>
 					{% if field.name == "puestos" %}
-                   		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
-                   	{% else %}             
+						{% if estacionamiento.NroPuesto %}
+                   			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{estacionamiento.NroPuesto}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
+                   		{% else %}	
+							<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>                   		
+                   		{% endif %}
+                   	{% elif field.name == "horarioin" %}
+                   		{% if estacionamiento.Apertura %}             
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{estacionamiento.Apertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% else %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% endif %}
+                    {% elif field.name == "horarioout" %}
+                    	{% if estacionamiento.Cierre %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{estacionamiento.Cierre}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% else %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% endif %}
+                    {% else %}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     {% endif %} 
               {{ field.errors }}
@@ -248,7 +264,11 @@
                 		
                 		<h5>{{field.label}} (*)</h5>
                 		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
-						<option value ="" select disable style="display:none;">Seleccione una opción</option>
+                		{% if estacionamiento.Esquema %}
+							<option value="{{estacionamiento.Esquema}}" select disable style="display:none;">Seleccione una opción</option>
+						{% else %}
+							<option value="" select disable style="display:none;">Seleccione una opción</option>
+						{% endif %}
 						<option value="Hora" style = "color:#000;">Por hora</option>
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
@@ -290,14 +310,22 @@
 	
                    	{% ifequal field.name "tarifa" %}
                    	 <h5>{{field.label}} (*)</h5>
-                   	 <input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   	 {% if esquema.Tarifa %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.Tarifa}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   	 {% else %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   	 {% endif %}	
                    	{%endifequal%}
                    	
                    	
                    	{% if field.name == "hora_picoini" %}
                 		<div id = "IniHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
-                		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% if esquema.PicoIni %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{esquema.PicoIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% endif %}
                 		</div>
                 		
                 	{% endif%}
@@ -305,21 +333,33 @@
                 	{% if field.name == "hora_picofin"%}
                 		<div id = "FinHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
-                		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% if esquema.PicoFin %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{esquema.PicoFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% endif %}
                 		</div>
                 	{% endif%}
                 	
                 	{% if field.name == "tarifa_pico"%}
                    		<div id = "TarifaPico" >
                    		<h5>{{field.label}} (*)</h5>
-                		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   		{% if esquema.TarifaPico %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.TarifaPico}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                		{% endif %}	
                 		</div>
              		{% endif %}
              		
              		{% if field.name == "tarifa_fin"%}
                    		<div id = "TarifaFin" >
                    		<h5>{{field.label}} (*)</h5>
-                		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   		{% if esquema.TarifaFin %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.TarifaFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                		{% endif %}	
                 		</div>
              		{% endif %}
         			<script>
