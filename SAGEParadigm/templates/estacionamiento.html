@@ -230,7 +230,7 @@
 							<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>                   		
                    		{% endif %}
                    	{% elif field.name == "horarioin" %}
-                   		{% if estacionamiento.Apertura %}             
+                   		{% if estacionamiento.Cierre %}             
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hApertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% else %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
@@ -265,7 +265,11 @@
                 		<h5>{{field.label}} (*)</h5>
                 		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 						<option value ="" select disable style="display:none;">Seleccione una opción</option>
-						<option value="Hora" style ="color:#000;">Por hora</option>
+						{% if estacionamiento.Esquema == "Hora" %}
+							<option value="Hora" selected style ="color:#000;">Por hora</option>
+						{% else %}
+							<option value="Hora" style ="color:#000;">Por hora</option>
+						{% endif %}
 						<option value="Minuto" style = "color:#000;">Por minuto</option>
 						<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
 						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
@@ -317,7 +321,7 @@
                    	{% if field.name == "hora_picoini" %}
                 		<div id = "IniHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
-                		{% if esquema.PicoIni %}
+                		{% if esquema.PicoFin %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% else %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
