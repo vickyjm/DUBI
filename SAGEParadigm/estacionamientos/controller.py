@@ -77,19 +77,19 @@ def reservar(horaIni,horaFin,tabla,puestos) :
 
 # Devuelve una matriz con el porcentaje de ocupación por horas del día actual
 # y de los próximos 7 días válidos de reserva a partir de él
-def calcularTasaReservaHoras(tabla,ReservaInicio, ReservaFin,NroPuesto,DiaActual):
+def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
     estadistica = []
     horas = []
 
-    if ReservaFin.hour == 23 and ReservaFin.minute > 0:
+    if Cierre.hour == 23 and Cierre.minute > 0:
         longFin = 24
     else:
-        longFin = ReservaFin.hour
-    for i in range(ReservaInicio.hour,longFin):
+        longFin = Cierre.hour
+    for i in range(Apertura.hour,longFin):
         horas.append(i)    
     aux = []
     for dia in range(0,8):
-        for i in range(ReservaInicio.hour,longFin):
+        for i in range(Apertura.hour,longFin):
             aux.append(0)
         estadistica.append(aux)
         aux = []
@@ -182,16 +182,16 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
         return (False, 'La reserva puede ser máximo hasta dentro de 7 días')            
     return (True, '')
 
-def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
+def validarPicos(HorarioApertura,HorarioCierre,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	if horaPicoIni is None or horaPicoFin is None or tarifaPico is None:
 		return (False,'Los campos Picos son obligatorios')
-	if horaPicoIni<horaIni or horaPicoFin>horaFin:
+	if horaPicoIni<HorarioApertura or horaPicoFin>HorarioCierre:
 		return (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento')
 	if Decimal(tarifa)>= Decimal(tarifaPico):
 		return (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle')
 	if horaPicoIni >= horaPicoFin:
 		return (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico')
-	if horaPicoIni == horaIni and horaPicoFin == horaFin:
+	if horaPicoIni == HorarioApertura and horaPicoFin == HorarioCierre:
 		return (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle')
 	return (True, '')
 

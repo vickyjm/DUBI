@@ -191,7 +191,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 ###################################################################
-# ESTACIONAMIENTO_EXTENDED_FORM
+#                 ESTACIONAMIENTO_EXTENDED_FORM
 ###################################################################
 
 	# malicia
@@ -312,7 +312,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(x, (True, ''))
 
 ###################################################################
-# ESTACIONAMIENTO_RESERVA_FORM
+#                  ESTACIONAMIENTO_RESERVA_FORM
 ###################################################################
 
 	# malicia
@@ -426,6 +426,97 @@ class SimpleFormTestCase(TestCase):
 		form_data = {'fechaInicio': datetime.date(2015,10,5),'horaInicio':datetime.time(6, 0),'fechaFinal': datetime.date(2015,10,5), 'horaFinal':datetime.time(12, 0)}
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
+		
+		
+###################################################################
+#		Pruebas para validar horario pico
+###################################################################
+
+	def test_validarPicosHorarioPicoValido(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+		
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (True, ''))
+		
+	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
+
+		horaPicoIni = datetime.time(14,0,0)
+		horaPicoFin = datetime.time(12,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
+			
+	def test_validarPicosTarifaPicoIgualTarifaValle(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(30)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
+		
+		
+	
+	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(5,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
+	
+	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(19,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
+	
+	def test_validarPicosHorarioPicoIgualQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(6,0,0)
+		horaPicoFin = datetime.time(18,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle'))
+	
+	def test_validarPicosInicioHorarioPicoIgualFinHorarioPico(self):
+
+		horaPicoIni = datetime.time(10,0,0)
+		horaPicoFin = datetime.time(10,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 
 
 #################################################################
@@ -625,9 +716,7 @@ class SimpleFormTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
-#################################################################
-#		Pruebas calculo de tarifa por horas 
-################################################################
+
 	
 	def test_PagoReserva_SinNacionalidad(self):
 		form_data = { 	'nombre' : 'Juan',
@@ -672,6 +761,8 @@ class SimpleFormTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
+class PruebasParaEsquemasTarifarios(unittest.TestCase):
+		
 	global min_tarifa, max_tarifa, estacionamiento, esq15, esq20, esq30, esqmin, esqmax
 	global esq15M,esq20M,esq30M,esqminM,esqmaxM,esq15HF,esq20HF,esq30HF,esqminHF,esqmaxHF
 	global esq15D,esq20D,esq30D,esqminD,esqmaxD
@@ -693,6 +784,11 @@ class SimpleFormTestCase(TestCase):
 	esq30HF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(30))
 	esqminHF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(min_tarifa))
 	esqmaxHF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(max_tarifa))
+	
+	
+#################################################################
+#		Pruebas calculo de tarifa por horas 
+################################################################
 	
 	# El minimo tiempo de reserva es de 1 hora
 	# El máximo tiempo de reserva es de 7 dias
@@ -1075,96 +1171,6 @@ class SimpleFormTestCase(TestCase):
 		esq=DifHora(Estacionamiento=estacionamiento,Tarifa=tarifa,PicoIni=iniciopico,PicoFin=finpico,TarifaPico=tarifapico)
 		self.assertEqual(esq.calcularMonto(inires, finres), Decimal(24*30-2*30/60).quantize(Decimal(10)**-2))
 
-
-###################################################################
-#		Pruebas para validar horario pico
-###################################################################
-
-	def test_validarPicosHorarioPicoValido(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-		
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (True, ''))
-		
-	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
-
-		horaPicoIni = datetime.time(14,0,0)
-		horaPicoFin = datetime.time(12,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
-			
-	def test_validarPicosTarifaPicoIgualTarifaValle(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(30)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
-		
-		
-	
-	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(5,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
-	
-	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(19,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
-	
-	def test_validarPicosHorarioPicoIgualQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(6,0,0)
-		horaPicoFin = datetime.time(18,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle'))
-	
-	def test_validarPicosInicioHorarioPicoIgualFinHorarioPico(self):
-
-		horaPicoIni = datetime.time(10,0,0)
-		horaPicoFin = datetime.time(10,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 	
 ##########################################################################################
 #		Pruebas calculo de tarifa diferenciado por fin de semana (hora y fracción)
@@ -1324,6 +1330,8 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas diferencia entre Decimal y Float
 ###################################################################
 
+class PruebasDecimalYFloat(unittest.TestCase):
+
 	def test_diferenciaEntreDecimalYFloat(self):
 		tarifa = Decimal(0.5)
 		inires = datetime.datetime(2015,7,12,10,0,0,0)
@@ -1341,10 +1349,13 @@ class SimpleFormTestCase(TestCase):
 			
 		resFloat=calcularMontoFloat(tarifa,inires,finres)
 		self.assertNotEqual(res,resFloat)
-	
+		
+		
 ###################################################################
-#		Pruebas para Verificacion de tasa de cada hora
+#		Pruebas para Verificacion de Calcular Tasa de Reserva
 ###################################################################
+
+class PruebasCalcularTasaReserva(unittest.TestCase):
 
 	def test_calcularTasaReservaHorasSinReservas(self):
 		tabla = []
