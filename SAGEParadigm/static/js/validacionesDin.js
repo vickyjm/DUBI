@@ -37,7 +37,7 @@ $(function(){
 	$('#id_cedula').keyup(function(){
 		var _this = $('#id_cedula');
 		var _valor = $('#id_cedula').val();
-		var regEx = /^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$/;
+		var regEx = /^([1-9][0-9]{0,3})([0-9]{3}){0,2}$/;
 		var valid = regEx.test(_valor);
 
         
