@@ -23,7 +23,7 @@ $(function(){
 	$('#id_nombre').keyup(function(){
 		var _this = $('#id_nombre');
 		var _valor = $('#id_nombre').val();
-		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
+		var regEx = /^[-_a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][-_a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){

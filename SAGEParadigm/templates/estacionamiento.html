@@ -222,7 +222,7 @@
               {% for field in form %}
               	<div class="control-group">
                   <div class="controls">
-					<h5>{{field.label}} (*) {{horas}}</h5>
+					<h5>{{field.label}} (*)</h5>
 					{% if field.name == "puestos" %}
 						{% if estacionamiento.NroPuesto %}
                    			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{estacionamiento.NroPuesto}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
@@ -231,13 +231,13 @@
                    		{% endif %}
                    	{% elif field.name == "horarioin" %}
                    		{% if estacionamiento.Apertura %}             
-                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{estacionamiento.Apertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hApertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% else %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% endif %}
                     {% elif field.name == "horarioout" %}
                     	{% if estacionamiento.Cierre %}
-                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{estacionamiento.Cierre}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hCierre}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% else %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% endif %}
@@ -318,7 +318,7 @@
                 		<div id = "IniHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
                 		{% if esquema.PicoIni %}
-                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{esquema.PicoIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% else %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% endif %}
@@ -330,7 +330,7 @@
                 		<div id = "FinHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
                 		{% if esquema.PicoFin %}
-                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{esquema.PicoFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% else %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% endif %}
