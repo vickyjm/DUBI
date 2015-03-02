@@ -222,7 +222,7 @@
               {% for field in form %}
               	<div class="control-group">
                   <div class="controls">
-					<h5>{{field.label}} (*)</h5>
+					<h5>{{field.label}} (*) {{horas}}</h5>
 					{% if field.name == "puestos" %}
 						{% if estacionamiento.NroPuesto %}
                    			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{estacionamiento.NroPuesto}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
@@ -273,7 +273,7 @@
 						</select> 
 						
 						<script>
-				
+	
 						$("#id_esquema").change(function(){ 
 							 if ($("#id_esquema").val() == "DifHora"){
 	    						$("#IniHorarioPico").show();

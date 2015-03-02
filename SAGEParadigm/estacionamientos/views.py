@@ -121,10 +121,12 @@ def estacionamiento_detail(request, _id):
                 #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
                 #estacion.TarifaPico = form.cleaned_data['tarifa_pico']
                 estacion.save()
+                tmp = estacion.Apertura
     else:
         form = EstacionamientoExtendedForm()
         esquemaform = EsquemaForm()
-    return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq})
+        tmp = str(estacion.Apertura.hour) + ':' + str(estacion.Apertura.minute)
+    return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq,'horas':tmp})
 
 
 def estacionamiento_reserva(request, _id):
