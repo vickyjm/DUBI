@@ -183,7 +183,7 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
     return (True, '')
 
 def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
-	if not(horaPicoIni and horaPicoFin and tarifaPico):
+	if horaPicoIni is None or horaPicoFin is None or tarifaPico is None:
 		return (False,'Los campos Picos son obligatorios')
 	if horaPicoIni<horaIni or horaPicoFin>horaFin:
 		return (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento')
