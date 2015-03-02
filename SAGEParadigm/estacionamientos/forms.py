@@ -118,7 +118,7 @@ class PagoReserva(forms.Form):
     tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), choices = (("Vista","Vista"),("Mister","Mister"),("Xpres","Xpres")))
     numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",validators = [numTarjeta_validator])
     
-class ConsultarIngreso(forms.Form):
+class ConsultarIngresoForm(forms.Form):
       rif = forms.CharField(
                     max_length = 13,
                     required = True,

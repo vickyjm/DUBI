@@ -222,7 +222,7 @@ def validarFin(tarifa,tarifaFin):
 		return (False,'La tarifa para el fin de semana es obligatoria')
 	return (True,'')
 
-def Ingreso(rif):
+def obtenerIngresos(rif):
 	estacion = Estacionamiento.objects.filter(Rif = rif)
 	listEst = []
 	for obj in estacion:

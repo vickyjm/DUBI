@@ -9,7 +9,7 @@ from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
-from estacionamientos.forms import ConsultarIngreso
+from estacionamientos.forms import ConsultarIngresoForm
 from estacionamientos.forms import PagoReserva
 from estacionamientos.forms import EsquemaForm
 from time import strptime
@@ -289,24 +289,22 @@ def estacionamiento_tasa_ocupacion(request, _id):
 
 def estacionamiento_ingreso(request):
     if request.method == 'GET':
-        form = ConsultarIngreso()
-        return render(request,'ConsultarIngreso.html', {'form': form})
+        form = ConsultarIngresoForm()
+        return render(request,'consultarIngresos.html', {'form': form})
     elif request.method == 'POST':
-        form = ConsultarIngreso(request.POST)
+        form = ConsultarIngresoForm(request.POST)
         if form.is_valid():
             Rif = form.cleaned_data['rif']
             listEst = []
-            estacion = []
-            ingr = []
-            listEst = Ingreso(Rif)
-            for est in listEst:
-                estacion.append(est[0])
-                ingr.append(est[1])
-            print(listEst)
-            return render(request, 'Ingreso.html', {'estacionamiento': estacion, 'ingreso':ingr})
+            listEst = obtenerIngresos(Rif)
+            total = 0
+            for obj in listEst :
+                total = total+obj[1]
+                
+            return render(request, 'mostrarIngresos.html', {'form': form,'ingresos': listEst,'total': total})
         else:
-            form = ConsultarIngreso()
-    return render(request,'ConsultarIngreso.html', {'form': form})
+            form = ConsultarIngresoForm()
+    return render(request,'consultarIngresos.html', {'form': form})
         
     
     
