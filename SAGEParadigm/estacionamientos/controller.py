@@ -71,8 +71,6 @@ def reservar(horaIni,horaFin,tabla,puestos) :
             if (((listaIntervalo[i][0] <= horaIni < listaIntervalo[i][1]) or (listaIntervalo[i][0] <  horaFin <= listaIntervalo[i][1])) or ((horaIni < listaIntervalo[i][0]) and (horaFin > listaIntervalo[i][1]))):
                 return False
             i = i + 1
-    tabla.append([horaIni,-1]) # Se agregan las horas aceptadas a la lista de las reservas
-    tabla.append([horaFin,1])
     return True
 
 # Devuelve una matriz con el porcentaje de ocupación por horas del día actual

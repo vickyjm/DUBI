@@ -220,7 +220,8 @@ def estacionamiento_pagar_reserva(request, _id):
             tipoTarjeta = form.cleaned_data['tipoTarjeta']
             numTarjeta = form.cleaned_data['numTarjeta']
             
-            reservar(inicio_reserva, final_reserva, listaReserva,estacion.NroPuesto)
+            listaReserva.append([inicio_reserva,-1]) # Se agregan las horas aceptadas a la lista de las reservas
+            listaReserva.append([final_reserva,1])
             reservaFinal = ReservasModel(
                                 Estacionamiento = estacion,
                                 InicioReserva = inicio_reserva,
