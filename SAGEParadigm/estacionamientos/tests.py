@@ -1964,3 +1964,25 @@ class SimpleFormTestCase(TestCase):
 				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('49.2')])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
+
+	# Frontera
+	def test_consultarReservasCamposBien(self):
+		form_data = { 	'nacionalidad' : 'V-',
+						'cedula': '12345678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), True)
+	# Frontera	
+	def test_consultarReservasErrorCedula(self):
+		form_data = { 	'nacionalidad' : 'V-',
+						'cedula': '123A5678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+	# Malicia	
+	def test_consultarReservasSinNacionalidad(self):
+		form_data = { 	'cedula': '12345678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+		
