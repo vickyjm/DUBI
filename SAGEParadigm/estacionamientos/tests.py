@@ -1964,3 +1964,29 @@ class SimpleFormTestCase(TestCase):
 				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('49.2')])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
+
+###################################################################
+#		Pruebas para Verificar forma ConsultarIngresoForm
+###################################################################
+
+	def test_ConsultarIngresoFormValido(self):
+		form_data = {
+					'rif' : 'J-12345678-0'
+					}
+		form = ConsultarIngresoForm(data = form_data)
+		self.assertEqual(form.is_valid(), True)
+		
+	def test_ConsultarIngresoFormNoValidoPorfaltadecaracteres(self):
+		form_data = {
+					'rif' : 'J-1234'
+					}
+		form = ConsultarIngresoForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+		
+	def test_ConsultarIngresoFormNoValidoPorcaracteresincorrecto(self):
+		form_data = {
+					'rif' : 'K-12345678-0'
+					}
+		form = ConsultarIngresoForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+		
