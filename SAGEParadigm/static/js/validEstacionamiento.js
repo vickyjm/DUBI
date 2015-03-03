@@ -11,8 +11,9 @@ $(function(){
 		var _valor = $('#id_propietario').val();
 		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
 		var valid = regEx.test(_valor);
+		var tam = _valor.length;
 		
-		if (valid){
+		if (valid && tam <= 50){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
@@ -40,7 +41,7 @@ $(function(){
 		var regEx = /^((0212)|(0412)|(0416)|(0414)|(0424)|(0426))-\d{7}$/;
 		var valid = regEx.test(_valor);
 		
-		if (valid){
+		if (valid || _valor==""){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
@@ -54,7 +55,7 @@ $(function(){
 		var regEx = /^((0212)|(0412)|(0416)|(0414)|(0424)|(0426))-\d{7}$/;
 		var valid = regEx.test(_valor);
 		
-		if (valid){
+		if (valid || _valor==""){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
@@ -68,7 +69,7 @@ $(function(){
 		var regEx = /^((0212)|(0412)|(0416)|(0414)|(0424)|(0426))-\d{7}$/;
 		var valid = regEx.test(_valor);
 		
-		if (valid){
+		if (valid || _valor==""){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
@@ -82,7 +83,7 @@ $(function(){
 		var regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
 		var valid = regEx.test(_valor);
 		
-		if (valid){
+		if (valid || _valor==""){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
@@ -96,7 +97,7 @@ $(function(){
 		var regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
 		var valid = regEx.test(_valor);
 		
-		if (valid){
+		if (valid || _valor==""){
 			_this.popover('hide');
 		} else {
 			_this.popover('show');
