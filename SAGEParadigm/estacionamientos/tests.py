@@ -1965,7 +1965,7 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
 
-	# Frontera
+	# Front
 	def test_consultarReservasCamposBien(self):
 		form_data = { 	'nacionalidad' : 'V-',
 						'cedula': '12345678',
