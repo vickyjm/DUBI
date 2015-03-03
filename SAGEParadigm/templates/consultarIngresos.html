@@ -15,7 +15,7 @@
     
     <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/validConsultarReservas.js"></script>
+    <script src="/static/js/validIngresos.js"></script>
     
    </head>
     
@@ -109,7 +109,7 @@
                   <div class="controls">
                   {% if field.name == "rif" %} 
                     <h5>{{field.label}} (*)</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" for="id_{{field.name}}"><p>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es X-12345678-0"><p>
                   {% endif %}
                      
                   {{ field.errors }}
