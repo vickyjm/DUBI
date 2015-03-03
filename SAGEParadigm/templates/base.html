@@ -131,7 +131,7 @@
                   
                   {% if field.name == "email_1" or field.name == "email_2"%} 
                     <h5>{{field.label}}</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="ejemplo@email.com" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es ejemplo@email.com"><p>
+                    <input type="text" class="form-control" name="{{field.name}}" placeholder="ejemplo@email.com" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato es ejemplo@email.com"><p>
                   {% endif %}
                   
                   {% ifequal field.name "rif" %} 

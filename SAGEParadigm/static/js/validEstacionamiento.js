@@ -20,20 +20,6 @@ $(function(){
 		
 	});
 	
-	$('#id_nombre').keyup(function(){
-		var _this = $('#id_nombre');
-		var _valor = $('#id_nombre').val();
-		var regEx = /^[-_a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][-_a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
-		var valid = regEx.test(_valor);
-		
-		if (valid){
-			_this.popover('hide');
-		} else {
-			_this.popover('show');
-		}
-		
-	});
-	
 	$('#id_rif').keyup(function(){
 		var _this = $('#id_rif');
 		var _valor = $('#id_rif').val();

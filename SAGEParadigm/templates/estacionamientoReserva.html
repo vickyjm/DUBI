@@ -217,7 +217,7 @@
                   <div class="controls">
                   	<h5>{{field.label}} (*)</h5>
                   	{% if field.label == "Fecha Inicio Reserva" or field.label == "Fecha Final Reserva" %}
-                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es aaaa:mm:dd"><p>            
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es aaaa-mm-dd"><p>            
                     {% elif field.label == "Horario Inicio Reserva" or field.label == "Horario Final Reserva"%}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es hh:mm"><p>
                     {% endif %}
