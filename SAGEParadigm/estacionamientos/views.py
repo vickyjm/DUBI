@@ -302,7 +302,7 @@ def estacionamiento_ingreso(request):
                 total = total+obj[1]
                 
             return render(request, 'mostrarIngresos.html', {'form': form,'ingresos': listEst,'total': total})
-        else:
+    else:
             form = ConsultarIngresoForm()
     return render(request,'consultarIngresos.html', {'form': form})
         
