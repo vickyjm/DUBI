@@ -286,7 +286,8 @@ def estacionamiento_tasa_ocupacion(request, _id):
         for i in range(len(estadistica[dia])):
             estadistica[dia][i] = float(estadistica[dia][i])
             porcentaje += estadistica[dia][i]
-        tasasDia.append(diasSemana[weekDay])
+        temp=(datetime.datetime.now()+datetime.timedelta(days=dia)).date()
+        tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
         if weekDay == 6: weekDay = -1
         weekDay += 1
         diasReserva.append(porcentaje/len(horasApertura)) 
@@ -403,4 +404,4 @@ def construirGrafico(tasasDia,estadistica,dia,inicio_reserva,final_reserva):
     )
 
     fig = Figure(data=data,layout = layout)
-    py.plot(fig, filename='tasaOcupacion') 
+    py.plot(fig, filename='tasaOcupacion',auto_open=False) 
