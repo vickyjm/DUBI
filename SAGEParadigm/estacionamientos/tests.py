@@ -100,7 +100,7 @@ class EstacionamientoFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# caso borde
-	def test_RIFtamanoinvalido(self):
+	def test_RifTamanoInvalido(self):
 		form_data = {
 			'propietario': 'Pedro132',
 			'nombre': 'Orinoco',
@@ -111,7 +111,7 @@ class EstacionamientoFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_RIFformatoinvalido(self):
+	def test_RifFormatoInvalido(self):
 		form_data = {
 			'propietario': 'Pedro132',
 			'nombre': 'Orinoco',
@@ -122,7 +122,7 @@ class EstacionamientoFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_AgregarTLFs(self):
+	def test_AgregarTelfs(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
@@ -136,7 +136,7 @@ class EstacionamientoFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), True)
 
 	# malicia
-	def test_FormatoInvalidoTLF(self):
+	def test_FormatoInvalidoTelf(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
@@ -148,7 +148,7 @@ class EstacionamientoFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# caso borde
-	def test_TamanoInvalidoTLF(self):
+	def test_TamanoInvalidoTelf(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
