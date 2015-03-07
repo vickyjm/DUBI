@@ -28,10 +28,10 @@ class SimpleTest(unittest.TestCase):
 
 
 ###################################################################
-#                    ESTACIONAMIENTO_ALL FORM
+#                    Pruebas para EstacionamientoForm
 ###################################################################
 
-class SimpleFormTestCase(TestCase):
+class EstacionamientoFormTestCase(TestCase):
 
 	# malicia
 	def test_CamposVacios(self):
@@ -191,9 +191,10 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 ###################################################################
-#                 ESTACIONAMIENTO_EXTENDED_FORM
+#                 Pruebas para Estacionamiento_ExtendedForm
 ###################################################################
 
+class EstacionamientoExtendedFormTestCase(TestCase):
 	# malicia
 	def test_EstacionamientoExtendedForm_UnCampo(self):
 		form_data = { 'puestos': 2}
@@ -266,6 +267,7 @@ class SimpleFormTestCase(TestCase):
 
 	# malicia
 	def test_EstacionamientoExtendedForm_listaEnHoraApertura(self):
+
 		form_data = { 'puestos': 2,
 								'horarioin': [datetime.time(6, 0)],
 								'horarioout': datetime.time(19, 0)}
@@ -273,9 +275,10 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 ######################################################################
-# ESTACIONAMIENTO_EXTENDED pruebas controlador
-###################################################################
+# Pruebas para el controlador de EstacionamientoExtendedForm
+#####################################################################
 
+class EstacionamientoExtendedFormControllerTestCase(TestCase):
 	# normal
 	def test_HorariosValidos(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
@@ -312,9 +315,10 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(x, (True, ''))
 
 ###################################################################
-#                  ESTACIONAMIENTO_RESERVA_FORM
+#                  Pruebas para EstacionamientoReserva
 ###################################################################
 
+class EstacionamientoReservaTestCase(TestCase):
 	# malicia
 	def test_EstacionamientoReserva_Vacio(self):
 		form_data = {}
@@ -361,14 +365,11 @@ class SimpleFormTestCase(TestCase):
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
-###################################################################
-# PRUEBAS DE FUNCIONES DEL CONTROLADOR
-###################################################################
-
 ##############################################################
 # Estacionamiento Reserva Controlador
 ###################################################################
 
+class EstacionamientoReservaControllerTestCase(TestCase):
 # HorarioReserva, pruebas Unitarias
 
 	# normal
@@ -431,6 +432,8 @@ class SimpleFormTestCase(TestCase):
 ###################################################################
 #		Pruebas para validar horario pico
 ###################################################################
+
+class ValidarHorarioPicoTestCase(TestCase):
 
 	def test_validarPicosHorarioPicoValido(self):
 
@@ -522,6 +525,8 @@ class SimpleFormTestCase(TestCase):
 #################################################################
 #		Pruebas de Marzullo
 ################################################################
+
+class MarzulloTestCase(TestCase):
 	# caso borde
 	def test_Reservar_horarios_todoeldia(self):
 		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
@@ -652,7 +657,11 @@ class SimpleFormTestCase(TestCase):
 		x = reservar(Hora3In, Hora3Out, lista, 2)
 		self.assertEqual(x, True)
 
-		
+#################################################################
+# Pruebas para PagoReserva
+#################################################################
+
+class PagoReservaTestCase(TestCase):		
 	def test_PagoReserva_CamposBien(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -715,8 +724,6 @@ class SimpleFormTestCase(TestCase):
 							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
-
-
 	
 	def test_PagoReserva_SinNacionalidad(self):
 		form_data = { 	'nombre' : 'Juan',
