@@ -7,25 +7,15 @@ import datetime
 from estacionamientos.models import ReciboPagoModel
 from estacionamientos.models import ReservasModel
 
-# Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
-# pueda funcionar [(7:00,7:00), (19:00,19:00)]
-
-
-
-
-# Suponiendo que cada estacionamiento tiene una estructura "matricial" lista de listas
-# donde si m es una matriz, m[i,j] las i corresponden a los puestos y las j corresponden a tuplas
-# con el horario inicio y fin de las reservas
-# [[(horaIn,horaOut),(horaIn,horaOut)],[],....]
-
-# chequeo de horarios de extended
-
+# Función para verificar el horario de funcionamiento de un estacionamiento
 
 def HorarioEstacionamiento(HoraInicio, HoraFin):
 
 	if HoraInicio >= HoraFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	return (True, '')
+
+# Algoritmo que determina los intervalos de tiempo con mayor ocupación de puestos en un estacionamiento
 
 def marzullo(tabla,puestos):
     best = 0
@@ -51,19 +41,18 @@ def marzullo(tabla,puestos):
     listaOut.append([best,0])
     return listaOut
 
+# Función que permite verificar la disponibilidad de un puesto en un estacionamiento para
+# una reserva determinada usando el algoritmo de Marzullo
+
 def reservar(horaIni,horaFin,tabla,puestos) :
-
-    # Verificacion de entrada
-    if ((horaIni.date == horaFin.date) and (horaFin.hour-horaIni.hour <= 0)):
-        return False
-
+	
     reservaOrdenada = tabla
 
     reservaOrdenada.sort()
     reservaOrdenada.sort(key=lambda k: (k[0],-k[1]))
     
     listaIntervalo = marzullo(reservaOrdenada,puestos) # Devuelve la lista de todos los intervalos maximos
-    best = listaIntervalo[len(listaIntervalo)-1][0] # Aqui esta el best 
+    best = listaIntervalo[len(listaIntervalo)-1][0] 
         
     if (best == puestos):
         i = 0
@@ -75,6 +64,7 @@ def reservar(horaIni,horaFin,tabla,puestos) :
 
 # Devuelve una matriz con el porcentaje de ocupación por horas del día actual
 # y de los próximos 7 días válidos de reserva a partir de él
+
 def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
     estadistica = []
     horas = []
@@ -97,7 +87,7 @@ def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
             diaEstad = (tabla[i-1][0] - DiaActual).days
             if tabla[i-1][0].hour*3600 + tabla[i-1][0].minute*60 + tabla[i-1][0].second < DiaActual.hour*3600+DiaActual.minute*60+DiaActual.second:
                 diaEstad += 1
-            rango = (tabla[i][0]-tabla[i-1][0]).days+1
+            rango = (tabla[i][0]-tabla[i-1][0]).days+1 # Cantidad de días que abarca la reserva
             if (tabla[i][0].hour*3600 + tabla[i][0].minute*60 + tabla[i][0].second) < (tabla[i-1][0].hour*3600 + tabla[i-1][0].minute*60 + tabla[i-1][0].second):
                 rango += 1
 
@@ -113,7 +103,7 @@ def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
                     if dia == 0:		
                         HoraIni = tabla[i-1][0].hour
                         MinIni = tabla[i-1][0].minute
-                        if rango > 1:					# es una reserva de más de un dia					     
+                        if rango > 1:					     
                             HoraFin = 24
                             MinFin = 0
                         else:
@@ -124,8 +114,7 @@ def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
                         HoraIni = 0
                         MinIni = 0
                         HoraFin = tabla[i][0].hour
-                        MinFin = tabla[i][0].minute
-                    
+                        MinFin = tabla[i][0].minute                    
                     # Se llenan las horas de reserva para el día "DiaEstad"    
                     for j in range(len(horas)):
                         if (HoraIni == horas[j]):
@@ -148,6 +137,9 @@ def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
                 diaEstad += 1
     return estadistica
 
+# Función para validar que la reserva de puesto que se desea hacer es válida (está dentro del horario de
+# funcionamiento del estacionamiento, la reserva es de al menos un día, está dentro de los próximos
+# 7 días, entre otros requerimientos)
 
 def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCierre,fechaActual):
     hIni = datetime.time(ReservaInicio.hour,ReservaInicio.minute)
@@ -180,6 +172,8 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
         return (False, 'La reserva puede ser máximo hasta dentro de 7 días')            
     return (True, '')
 
+# Función para verificar que los parámetros del esquema Diferenciado Por Hora son correctos
+
 def validarPicos(HorarioApertura,HorarioCierre,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	if horaPicoIni is None or horaPicoFin is None or tarifaPico is None:
 		return (False,'Los campos Picos son obligatorios')
@@ -193,8 +187,9 @@ def validarPicos(HorarioApertura,HorarioCierre,horaPicoIni,horaPicoFin,tarifa,ta
 		return (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle')
 	return (True, '')
 
+# Función que permite obtener el número de un recibo de pago determinado
+
 def obtenerNumRecibo(estacionamiento):
-    #listaRecibo = ReciboPagoModel.objects.values_list('Reserva','numeroRecibo')
     listaRecibo = ReciboPagoModel.objects.all()
     maxId = 0	
     for recibo in listaRecibo :
@@ -203,6 +198,9 @@ def obtenerNumRecibo(estacionamiento):
                 maxId = recibo.numeroRecibo
     maxId= maxId+1
     return maxId		
+
+# Función para verificar que la tarifa para el fin de semana existe, cuando el esquema tarifario es el
+# Diferenciado por fin de semana
 
 def validarFin(tarifa,tarifaFin):
 	if tarifaFin is None:

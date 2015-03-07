@@ -17,7 +17,7 @@ from estacionamientos.models import *
 from django.db.models.lookups import Day
 from _datetime import date
 
-listaReserva = []
+listaReserva = [] # Cada reserva está representada por un par de listas de la forma [inicio,-1],[fin,1]
 
 # Usamos esta vista para procesar todos los estacionamientos
 def estacionamientos_all(request):
@@ -59,13 +59,14 @@ def estacionamientos_all(request):
 
     return render(request, 'base.html',{'form': form, 'estacionamientos': estacionamientos})
 
+# Vista para realizar la parametrización de un estacionamiento
 def estacionamiento_detail(request, _id):
     _id = int(_id)
     # Verificamos que el objeto exista antes de continuar
     try:
         estacion = Estacionamiento.objects.get(id = _id)
         esq = Esquema(Estacionamiento = estacion, Tarifa = Decimal(0))
-        if estacion.Esquema:
+        if estacion.Esquema: # Si el estacionamiento ya tiene un esquema, se usa 
             esq=eval(estacion.Esquema+".objects.get(Estacionamiento=estacion)")            
     except ObjectDoesNotExist:
         return render(request, '404.html')
@@ -81,12 +82,11 @@ def estacionamiento_detail(request, _id):
             if form.is_valid():
                 hora_in = form.cleaned_data['horarioin']
                 hora_out = form.cleaned_data['horarioout']
-                #reserva_in = form.cleaned_data['horario_reserin']
-                #reserva_out = form.cleaned_data['horario_reserout']
 
                 m_validado = HorarioEstacionamiento(hora_in, hora_out)
                 if not m_validado[0]:
-                    return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
+                    return render(request, 'templateMensaje.html', \
+                                  {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
                 
             if esquemaform.is_valid():    
                 tipoEsquema=esquemaform.cleaned_data['esquema']
@@ -99,34 +99,33 @@ def estacionamiento_detail(request, _id):
                     tarifaPico = esquemaform.cleaned_data['tarifa_pico']
                     m_validado=validarPicos(hora_in,hora_out,picoIni,picoFin,tarifa,tarifaPico)
                     if not m_validado[0]:
-                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
-                    esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
+                        return render(request, 'templateMensaje.html', \
+                                {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
+                    esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,\
+                                            PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
                 elif tipoEsquema=="DifFin":
                     tarifaFin = esquemaform.cleaned_data['tarifa_fin']
                     m_validado=validarFin(tarifa,tarifaFin)
                     if not m_validado[0]:
-                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
-                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, TarifaFin = tarifaFin)")
+                        return render(request, 'templateMensaje.html', \
+                                      {'color':'red', 'mensaje': m_validado[1]})
+                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, \
+                                                                    TarifaFin = tarifaFin)")
                 else:
                     esq=eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
                 esq.save()
-                #estacion.Tarifa = form.cleaned_data['tarifa']
                 estacion.Esquema = esquemaform.cleaned_data['esquema']
                 estacion.Apertura = hora_in
                 estacion.Cierre = hora_out
-                #estacion.Reservas_Inicio = reserva_in
-                #estacion.Reservas_Cierre = reserva_out
                 estacion.NroPuesto = form.cleaned_data['puestos']
-                #estacion.Pico_Ini = form.cleaned_data['hora_picoini']
-                #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
-                #estacion.TarifaPico = form.cleaned_data['tarifa_pico']
                 estacion.save()
     else:
         form = EstacionamientoExtendedForm()
         esquemaform = EsquemaForm()
-    return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq})
+    return render(request, 'estacionamiento.html', \
+                  {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq})
 
-
+# Vista para procesar una reserva en un estacionamiento
 def estacionamiento_reserva(request, _id):
     _id = int(_id)
     # Verificamos que el objeto exista antes de continuar
@@ -141,7 +140,8 @@ def estacionamiento_reserva(request, _id):
     # Si se hace un GET renderizamos los estacionamientos con su formulario
     if request.method == 'GET':
         form = EstacionamientoReserva()
-        return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion, 'esquema': esq})
+        return render(request, 'estacionamientoReserva.html', \
+                      {'form': form, 'estacionamiento': estacion, 'esquema': esq})
 
     # Si es un POST estan mandando un request
     elif request.method == 'POST':
@@ -157,11 +157,13 @@ def estacionamiento_reserva(request, _id):
                 final_reserva = datetime.datetime.combine(fechaFin,horaFin)
 
                 # Validamos los horarios con los horario de salida y entrada
-                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, estacion.Apertura, estacion.Cierre,datetime.datetime.now())
+                m_validado = validarHorarioReserva(inicio_reserva, final_reserva, \
+                                            estacion.Apertura, estacion.Cierre,datetime.datetime.now())
 
                 # Si no es valido devolvemos el request
                 if not m_validado[0]:
-                    return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
+                    return render(request, 'templateMensaje.html', \
+                                {'color':'red', 'mensaje': m_validado[1], 'estacionamiento':estacion})
                 # Antes de entrar en la reserva, si la lista esta vacia, agregamos los valores predefinidos
                 if len(listaReserva) < 1:          
                     puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
@@ -181,15 +183,20 @@ def estacionamiento_reserva(request, _id):
                     request.session['monto'] = tarifaFinal
                     mensajeTarifa='La solicitud es factible. El costo es de ' + str(tarifaFinal)+" BsF"
                 
-                    return render(request, 'reservaFactible.html', {'color':'green', 'mensaje': mensajeTarifa, 'estacionamiento':estacion})                
+                    return render(request, 'reservaFactible.html', \
+                                  {'color':'green', 'mensaje': mensajeTarifa, 'estacionamiento':estacion})                
                 else:
-                    return render(request, 'templateMensaje.html', {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario', 'estacionamiento':estacion})
+                    return render(request, 'templateMensaje.html', \
+                        {'color':'red', 'mensaje':'No hay un puesto disponible para ese horario', \
+                            'estacionamiento':estacion})
                 
     else:
         form = EstacionamientoReserva()
 
-    return render(request, 'estacionamientoReserva.html', {'form': form, 'estacionamiento': estacion, 'esquema': esq})
+    return render(request, 'estacionamientoReserva.html', \
+                  {'form': form, 'estacionamiento': estacion, 'esquema': esq})
 
+# Vista para realizar el pago de una reserva y generar el recibo asociado
 def estacionamiento_pagar_reserva(request, _id):
     _id = int(_id)
     # Verificamos que el objeto exista antes de continuar
@@ -207,7 +214,9 @@ def estacionamiento_pagar_reserva(request, _id):
     final_reserva=datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
     if request.method == 'GET':
         form = PagoReserva()
-        return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
+        return render(request, 'pagoReserva.html', \
+                        {'form': form, 'estacionamiento': estacion,\
+                         'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
     elif request.method == 'POST':
         form = PagoReserva(request.POST)
         
@@ -220,7 +229,8 @@ def estacionamiento_pagar_reserva(request, _id):
             tipoTarjeta = form.cleaned_data['tipoTarjeta']
             numTarjeta = form.cleaned_data['numTarjeta']
             
-            listaReserva.append([inicio_reserva,-1]) # Se agregan las horas aceptadas a la lista de las reservas
+            listaReserva.append([inicio_reserva,-1])    # Se agregan las horas aceptadas a la lista 
+                                                        # de las reservas
             listaReserva.append([final_reserva,1])
             reservaFinal = ReservasModel(
                                 Estacionamiento = estacion,
@@ -242,11 +252,16 @@ def estacionamiento_pagar_reserva(request, _id):
             pago.save()
             
             mensajeExito = 'Su reserva ha sido exitosa. Este es su recibo de pago :'
-            return render(request, 'mostrarRecibo.html', {'recibo': pago,'color': 'green','mensaje' : mensajeExito, 'estacionamiento':estacion})
+            return render(request, 'mostrarRecibo.html', \
+                    {'recibo': pago,'color': 'green','mensaje' : mensajeExito, \
+                                                    'estacionamiento':estacion})
     else : 
         form = PagoReserva()
-    return render(request, 'pagoReserva.html', {'form': form, 'estacionamiento': estacion,'inicio': inicio_reserva,'final': final_reserva,'monto': monto})
+    return render(request, 'pagoReserva.html', \
+                {'form': form, 'estacionamiento': estacion,'inicio': \
+                    inicio_reserva,'final': final_reserva,'monto': monto})
     
+# Vista para mostrar la tasa de ocupación de un estacionamiento según cierta granularidad
 def estacionamiento_tasa_ocupacion(request, _id):
     _id = int(_id)
     # Verificamos que el objeto exista antes de continuar
@@ -286,4 +301,6 @@ def estacionamiento_tasa_ocupacion(request, _id):
             
     now = datetime.datetime.now()
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
-    return render(request, 'tasaOcupacion.html', {'estacionamiento': estacion, 'horas': horasApertura, 'dias': tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+    return render(request, 'tasaOcupacion.html', \
+                  {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
+                   tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
