@@ -206,7 +206,6 @@ def validarPicos(horaIni,horaFin,horaPicoIni,horaPicoFin,tarifa,tarifaPico):
 	return (True, '')
 
 def obtenerNumRecibo(estacionamiento):
-    #listaRecibo = ReciboPagoModel.objects.values_list('Reserva','numeroRecibo')
     listaRecibo = ReciboPagoModel.objects.all()
     maxId = 0	
     for recibo in listaRecibo :

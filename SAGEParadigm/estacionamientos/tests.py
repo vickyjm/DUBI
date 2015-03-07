@@ -1947,6 +1947,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(res,estad)
 		
 	def test_calcularTasaReservaVariasReservaAbarca7dias(self):
+
 		tabla = []
 		res = []
 		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
@@ -1965,7 +1966,9 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
 
+
 	# Front
+class ConsultarReservasFormTestCase(TestCase):
 	def test_consultarReservasCamposBien(self):
 		form_data = { 	'nacionalidad' : 'V-',
 						'cedula': '12345678',
