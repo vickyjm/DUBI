@@ -300,7 +300,7 @@ def consultar_reservas(request):
             cedulaCompleta = nac + ci
             recibos = sorted(ReciboPagoModel.objects.filter(cedula = cedulaCompleta),key=attrgetter('Reserva.InicioReserva'))
             return render(request,'mostrarReservas.html',{'recibos': recibos})
-        else : 
+    else : 
             form = ConsultarReservasForm()
     
     return render(request, 'consultarReservas.html', {'form': form})
