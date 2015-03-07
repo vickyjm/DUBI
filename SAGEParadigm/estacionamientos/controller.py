@@ -7,6 +7,11 @@ import datetime
 from estacionamientos.models import ReciboPagoModel
 from estacionamientos.models import ReservasModel
 
+
+import plotly.plotly as py
+from plotly.graph_objs import *
+py.sign_in('monica.figuera', 'z6pyvhq79s')
+
 # Las Tuplas de cada puesto deben tener los horarios de inicio y de cierre para que
 # pueda funcionar [(7:00,7:00), (19:00,19:00)]
 
@@ -222,9 +227,6 @@ def validarFin(tarifa,tarifaFin):
 	return (True,'')
 
 def construirGrafico(tasasDia,estadistica,dia,inicio_reserva,final_reserva):
-    print(tasasDia)
-    print(estadistica)
-    print(len(tasasDia),len(estadistica))
     tasasDia[0] = dia
     data = Data([
         Bar(

@@ -17,10 +17,6 @@ from estacionamientos.models import *
 from django.db.models.lookups import Day
 from _datetime import date
 
-import plotly.plotly as py
-from plotly.graph_objs import *
-py.sign_in('monica.figuera', 'z6pyvhq79s')
-
 listaReserva = []
 
 # Usamos esta vista para procesar todos los estacionamientos
