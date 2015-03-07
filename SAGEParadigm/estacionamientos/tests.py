@@ -1990,3 +1990,284 @@ class SimpleFormTestCase(TestCase):
 		form = ConsultarIngresoForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 		
+###################################################################
+#		Pruebas para Verificar forma ConsultarIngresoForm
+###################################################################
+
+	def test_obtenerIngresosSinEstacionamientos(self):
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, []) 
+		
+	def test_obtenerIngresosEstacionamientosNocoincideRif(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-1')
+		obj.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [])
+		
+	def test_obtenerIngresosEstacionamientosSinReservas(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [['EstacionamientoA',0]])
+		
+	def test_obtenerIngresosEstacionamientosConVariasReservas(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj.save()
+		reserva = ReservasModel(
+				Estacionamiento = obj,
+                InicioReserva = '2015-08-12 06:00:00',
+                FinalReserva = '2015-08-12 10:00:00')
+		reserva.save()
+		pago = ReciboPagoModel(
+                numeroRecibo = '1',
+                Reserva = reserva,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(16).quantize(Decimal(10)**-2)
+                )
+		pago.save()
+		reserva2 = ReservasModel(
+				Estacionamiento = obj,
+                InicioReserva = '2015-08-12 13:00:00',
+                FinalReserva = '2015-08-12 15:00:00')
+		reserva2.save()
+		pago2 = ReciboPagoModel(
+                numeroRecibo = '2',
+                Reserva = reserva2,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(8).quantize(Decimal(10)**-2)
+                )
+		pago2.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('24.0')]])
+		
+	def test_obtenerIngresosMultiplesEstacionamientosUnaSolaCoincidencia(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj.save()
+		obj2 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoB',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-1')
+		obj2.save()
+		obj3 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoC',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-1')
+		obj3.save()
+		reserva = ReservasModel(
+				Estacionamiento = obj,
+                InicioReserva = '2015-08-12 06:00:00',
+                FinalReserva = '2015-08-12 10:00:00')
+		reserva.save()
+		pago = ReciboPagoModel(
+                numeroRecibo = '1',
+                Reserva = reserva,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(16).quantize(Decimal(10)**-2)
+                )
+		pago.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('16.0')]])
+		
+	def test_obtenerIngresosMultiplesEstacionamientosTodosCoinciden(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj.save()
+		obj2 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoB',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj2.save()
+		obj3 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoC',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj3.save()
+		reserva = ReservasModel(
+				Estacionamiento = obj,
+                InicioReserva = '2015-08-12 06:00:00',
+                FinalReserva = '2015-08-12 10:00:00')
+		reserva.save()
+		reserva2 = ReservasModel(
+				Estacionamiento = obj2,
+                InicioReserva = '2015-08-12 13:00:00',
+                FinalReserva = '2015-08-12 18:00:00')
+		reserva2.save()
+		reserva3 = ReservasModel(
+				Estacionamiento = obj3,
+                InicioReserva = '2015-08-12 13:00:00',
+                FinalReserva = '2015-08-12 18:00:00')
+		reserva3.save()
+		pago = ReciboPagoModel(
+                numeroRecibo = '1',
+                Reserva = reserva,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(16).quantize(Decimal(10)**-2)
+                )
+		pago.save()
+		pago2 = ReciboPagoModel(
+                numeroRecibo = '2',
+                Reserva = reserva2,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(20).quantize(Decimal(10)**-2)
+                )
+		pago2.save()
+		pago3 = ReciboPagoModel(
+                numeroRecibo = '3',
+                Reserva = reserva3,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(27.5).quantize(Decimal(10)**-2)
+                )
+		pago3.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('16.0')],
+								['EstacionamientoB',Decimal('20.0')],
+								['EstacionamientoC',Decimal('27.5')]])
+		
+	def test_obtenerIngresosMultipleEstacionamientosNocoincideRif(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-1')
+		obj.save()
+		obj2 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoB',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-1')
+		obj2.save()
+		obj3 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoC',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-5')
+		obj3.save()
+		obj4 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoD',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-4')
+		obj4.save()
+		obj5 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoE',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-4')
+		obj5.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [])
+		
+	def test_obtenerIngresosMaximoEstacionamientosTodosCoinciden(self):
+		obj = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoA',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj.save()
+		obj2 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoB',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj2.save()
+		obj3 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoC',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj3.save()
+		obj4 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoD',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj4.save()
+		obj5 = Estacionamiento(
+				Propietario = 'Pedro Perez',
+				Nombre = 'EstacionamientoE',
+                Direccion = 'El Hatillo',
+                Rif = 'J-12345678-0')
+		obj5.save()
+		reserva = ReservasModel(
+				Estacionamiento = obj,
+                InicioReserva = '2015-08-12 06:00:00',
+                FinalReserva = '2015-08-12 10:00:00')
+		reserva.save()
+		reserva2 = ReservasModel(
+				Estacionamiento = obj2,
+                InicioReserva = '2015-08-12 13:00:00',
+                FinalReserva = '2015-08-12 18:00:00')
+		reserva2.save()
+		reserva3 = ReservasModel(
+				Estacionamiento = obj3,
+                InicioReserva = '2015-08-12 13:00:00',
+                FinalReserva = '2015-08-12 18:00:00')
+		reserva3.save()
+		pago = ReciboPagoModel(
+                numeroRecibo = '1',
+                Reserva = reserva,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(16).quantize(Decimal(10)**-2)
+                )
+		pago.save()
+		pago2 = ReciboPagoModel(
+                numeroRecibo = '2',
+                Reserva = reserva2,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(20).quantize(Decimal(10)**-2)
+                )
+		pago2.save()
+		pago3 = ReciboPagoModel(
+                numeroRecibo = '3',
+                Reserva = reserva3,
+                cedula = 'Venezolana' + '12345678',
+                fechaTransaccion = '2015-08-11 07:00:00',
+                TipoTarjeta = 'Mister',
+                MontoPago = Decimal(27.5).quantize(Decimal(10)**-2)
+                )
+		pago3.save()
+		ingresos = obtenerIngresos('J-12345678-0')
+		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('16.0')],
+								['EstacionamientoB',Decimal('20.0')],
+								['EstacionamientoC',Decimal('27.5')],
+								['EstacionamientoD',0],
+								['EstacionamientoE',0]]) 
