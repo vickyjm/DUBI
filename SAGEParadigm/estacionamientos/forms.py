@@ -103,6 +103,7 @@ class PagoReserva(forms.Form):
                         )
                     ]
                 )
+    
     apellidos = forms.CharField(
                     max_length = 100,
                     required = True,
@@ -114,8 +115,10 @@ class PagoReserva(forms.Form):
                         )
                     ]
                 ) 
+    
     nacionalidad = forms.ChoiceField(required = True, widget = forms.Select(), \
                                      choices = (("V-","V-"),("E-","E-")))
+    
     cedula = forms.CharField(
                     max_length = 11,
                     required = True,
@@ -127,11 +130,14 @@ class PagoReserva(forms.Form):
                         )
                     ]
             )
+    
     numTarjeta_validator = RegexValidator(
                                 regex = '^\d{4}-?\d{4}-?\d{4}-?\d{4}$',
                                 message = 'Formato erróneo'          
                                           )
+    
     tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), \
                                     choices = (("Vista","Vista"),("Mister","Mister"),("Xpres","Xpres")))
+    
     numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",\
                                  validators = [numTarjeta_validator])                                

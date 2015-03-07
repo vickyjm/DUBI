@@ -78,7 +78,7 @@ def estacionamiento_detail(request, _id):
             # Leemos el formulario
             form = EstacionamientoExtendedForm(request.POST)
             esquemaform = EsquemaForm(request.POST)
-            # Si el formulario
+            # Si el formulario es valido
             if form.is_valid():
                 hora_in = form.cleaned_data['horarioin']
                 hora_out = form.cleaned_data['horarioout']
@@ -175,6 +175,7 @@ def estacionamiento_reserva(request, _id):
                 
                 if exito == True :
                     
+                    # Creamos una sesion para pasar informacion a la siguiente view
                     request.session['inicioR'] = inicio_reserva.strftime('%Y-%m-%d %H:%M:%S')
                     request.session['finalR'] = final_reserva.strftime('%Y-%m-%d %H:%M:%S')
                     
@@ -199,6 +200,7 @@ def estacionamiento_reserva(request, _id):
 # Vista para realizar el pago de una reserva y generar el recibo asociado
 def estacionamiento_pagar_reserva(request, _id):
     _id = int(_id)
+    
     # Verificamos que el objeto exista antes de continuar
     try:
         estacion = Estacionamiento.objects.get(id = _id)
@@ -207,11 +209,14 @@ def estacionamiento_pagar_reserva(request, _id):
     
     global listaReserva
     
+    # Pedimos los datos de la sesion creada por la view anterior
     inicio_reserva = request.session.get('inicioR')
     final_reserva = request.session.get('finalR')
     monto = request.session.get('monto')
+    
     inicio_reserva=datetime.datetime.strptime(inicio_reserva,'%Y-%m-%d %H:%M:%S')
     final_reserva=datetime.datetime.strptime(final_reserva,'%Y-%m-%d %H:%M:%S')
+    
     if request.method == 'GET':
         form = PagoReserva()
         return render(request, 'pagoReserva.html', \
@@ -232,6 +237,8 @@ def estacionamiento_pagar_reserva(request, _id):
             listaReserva.append([inicio_reserva,-1])    # Se agregan las horas aceptadas a la lista 
                                                         # de las reservas
             listaReserva.append([final_reserva,1])
+            
+            # Creamos los objetos de reserva y pago y los guardamos en la base de datos.
             reservaFinal = ReservasModel(
                                 Estacionamiento = estacion,
                                 InicioReserva = inicio_reserva,
@@ -272,6 +279,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
         return render(request, '404.html')
  
     global listaReserva
+    
     # Se llena la lista de reservas
     if len(listaReserva) < 1:          
         puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')

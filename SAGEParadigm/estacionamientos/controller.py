@@ -10,7 +10,6 @@ from estacionamientos.models import ReservasModel
 # Función para verificar el horario de funcionamiento de un estacionamiento
 
 def HorarioEstacionamiento(HoraInicio, HoraFin):
-
 	if HoraInicio >= HoraFin:
 		return (False, 'El horario de apertura debe ser menor al horario de cierre')
 	return (True, '')
@@ -23,6 +22,7 @@ def marzullo(tabla,puestos):
     listaOut = []
     beststart = 0
     bestend = 0
+    
     for i in range(len(tabla)-1) :
         if (tabla[i][1] == -1) :  
             cnt = cnt+1
