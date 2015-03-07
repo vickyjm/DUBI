@@ -359,7 +359,7 @@ class EstacionamientoReservaTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_EstacionamientoReserva_finalNone(self):
+	def test_EstacionamientoReserva_FinalNone(self):
 		form_data = {'inicio':datetime.time(6, 0),
 								'final':None}
 		form = EstacionamientoReserva(data = form_data)
@@ -422,12 +422,7 @@ class EstacionamientoReservaControllerTestCase(TestCase):
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre, horaActual)
 		self.assertEqual(x, (False, 'La hora de inicio de la reserva debe estar en un horario valido'))
 
-	# malicia
-	def test_Reservacion_CamposVacios(self):
-		form_data = {'fechaInicio': datetime.date(2015,10,5),'horaInicio':datetime.time(6, 0),'fechaFinal': datetime.date(2015,10,5), 'horaFinal':datetime.time(12, 0)}
-		form = EstacionamientoReserva(data = form_data)
-		self.assertEqual(form.is_valid(), True)
-		
+	# malic	
 		
 ###################################################################
 #		Pruebas para validar horario pico
