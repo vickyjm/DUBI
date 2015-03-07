@@ -220,3 +220,70 @@ def validarFin(tarifa,tarifaFin):
 	if tarifaFin is None:
 		return (False,'La tarifa para el fin de semana es obligatoria')
 	return (True,'')
+
+def construirGrafico(tasasDia,estadistica,dia,inicio_reserva,final_reserva):
+    print(tasasDia)
+    print(estadistica)
+    print(len(tasasDia),len(estadistica))
+    tasasDia[0] = dia
+    data = Data([
+        Bar(
+            x = tasasDia,
+            y = estadistica,
+        )
+    ])
+
+
+    layout = Layout(
+        xaxis = XAxis(
+            showline = True,
+            rangemode = "nonnegative",
+            title = "Días de reserva",
+            linewidth = 1,
+            mirror = False,
+            gridwidth = 1,
+            zeroline = True,
+            zerolinewidth = 0.1,
+            gridcolor = "rgb(204, 204, 204)"
+        ),
+        yaxis = YAxis(
+            type = "linear",
+            range = [
+            0,
+            100
+            ],
+            autorange = False,
+            showgrid = True,
+            showline = True,
+            rangemode = "nonnegative",
+            title = "Porcentaje",
+            linewidth = 1,
+            mirror = False,
+            gridwidth = 1,
+            zeroline = True,
+            zerolinewidth = 0.1,
+            nticks = 20,
+            dtick = 5,
+            autotick = True,
+            ticks = "inside",
+            ticklen = 5,
+            tickwidth = 1,
+            gridcolor = "rgb(204, 204, 204)"
+        ),
+        height = 477,
+        width = 811,
+        autosize = True,
+        showlegend = False,
+        separators = ".,",
+        margin = Margin(
+            autoexpand = False
+        ),
+        plot_bgcolor = "rgb(255, 255, 255)",
+        barmode = "stack",
+        bargap = 0.1,
+        bargroupgap = 0,
+        paper_bgcolor = "rgb(255, 255, 255)",
+    )
+
+    fig = Figure(data=data,layout = layout)
+    py.plot(fig, filename='tasaOcupacion',auto_open=False) 
