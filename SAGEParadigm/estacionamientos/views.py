@@ -300,7 +300,8 @@ def estacionamiento_ingreso(request):
             total = 0
             for obj in listEst :
                 total = total+obj[1]
-                
+                obj[1] = '{0:,}'.format(obj[1])
+            total = '{0:,}'.format(total)
             return render(request, 'mostrarIngresos.html', {'form': form,'ingresos': listEst,'total': total})
     else:
             form = ConsultarIngresoForm()

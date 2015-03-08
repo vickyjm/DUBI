@@ -1969,6 +1969,8 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas para Verificar forma ConsultarIngresoForm
 ###################################################################
 
+class TestCaseIngresoForm(unittest.TestCase):
+	
 	def test_ConsultarIngresoFormValido(self):
 		form_data = {
 					'rif' : 'J-12345678-0'
@@ -1994,11 +1996,19 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas para Verificar forma ConsultarIngresoForm
 ###################################################################
 
+class TestCaseobtenerIngresos(unittest.TestCase):
+	
 	def test_obtenerIngresosSinEstacionamientos(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, []) 
 		
 	def test_obtenerIngresosEstacionamientosNocoincideRif(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2009,6 +2019,9 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(ingresos, [])
 		
 	def test_obtenerIngresosEstacionamientosSinReservas(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2019,6 +2032,9 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(ingresos, [['EstacionamientoA',0]])
 		
 	def test_obtenerIngresosEstacionamientosConVariasReservas(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2057,6 +2073,9 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('24.0')]])
 		
 	def test_obtenerIngresosMultiplesEstacionamientosUnaSolaCoincidencia(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2093,6 +2112,9 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('16.0')]])
 		
 	def test_obtenerIngresosMultiplesEstacionamientosTodosCoinciden(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2159,6 +2181,9 @@ class SimpleFormTestCase(TestCase):
 								['EstacionamientoC',Decimal('27.5')]])
 		
 	def test_obtenerIngresosMultipleEstacionamientosNocoincideRif(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
@@ -2193,6 +2218,9 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(ingresos, [])
 		
 	def test_obtenerIngresosMaximoEstacionamientosTodosCoinciden(self):
+		Estacionamiento.objects.all().delete()
+		ReservasModel.objects.all().delete()
+		ReciboPagoModel.objects.all().delete()
 		obj = Estacionamiento(
 				Propietario = 'Pedro Perez',
 				Nombre = 'EstacionamientoA',
