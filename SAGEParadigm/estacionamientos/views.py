@@ -88,39 +88,39 @@ def estacionamiento_detail(request, _id):
                 if not m_validado[0]:
                     return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
                 
-            if esquemaform.is_valid():    
-                tipoEsquema=esquemaform.cleaned_data['esquema']
-                tarifa = esquemaform.cleaned_data['tarifa']
-                if estacion.Esquema:
-                    eval(tipoEsquema+".objects.filter(Estacionamiento=estacion).delete()")
-                if tipoEsquema=="DifHora":
-                    picoIni = esquemaform.cleaned_data['hora_picoini']
-                    picoFin = esquemaform.cleaned_data['hora_picofin']
-                    tarifaPico = esquemaform.cleaned_data['tarifa_pico']
-                    m_validado=validarPicos(reserva_in,reserva_out,picoIni,picoFin,tarifa,tarifaPico)
-                    if not m_validado[0]:
-                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
-                    esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
-                elif tipoEsquema=="DifFin":
-                    tarifaFin = esquemaform.cleaned_data['tarifa_fin']
-                    m_validado=validarFin(tarifa,tarifaFin)
-                    if not m_validado[0]:
-                        return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
-                    esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, TarifaFin = tarifaFin)")
-                else:
-                    esq=eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
-                esq.save()
-                #estacion.Tarifa = form.cleaned_data['tarifa']
-                estacion.Esquema = esquemaform.cleaned_data['esquema']
-                estacion.Apertura = hora_in
-                estacion.Cierre = hora_out
-                estacion.Reservas_Inicio = reserva_in
-                estacion.Reservas_Cierre = reserva_out
-                estacion.NroPuesto = form.cleaned_data['puestos']
-                #estacion.Pico_Ini = form.cleaned_data['hora_picoini']
-                #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
-                #estacion.TarifaPico = form.cleaned_data['tarifa_pico']
-                estacion.save()
+                if esquemaform.is_valid():    
+                    tipoEsquema=esquemaform.cleaned_data['esquema']
+                    tarifa = esquemaform.cleaned_data['tarifa']
+                    if estacion.Esquema:
+                        eval(tipoEsquema+".objects.filter(Estacionamiento=estacion).delete()")
+                    if tipoEsquema=="DifHora":
+                        picoIni = esquemaform.cleaned_data['hora_picoini']
+                        picoFin = esquemaform.cleaned_data['hora_picofin']
+                        tarifaPico = esquemaform.cleaned_data['tarifa_pico']
+                        m_validado=validarPicos(reserva_in,reserva_out,picoIni,picoFin,tarifa,tarifaPico)
+                        if not m_validado[0]:
+                            return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
+                        esq = eval(tipoEsquema+"(Estacionamiento=estacion,Tarifa=tarifa,PicoIni=picoIni,PicoFin=picoFin,TarifaPico=tarifaPico)")
+                    elif tipoEsquema=="DifFin":
+                        tarifaFin = esquemaform.cleaned_data['tarifa_fin']
+                        m_validado=validarFin(tarifa,tarifaFin)
+                        if not m_validado[0]:
+                            return render(request, 'templateMensaje.html', {'color':'red', 'mensaje': m_validado[1]})
+                        esq = eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa, TarifaFin = tarifaFin)")
+                    else:
+                        esq=eval(tipoEsquema+"(Estacionamiento = estacion, Tarifa = tarifa)")
+                    esq.save()
+                    #estacion.Tarifa = form.cleaned_data['tarifa']
+                    estacion.Esquema = esquemaform.cleaned_data['esquema']
+                    estacion.Apertura = hora_in
+                    estacion.Cierre = hora_out
+                    estacion.Reservas_Inicio = reserva_in
+                    estacion.Reservas_Cierre = reserva_out
+                    estacion.NroPuesto = form.cleaned_data['puestos']
+                    #estacion.Pico_Ini = form.cleaned_data['hora_picoini']
+                    #estacion.Pico_Fin = form.cleaned_data['hora_picofin']
+                    #estacion.TarifaPico = form.cleaned_data['tarifa_pico']
+                    estacion.save()
     else:
         form = EstacionamientoExtendedForm()
         esquemaform = EsquemaForm()

@@ -23,7 +23,7 @@ $(function(){
 	$('#id_horarioin').keyup(function(){
 		var _this = $('#id_horarioin');
 		var _valor = $('#id_horarioin').val();
-		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5]?[0-9]$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){
@@ -37,7 +37,7 @@ $(function(){
 	$('#id_horarioout').keyup(function(){
 		var _this = $('#id_horarioout');
 		var _valor = $('#id_horarioout').val();
-		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5]?[0-9]$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){
@@ -65,7 +65,7 @@ $(function(){
 	$('#id_hora_picoini').keyup(function(){
 		var _this = $('#id_hora_picoini');
 		var _valor = $('#id_hora_picoini').val();
-		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5]?[0-9]$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){
@@ -79,7 +79,7 @@ $(function(){
 	$('#id_hora_picofin').keyup(function(){
 		var _this = $('#id_hora_picofin');
 		var _valor = $('#id_hora_picofin').val();
-		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+		var regEx = /^([0-9]|[0-1][0-9]|2[0-3]):[0-5]?[0-9]$/;
 		var valid = regEx.test(_valor);
 		
 		if (valid){

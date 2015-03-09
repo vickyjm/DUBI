@@ -224,19 +224,25 @@
                   <div class="controls">
 					<h5>{{field.label}} (*)</h5>
 					{% if field.name == "puestos" %}
-						{% if estacionamiento.NroPuesto %}
+                   		{% if field.value %}
+                   			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
+                   		{% elif estacionamiento.NroPuesto %}
                    			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{estacionamiento.NroPuesto}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
                    		{% else %}	
 							<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>                   		
                    		{% endif %}
                    	{% elif field.name == "horarioin" %}
-                   		{% if estacionamiento.Cierre %}             
+                    	{% if field.value%}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% elif estacionamiento.Cierre %}             
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hApertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% else %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% endif %}
                     {% elif field.name == "horarioout" %}
-                    	{% if estacionamiento.Cierre %}
+                    	{% if field.value %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% elif estacionamiento.Cierre %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hCierre}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                     	{% else %}
                     		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
@@ -265,27 +271,27 @@
                 		<h5>{{field.label}} (*)</h5>
                 		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 						<option value ="" select disable style="display:none;">Seleccione una opción</option>
-						{% if estacionamiento.Esquema == "Hora" %}
-							<option value="Hora" selected style ="color:#000;">Por hora</option>
+						{% if estacionamiento.Esquema == "Hora" or field.value == "Hora" %}
+							<option value="Hora" selected style ="color:#000;">Por hora</option>	
 						{% else %}
 							<option value="Hora" style ="color:#000;">Por hora</option>
 						{% endif %}
-						{% if estacionamiento.Esquema == "Minuto" %}
+						{% if estacionamiento.Esquema == "Minuto" or field.value == "Minuto" %}
 							<option value="Minuto" selected style = "color:#000;">Por minuto</option>
 						{% else %}
 							<option value="Minuto" style = "color:#000;">Por minuto</option>
 						{% endif %}
-						{% if estacionamiento.Esquema == "HoraFraccion" %}
+						{% if estacionamiento.Esquema == "HoraFraccion" or field.value == "HoraFraccion"%}
 							<option value="HoraFraccion" selected style = "color:#000;">Hora y fracción</option>
 						{% else %}	
 							<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
 						{% endif %}
-						{% if estacionamiento.Esquema == "DifHora" %}
+						{% if estacionamiento.Esquema == "DifHora" or field.value == "DifHora"%}
 							<option value="DifHora" selected style = "color:#000;">Diferenciado por hora</option>
 						{% else %}
 							<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
 						{% endif %}
-						{% if estacionamiento.Esquema == "DifFin" %}
+						{% if estacionamiento.Esquema == "DifFin" or field.value == "DifFin"%}
 							<option value="DifFin" selected style = "color:#000;">Diferenciado por fin de semana</option>
 						{% else %}
 							<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
@@ -326,7 +332,9 @@
 	
                    	{% ifequal field.name "tarifa" %}
                    	 <h5>{{field.label}} (*)</h5>
-                   	 {% if esquema.Tarifa %}
+                   	 {% if field.value %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{field.value}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
+                   	 {% elif esquema.Tarifa %}
                    	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.Tarifa}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
                    	 {% else %}
                    	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras de decimal"><p>
@@ -337,7 +345,9 @@
                    	{% if field.name == "hora_picoini" %}
                 		<div id = "IniHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
-                		{% if esquema.PicoFin %}
+                		{% if field.value %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% elif esquema.PicoFin %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% else %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
@@ -349,7 +359,9 @@
                 	{% if field.name == "hora_picofin"%}
                 		<div id = "FinHorarioPico" >
                 		<h5>{{field.label}} (*)</h5>
-                		{% if esquema.PicoFin %}
+                		{% if field.value %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% elif esquema.PicoFin %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
                 		{% else %}
                 			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
