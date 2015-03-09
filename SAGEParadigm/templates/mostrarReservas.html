@@ -75,7 +75,7 @@
 <div class="col-sm-10">
         
       <!-- column 2 --> 
-       <h3><i class="fa fa-money"></i> Mis ingresos</h3>  
+       <h3><i class="fa fa-calendar"></i> Mis reservas</h3>  
             
        <hr>
       
@@ -88,40 +88,28 @@
      
        <div class="col-md-8"> 
       <table class="table table-striped">
-      {% if ingresos %}
+      {% if recibos %}
 
         <thead>
-          <tr><th>Estacionamiento</th><th>Ingresos</th></tr>
+          <tr><th>Inicio</th><th>Fin</th><th>Estacionamiento</th><th>Teléfono</th></tr>
         </thead>
         <tbody>
-        {% for obj in ingresos %}
-          <tr><td>{{obj.0}}</td><td>{{obj.1}}</td>
+        {% for obj in recibos %}
+          <tr><td>{{obj.Reserva.InicioReserva}}</td><td>{{obj.Reserva.FinalReserva}}</td><td>{{obj.Reserva.Estacionamiento.Nombre}}</td><td>{{obj.Reserva.Estacionamiento.Telefono_1}}</td>
         {% endfor %}
         </tbody>
         {% else %}
-       <h3>No existen estacionamientos con ese RIF</h3>
+       <h3>Usted no ha hecho ninguna reserva</h3>
       {% endif %}
       </table>
       <hr>              
-    </div><div class="col-md-3">
-          {% if ingresos %}
-            <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="panel-title">
-                <i class="glyphicon glyphicon-stats pull-right">
-                </i>
-                <h4>
-                  Total
-                </h4>
-              </div>
+    </div><div class="col-md-4">
+
             </div>
-            <div class="panel-body">
-            <td>{{ total }}</td>
-            </div>
-           {% endif %}
             <!--/panel content-->
           </div>
           <!--/panel-->
+          
           <!--/panel-->
           
         </div></div><!--/row-->

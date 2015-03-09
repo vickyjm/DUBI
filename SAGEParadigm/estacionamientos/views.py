@@ -4,12 +4,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 
 from django.utils import timezone
-
+from operator import attrgetter
 from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
 from estacionamientos.forms import ConsultarIngresoForm
+from estacionamientos.forms import ConsultarReservasForm
 from estacionamientos.forms import PagoReserva
 from estacionamientos.forms import EsquemaForm
 from time import strptime
@@ -338,3 +339,21 @@ def estacionamiento_ingreso(request):
     else:
             form = ConsultarIngresoForm()
     return render(request,'consultarIngresos.html', {'form': form})
+
+def consultar_reservas(request):
+    
+    if request.method == 'GET':
+        form = ConsultarReservasForm()
+        return render(request, 'consultarReservas.html', {'form': form})
+    elif request.method == 'POST':
+        form = ConsultarReservasForm(request.POST)
+        if form.is_valid():
+            nac = form.cleaned_data['nacionalidad']
+            ci = form.cleaned_data['cedula']
+            cedulaCompleta = nac + ci
+            recibos = sorted(ReciboPagoModel.objects.filter(cedula = cedulaCompleta),key=attrgetter('Reserva.InicioReserva'))
+            return render(request,'mostrarReservas.html',{'recibos': recibos})
+    else : 
+            form = ConsultarReservasForm()
+    
+    return render(request, 'consultarReservas.html', {'form': form})

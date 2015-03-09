@@ -125,7 +125,7 @@ class PagoReserva(forms.Form):
                     label = "Cédula de Identidad",
                     validators = [
                         RegexValidator(
-                            regex = '^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$',
+                            regex = '^([1-9][0-9]{0,3})([0-9]{3}){0,2}$',
                             message = 'Formato erróneo'
                         )
                     ]
@@ -154,3 +154,17 @@ class ConsultarIngresoForm(forms.Form):
                         )
                     ]
                 )
+      
+class ConsultarReservasForm(forms.Form):    
+    nacionalidad = forms.ChoiceField(required = True, widget = forms.Select(), choices = (("V-","V-"),("E-","E-")))       
+    cedula = forms.CharField(
+                max_length = 11,
+                required = True,
+                label = "Cédula de Identidad",
+                validators = [
+                    RegexValidator(
+                        regex = '^([1-9][0-9]{0,3})([0-9]{3}){0,2}$',
+                        message = 'Formato erróneo'
+                    )
+                ]
+        )

@@ -1670,6 +1670,7 @@ class PruebasCalcularTasaReserva(unittest.TestCase):
 		
 	# Esquina maliciosa	
 	def test_calcularTasaReservaVariasReservaAbarca7dias(self):
+
 		tabla = []
 		res = []
 		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
@@ -2022,3 +2023,25 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 								['EstacionamientoC',Decimal('27.5')],
 								['EstacionamientoD',0],
 								['EstacionamientoE',0]])
+		
+	# Front
+class ConsultarReservasFormTestCase(TestCase):
+	def test_consultarReservasCamposBien(self):
+		form_data = { 	'nacionalidad' : 'V-',
+						'cedula': '12345678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), True)
+	# Frontera	
+	def test_consultarReservasErrorCedula(self):
+		form_data = { 	'nacionalidad' : 'V-',
+						'cedula': '123A5678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
+	# Malicia	
+	def test_consultarReservasSinNacionalidad(self):
+		form_data = { 	'cedula': '12345678',
+						}
+		form = ConsultarReservasForm(data = form_data)
+		self.assertEqual(form.is_valid(), False)
