@@ -9,7 +9,7 @@ from estacionamientos.controller import *
 from estacionamientos.forms import EstacionamientoExtendedForm
 from estacionamientos.forms import EstacionamientoForm
 from estacionamientos.forms import EstacionamientoReserva
-
+from estacionamientos.forms import ConsultarIngresoForm
 from estacionamientos.forms import PagoReserva
 from estacionamientos.forms import EsquemaForm
 from time import strptime
@@ -318,3 +318,23 @@ def estacionamiento_tasa_ocupacion(request, _id):
     return render(request, 'tasaOcupacion.html', \
                   {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
                    tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+    
+def estacionamiento_ingreso(request):
+    if request.method == 'GET':
+        form = ConsultarIngresoForm()
+        return render(request,'consultarIngresos.html', {'form': form})
+    elif request.method == 'POST':
+        form = ConsultarIngresoForm(request.POST)
+        if form.is_valid():
+            Rif = form.cleaned_data['rif']
+            listEst = []
+            listEst = obtenerIngresos(Rif)
+            total = 0
+            for obj in listEst :
+                total = total+obj[1]
+                obj[1] = '{0:,}'.format(obj[1])
+            total = '{0:,}'.format(total)
+            return render(request, 'mostrarIngresos.html', {'form': form,'ingresos': listEst,'total': total})
+    else:
+            form = ConsultarIngresoForm()
+    return render(request,'consultarIngresos.html', {'form': form})

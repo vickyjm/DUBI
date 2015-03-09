@@ -6,6 +6,7 @@ from decimal import Decimal
 import datetime
 from estacionamientos.models import ReciboPagoModel
 from estacionamientos.models import ReservasModel
+from estacionamientos.models import Estacionamiento
 
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -274,3 +275,15 @@ def construirGrafico(tasasDia,estadistica,dia):
 
     fig = Figure(data=data,layout = layout)
     py.plot(fig, filename='tasaOcupacion',auto_open=False) 
+
+def obtenerIngresos(rif):
+	estacion = Estacionamiento.objects.filter(Rif = rif)
+	listEst = []
+	for obj in estacion:
+		listaReservas = ReservasModel.objects.filter(Estacionamiento = obj)
+		ingr = 0
+		for reservas in listaReservas:
+			monto = ReciboPagoModel.objects.filter(Reserva = reservas).values_list('MontoPago')
+			ingr += monto[0][0]
+		listEst.append([obj.Nombre,ingr])
+	return listEst

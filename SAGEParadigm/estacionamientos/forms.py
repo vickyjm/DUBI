@@ -135,9 +135,22 @@ class PagoReserva(forms.Form):
                                 regex = '^\d{4}-?\d{4}-?\d{4}-?\d{4}$',
                                 message = 'Formato erróneo'          
                                           )
-    
+
     tipoTarjeta = forms.ChoiceField(required = True, widget = forms.Select(), \
                                     choices = (("Vista","Vista"),("Mister","Mister"),("Xpres","Xpres")))
     
     numTarjeta = forms.CharField(required = True,label = "Número de Tarjeta",\
                                  validators = [numTarjeta_validator])                                
+    
+class ConsultarIngresoForm(forms.Form):
+      rif = forms.CharField(
+                    max_length = 13,
+                    required = True,
+                    label = "RIF",
+                    validators = [
+                          RegexValidator(
+                                regex = '^[JVD]-\d{8}-\d$',
+                                message = 'Introduzca un RIF con un formato válido.'
+                        )
+                    ]
+                )
