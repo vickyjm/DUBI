@@ -109,7 +109,11 @@
                   <div class="controls">
                   {% if field.name == "rif" %} 
                     <h5>{{field.label}} (*)</h5>
-                    <input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es X-12345678-0"><p>
+                    {% if field.value %}
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" value="{{field.value}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es X-12345678-0"><p>
+                    {% else %}
+                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="X-12345678-0" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es X-12345678-0"><p>
+                    {% endif %}		
                   {% endif %}
                      
                   {{ field.errors }}
