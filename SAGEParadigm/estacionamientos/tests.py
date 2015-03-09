@@ -28,10 +28,10 @@ class SimpleTest(unittest.TestCase):
 
 
 ###################################################################
-#                    ESTACIONAMIENTO_ALL FORM
+#                    Pruebas para EstacionamientoForm
 ###################################################################
 
-class SimpleFormTestCase(TestCase):
+class EstacionamientoFormTestCase(TestCase):
 
 	# malicia
 	def test_CamposVacios(self):
@@ -100,7 +100,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# caso borde
-	def test_RIFtamanoinvalido(self):
+	def test_RifTamanoInvalido(self):
 		form_data = {
 			'propietario': 'Pedro132',
 			'nombre': 'Orinoco',
@@ -111,7 +111,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_RIFformatoinvalido(self):
+	def test_RifFormatoInvalido(self):
 		form_data = {
 			'propietario': 'Pedro132',
 			'nombre': 'Orinoco',
@@ -122,7 +122,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_AgregarTLFs(self):
+	def test_AgregarTelfs(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
@@ -136,7 +136,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), True)
 
 	# malicia
-	def test_FormatoInvalidoTLF(self):
+	def test_FormatoInvalidoTelf(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
@@ -148,7 +148,7 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# caso borde
-	def test_TamanoInvalidoTLF(self):
+	def test_TamanoInvalidoTelf(self):
 		form_data = {
 			'propietario': 'Pedro',
 			'nombre': 'Orinoco',
@@ -191,9 +191,10 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 ###################################################################
-# ESTACIONAMIENTO_EXTENDED_FORM
+#                 Pruebas para Estacionamiento_ExtendedForm
 ###################################################################
 
+class EstacionamientoExtendedFormTestCase(TestCase):
 	# malicia
 	def test_EstacionamientoExtendedForm_UnCampo(self):
 		form_data = { 'puestos': 2}
@@ -208,31 +209,10 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_EstacionamientoExtendedForm_TresCampos(self):
-		form_data = { 'puestos': 2,
-								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0)}
-		form = EstacionamientoExtendedForm(data = form_data)
-		self.assertEqual(form.is_valid(), False)
-
-	# malicia
-	def test_EstacionamientoExtendedForm_CuatroCampos(self):
-		form_data = { 'puestos': 2,
-								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0)}
-		form = EstacionamientoExtendedForm(data = form_data)
-		self.assertEqual(form.is_valid(), False)
-
-
-
-	# caso borde
 	def test_EstacionamientoExtendedForm_TodosCamposBien(self):
 		form_data = { 'puestos': 2,
 								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0)}
+								'horarioout': datetime.time(19, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
@@ -240,11 +220,7 @@ class SimpleFormTestCase(TestCase):
 	def test_EstacionamientoExtendedForm_Puestos0(self):
 		form_data = { 'puestos': 0,
 								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0),
-								'esquema':'Minuto',
-								'tarifa': '12'}
+								'horarioout': datetime.time(19, 0),}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
@@ -252,23 +228,7 @@ class SimpleFormTestCase(TestCase):
 	def test_EstacionamientoExtendedForm_HoraInicioIgualHoraCierre(self):
 		form_data = { 'puestos': 2,
 								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(6, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0),
-								'esquema':'Hora',
-								'tarifa': '30'}
-		form = EstacionamientoExtendedForm(data = form_data)
-		self.assertEqual(form.is_valid(), True)
-
-	# caso borde
-	def test_EstacionamientoExtendedForm_HoraIniReserIgualHoraFinReser(self):
-		form_data = { 'puestos': 2,
-								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(7, 0),
-								'esquema':'Minuto',
-								'tarifa': '12'}
+								'horarioout': datetime.time(6, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 
@@ -276,10 +236,7 @@ class SimpleFormTestCase(TestCase):
 	def test_EstacionamientoExtendedForm_StringEnPuesto(self):
 		form_data = { 'puestos': 'hola',
 								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0),
-								'tarifa': '12'}
+								'horarioout': datetime.time(19, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
@@ -287,10 +244,7 @@ class SimpleFormTestCase(TestCase):
 	def test_EstacionamientoExtendedForm_StringHoraInicio(self):
 		form_data = { 'puestos': 2,
 								'horarioin': 'holaa',
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0),
-								'tarifa': '12'}
+								'horarioout': datetime.time(19, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
@@ -298,146 +252,73 @@ class SimpleFormTestCase(TestCase):
 	def test_EstacionamientoExtendedForm_NumeroNegativoHoraInicio(self):
 		form_data = { 'puestos': 2,
 								'horarioin':-1,
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': datetime.time(14, 0),
-								'tarifa': '12'}
+								'horarioout': datetime.time(19, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
 
 	# malicia
-	def test_EstacionamientoExtendedForm_NoneEnHorarioReserva(self):
+	def test_EstacionamientoExtendedForm_NoneEnHorarioCierre(self):
 		form_data = { 'puestos': 2,
 								'horarioin': 'holaa',
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': None,
-								'horario_reserout': datetime.time(14, 0),
-								'tarifa': '12'}
+								'horarioout': None}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_EstacionamientoExtendedForm_listaEnHoraReserva(self):
+	def test_EstacionamientoExtendedForm_listaEnHoraApertura(self):
+
 		form_data = { 'puestos': 2,
-								'horarioin': datetime.time(6, 0),
-								'horarioout': datetime.time(19, 0),
-								'horario_reserin': datetime.time(7, 0),
-								'horario_reserout': [datetime.time(14, 0)],
-								'esquema':'hora',
-								'tarifa': 12}
+								'horarioin': [datetime.time(6, 0)],
+								'horarioout': datetime.time(19, 0)}
 		form = EstacionamientoExtendedForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
 ######################################################################
-# ESTACIONAMIENTO_EXTENDED pruebas controlador
-###################################################################
+# Pruebas para el controlador de EstacionamientoExtendedForm
+#####################################################################
 
+class EstacionamientoExtendedFormControllerTestCase(TestCase):
 	# normal
 	def test_HorariosValidos(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 18, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
+		x = HorarioEstacionamiento(HoraInicio, HoraFin)
 		self.assertEqual(x, (True, ''))
 
 	# malicia
 	def test_HorariosInvalido_HoraCierre_Menor_HoraApertura(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraFin = datetime.time(hour = 11, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 18, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
+		x = HorarioEstacionamiento(HoraInicio, HoraFin)
 		self.assertEqual(x, (False, 'El horario de apertura debe ser menor al horario de cierre'))
 
 	# caso borde
 	def test_HorariosInvalido_HoraCierre_Igual_HoraApertura(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraFin = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 18, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
+		x = HorarioEstacionamiento(HoraInicio, HoraFin)
 		self.assertEqual(x, (False, 'El horario de apertura debe ser menor al horario de cierre'))
-
-	# caso borde
-	def test_HorariosInvalido_HoraCierreReserva_Menor_HoraAperturaReserva(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 11, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva'))
-
-	# caso borde
-	def test_HorariosInvalido_HoraCierreReserva_Igual_HoraAperturaReserva(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 12, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor al horario de fin de reserva'))
 
 	# caso borde
 	def test_Limite_HorarioValido_Apertura_Cierre(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
 		HoraFin = datetime.time(hour = 12, minute = 0, second = 1)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 12, minute = 0, second = 1)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
+		x = HorarioEstacionamiento(HoraInicio, HoraFin)
 		self.assertEqual(x, (True, ''))
 
 	# caso borde
 	def test_Limite_Superior_HorarioValido_Apertura_Cierre(self):
 		HoraInicio = datetime.time(hour = 0, minute = 0, second = 0)
 		HoraFin = datetime.time(hour = 23, minute = 59, second = 59)
-		ReservaInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 23, minute = 59, second = 59)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
+		x = HorarioEstacionamiento(HoraInicio, HoraFin)
 		self.assertEqual(x, (True, ''))
 
-	# caso borde
-	def test_InicioReserva_Mayor_HoraCierreEstacionamiento(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 19, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 20, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de comienzo de reserva debe ser menor al horario de cierre del estacionamiento'))
-
-	# caso borde
-	def test_InicioReserva_Mayor_HoraCierreEstacionamiento2(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 19, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 20, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de comienzo de reserva debe ser menor al horario de cierre del estacionamiento'))
-
-	# malicia
-	def test_CierreReserva_Mayor_HoraCierreEstacionamiento(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 17, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 20, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de cierre de estacionamiento debe ser mayor o igual al horario de finalizacion de reservas'))
-
-	# malicia
-	def test_CierreReserva_Menos_HoraInicioEstacionamiento(self):
-		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
-		HoraFin = datetime.time(hour = 18, minute = 0, second = 0)
-		ReservaInicio = datetime.time(hour = 10, minute = 0, second = 0)
-		ReservaFin = datetime.time(hour = 11, minute = 0, second = 0)
-		x = HorarioEstacionamiento(HoraInicio, HoraFin, ReservaInicio, ReservaFin)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe mayor o igual al horario de apertura del estacionamiento'))
-
-
-
 ###################################################################
-# ESTACIONAMIENTO_RESERVA_FORM
+#                  Pruebas para EstacionamientoReserva
 ###################################################################
 
+class EstacionamientoReservaTestCase(TestCase):
 	# malicia
 	def test_EstacionamientoReserva_Vacio(self):
 		form_data = {}
@@ -478,20 +359,17 @@ class SimpleFormTestCase(TestCase):
 		self.assertEqual(form.is_valid(), False)
 
 	# malicia
-	def test_EstacionamientoReserva_finalNone(self):
+	def test_EstacionamientoReserva_FinalNone(self):
 		form_data = {'inicio':datetime.time(6, 0),
 								'final':None}
 		form = EstacionamientoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 
-###################################################################
-# PRUEBAS DE FUNCIONES DEL CONTROLADOR
-###################################################################
-
 ##############################################################
 # Estacionamiento Reserva Controlador
 ###################################################################
 
+class EstacionamientoReservaControllerTestCase(TestCase):
 # HorarioReserva, pruebas Unitarias
 
 	# normal
@@ -512,7 +390,7 @@ class SimpleFormTestCase(TestCase):
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		horaActual = datetime.datetime(year = 2015,month = 10, day = 5, hour = 12,minute = 50)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe ser menor que le horario de fin de reserva'))
+		self.assertEqual(x, (False, 'La hora de inicio de la reserva debe ser menor que la hora de fin de la reserva'))
 
 	# caso borde
 	def test_HorarioReservaInvalido_TiempoTotalMenor1h(self):
@@ -532,7 +410,7 @@ class SimpleFormTestCase(TestCase):
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		horaActual = datetime.datetime(year = 2015,month = 10, day = 5, hour = 12,minute = 50)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre,horaActual)
-		self.assertEqual(x, (False, 'El horario de inicio de reserva debe estar en un horario valido'))
+		self.assertEqual(x, (False, 'La hora de fin de la reserva debe estar en un horario valido'))
 
 	# caso borde
 	def test_HorarioReservaInvalido_ReservaInicial_Menor_HorarioApertura(self):
@@ -542,18 +420,108 @@ class SimpleFormTestCase(TestCase):
 		HoraCierre = datetime.time(hour = 18, minute = 0, second = 0)
 		horaActual = datetime.datetime(year = 2015,month = 10, day = 5, hour = 12,minute = 50)
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre, horaActual)
-		self.assertEqual(x, (False, 'El horario de cierre de reserva debe estar en un horario valido'))
+		self.assertEqual(x, (False, 'La hora de inicio de la reserva debe estar en un horario valido'))
 
-	# malicia
-	def test_Reservacion_CamposVacios(self):
-		form_data = {'fechaInicio': datetime.date(2015,10,5),'horaInicio':datetime.time(6, 0),'fechaFinal': datetime.date(2015,10,5), 'horaFinal':datetime.time(12, 0)}
-		form = EstacionamientoReserva(data = form_data)
-		self.assertEqual(form.is_valid(), True)
+	# malic	
+		
+###################################################################
+#		Pruebas para validar horario pico
+###################################################################
+
+class ValidarHorarioPicoTestCase(TestCase):
+
+	def test_validarPicosHorarioPicoValido(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+		
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (True, ''))
+		
+	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
+
+		horaPicoIni = datetime.time(14,0,0)
+		horaPicoFin = datetime.time(12,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
+			
+	def test_validarPicosTarifaPicoIgualTarifaValle(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(30)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
+		
+		
+	
+	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(5,0,0)
+		horaPicoFin = datetime.time(14,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
+	
+	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(12,0,0)
+		horaPicoFin = datetime.time(19,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
+	
+	def test_validarPicosHorarioPicoIgualQueHorarioReservas(self):
+
+		horaPicoIni = datetime.time(6,0,0)
+		horaPicoFin = datetime.time(18,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle'))
+	
+	def test_validarPicosInicioHorarioPicoIgualFinHorarioPico(self):
+
+		horaPicoIni = datetime.time(10,0,0)
+		horaPicoFin = datetime.time(10,0,0)
+		inicioReservas = datetime.time(6,0,0)
+		finReservas = datetime.time(18,0,0)
+		tarifa = Decimal(20)
+		tarifaPico = Decimal (30)
+
+		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
+		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 
 
 #################################################################
 #		Pruebas de Marzullo
 ################################################################
+
+class MarzulloTestCase(TestCase):
 	# caso borde
 	def test_Reservar_horarios_todoeldia(self):
 		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
@@ -684,7 +652,11 @@ class SimpleFormTestCase(TestCase):
 		x = reservar(Hora3In, Hora3Out, lista, 2)
 		self.assertEqual(x, True)
 
-		
+#################################################################
+# Pruebas para PagoReserva
+#################################################################
+
+class PagoReservaTestCase(TestCase):		
 	def test_PagoReserva_CamposBien(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -747,10 +719,6 @@ class SimpleFormTestCase(TestCase):
 							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
-
-#################################################################
-#		Pruebas calculo de tarifa por horas 
-################################################################
 	
 	def test_PagoReserva_SinNacionalidad(self):
 		form_data = { 	'nombre' : 'Juan',
@@ -795,6 +763,8 @@ class SimpleFormTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
+class PruebasParaEsquemasTarifarios(unittest.TestCase):
+		
 	global min_tarifa, max_tarifa, estacionamiento, esq15, esq20, esq30, esqmin, esqmax
 	global esq15M,esq20M,esq30M,esqminM,esqmaxM,esq15HF,esq20HF,esq30HF,esqminHF,esqmaxHF
 	global esq15D,esq20D,esq30D,esqminD,esqmaxD
@@ -816,6 +786,11 @@ class SimpleFormTestCase(TestCase):
 	esq30HF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(30))
 	esqminHF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(min_tarifa))
 	esqmaxHF=HoraFraccion(Estacionamiento=estacionamiento,Tarifa=Decimal(max_tarifa))
+	
+	
+#################################################################
+#		Pruebas calculo de tarifa por horas 
+################################################################
 	
 	# El minimo tiempo de reserva es de 1 hora
 	# El máximo tiempo de reserva es de 7 dias
@@ -874,7 +849,7 @@ class SimpleFormTestCase(TestCase):
 		finres = datetime.datetime(2015,7,5,20,0,0,0)
 		self.assertEqual(esqmax.calcularMonto(inires, finres), Decimal(9999999.99*2).quantize(Decimal(10)**-2))
 	
-	# Exquina	
+	# Esquina	
 	def test_tarifaPorHoraMaxTarifaMaxTiempo(self):
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,12,18,25,0,0)
@@ -990,13 +965,13 @@ class SimpleFormTestCase(TestCase):
 		finres = datetime.datetime(2015,7,5,22,24,0,0)
 		self.assertEqual(esq20HF.calcularMonto(inires, finres), Decimal(20*3 + 20).quantize(Decimal(10)**-2))
 	
-	# 
+	# Extremo
 	def test_tarifaPorHoraYFraccionHorasExactasMismoDia(self):
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,5,21,25,0,0)
 		self.assertEqual(esq30HF.calcularMonto(inires, finres), Decimal(30*3))
 	
-	# 
+	# Extremo
 	def test_tarifaPorHoraYFraccionHorasExactasDiferentesDia(self):
 		inires = datetime.datetime(2015,7,5,18,25,0,0)
 		finres = datetime.datetime(2015,7,8,18,25,0,0)
@@ -1198,96 +1173,6 @@ class SimpleFormTestCase(TestCase):
 		esq=DifHora(Estacionamiento=estacionamiento,Tarifa=tarifa,PicoIni=iniciopico,PicoFin=finpico,TarifaPico=tarifapico)
 		self.assertEqual(esq.calcularMonto(inires, finres), Decimal(24*30-2*30/60).quantize(Decimal(10)**-2))
 
-
-###################################################################
-#		Pruebas para validar horario pico
-###################################################################
-
-	def test_validarPicosHorarioPicoValido(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-		
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (True, ''))
-		
-	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
-
-		horaPicoIni = datetime.time(14,0,0)
-		horaPicoFin = datetime.time(12,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
-			
-	def test_validarPicosTarifaPicoIgualTarifaValle(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(30)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
-		
-		
-	
-	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(5,0,0)
-		horaPicoFin = datetime.time(14,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento'))
-	
-	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(12,0,0)
-		horaPicoFin = datetime.time(19,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de reservas del estacionamiento'))
-	
-	def test_validarPicosHorarioPicoIgualQueHorarioReservas(self):
-
-		horaPicoIni = datetime.time(6,0,0)
-		horaPicoFin = datetime.time(18,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle'))
-	
-	def test_validarPicosInicioHorarioPicoIgualFinHorarioPico(self):
-
-		horaPicoIni = datetime.time(10,0,0)
-		horaPicoFin = datetime.time(10,0,0)
-		inicioReservas = datetime.time(6,0,0)
-		finReservas = datetime.time(18,0,0)
-		tarifa = Decimal(20)
-		tarifaPico = Decimal (30)
-
-		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
-		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
 	
 ##########################################################################################
 #		Pruebas calculo de tarifa diferenciado por fin de semana (hora y fracción)
@@ -1447,6 +1332,8 @@ class SimpleFormTestCase(TestCase):
 #		Pruebas diferencia entre Decimal y Float
 ###################################################################
 
+class PruebasDecimalYFloat(unittest.TestCase):
+
 	def test_diferenciaEntreDecimalYFloat(self):
 		tarifa = Decimal(0.5)
 		inires = datetime.datetime(2015,7,12,10,0,0,0)
@@ -1464,11 +1351,15 @@ class SimpleFormTestCase(TestCase):
 			
 		resFloat=calcularMontoFloat(tarifa,inires,finres)
 		self.assertNotEqual(res,resFloat)
-	
+		
+		
 ###################################################################
-#		Pruebas para Verificacion de tasa de cada hora
+#		Pruebas para Verificacion de Calcular Tasa de Reserva
 ###################################################################
 
+class PruebasCalcularTasaReserva(unittest.TestCase):
+
+	# Frontera
 	def test_calcularTasaReservaHorasSinReservas(self):
 		tabla = []
 		res = []
@@ -1478,7 +1369,8 @@ class SimpleFormTestCase(TestCase):
 			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
-		
+	
+	# Frontera	
 	def test_calcularTasaReservaHorasLleno(self):
 		tabla = []
 		res = []
@@ -1493,42 +1385,21 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
 		
+	# Frontera	
 	def test_calcularTasaReservaReservaMinimaMasUnosMinutos(self):
 		tabla = []
 		res = []
 		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
+		tabla.append([datetime.datetime(2015,7,5,7,1,0,0),1])
 		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append([Decimal('33.3'),Decimal('1.7'),0,0,0,0,0,0,0,0,0,0])
+		res.append([Decimal('33.3'),Decimal('0.6'),0,0,0,0,0,0,0,0,0,0])
 		for i in range(0,7):
 			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
 		
-	def test_calcularTasaReservaFunciona(self):
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,7,3,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,17,3,0,0),1])
-		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append([Decimal('66.6'),Decimal('3.4'),0,0,Decimal('33.3'),0,0,0,Decimal('99.9'),Decimal('99.9'),Decimal('99.9'),Decimal('5.1')])
-		for i in range(0,7):
-			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
-		self.assertEqual(res,estad)
-		
+	# Esquina	
 	def test_calcularTasaReservaEstminimo(self):
 		tabla = []
 		res = []
@@ -1545,7 +1416,8 @@ class SimpleFormTestCase(TestCase):
 			res.append([0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)	
-		
+	
+	# Frontera		
 	def test_calcularTasaReservaEstmaximo(self):
 		tabla = []
 		res = []
@@ -1565,7 +1437,8 @@ class SimpleFormTestCase(TestCase):
 			res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
-		
+	
+	# Malicia	
 	def test_calcularTasaReservaLlenarhoraahora(self):	
 		tabla = []
 		res = []
@@ -1602,54 +1475,7 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,1,Horaini)
 		self.assertEqual(res,estad)
 		
-	def test_calcularTasaReservaLlenar3horas(self):	
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,0,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,3,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,12,0,0,0),1])
-		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,12,0,0,0)
-		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
-				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0')])
-		for i in range(0,7):
-			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
-		self.assertEqual(res,estad)
-		
-	def test_calcularTasaReservaFrontera(self):
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
-		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append([Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),
-				Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3'),Decimal('33.3')])
-		for i in range(0,7):
-			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
-		self.assertEqual(res,estad)
-		
+	# Extremo			
 	def test_calcularTasaReservaSolapar(self):
 		tabla = []
 		res = []
@@ -1675,7 +1501,8 @@ class SimpleFormTestCase(TestCase):
 			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
-		
+	
+	# Malicia
 	def test_calcularTasaReservaSolaparyFrontera(self):
 		tabla = []
 		res = []
@@ -1707,33 +1534,8 @@ class SimpleFormTestCase(TestCase):
 		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
 		self.assertEqual(res,estad)
-		
-	def test_calcularTasaReservaRandom(self):
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,7,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,16,0,0,0),1])
-		res.append([Decimal('33.3'),Decimal('66.6'),Decimal('66.6'),Decimal('33.3'),Decimal('66.6'),Decimal('33.3'),
-				Decimal('33.3'),Decimal('66.6'),0,Decimal('66.6'),Decimal('33.3'),Decimal('33.3')])
-		for i in range(0,7):
-			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
-		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,3,Horaini)
-		self.assertEqual(res,estad)
-		
+	
+	# Frontera	
 	def test_calcularTasaReservaDiferentediasActual(self):
 		tabla = []
 		res = []
@@ -1769,42 +1571,7 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
 		
-	def test_calcularTasaReservaDiferentediasDentrode2dias(self):
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,6,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,6,10,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,18,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,6,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,6,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,7,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,16,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,18,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,7,0,0,0),1])
-		Horaini = datetime.datetime(2015,7,5,6,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,18,0,0,0)
-		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),0,
-				0,Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
-		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0])
-		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,
-				Decimal('100.0'),Decimal('50.0'),Decimal('50.0')])
-		for i in range(0,5):
-			res.append([0,0,0,0,0,0,0,0,0,0,0,0])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
-		self.assertEqual(res,estad)
-		
+	# Extremo		
 	def test_calcularTasaReservaDiferentediasDentrode7dias(self):
 		tabla = []
 		res = []
@@ -1841,7 +1608,8 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
 
-	def test_calcularTasaReservaComenzarenunahoraconminutos(self):
+	# Malicia
+	def test_calcularTasaReservaComenzarEnUnaHoraConMinutos(self):
 		tabla = []
 		res = []
 		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
@@ -1862,53 +1630,7 @@ class SimpleFormTestCase(TestCase):
 		
 		self.assertEqual(res,estad)
 		
-	def test_calcularTasaReservaReservaAbarcaVariosdias(self):
-		tabla = []
-		res = []
-		tabla.append([datetime.datetime(2015,7,11,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,11,10,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,13,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,18,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,11,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,11,10,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,11,14,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,11,7,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,11,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,7,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,7,16,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,11,15,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,11,18,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,5,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,5,9,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,11,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,11,7,0,0,0),1])
-		tabla.append([datetime.datetime(2015,7,8,6,0,0,0),-1])
-		tabla.append([datetime.datetime(2015,7,10,2,0,0,0),1])
-		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
-		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
-		res.append([0,0,0,0,0,0,Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),0,Decimal('50.0'),0,0,Decimal('50.0'),0,0,0,0,0,0,0,0,0,0])
-		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-				Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0])
-		res.append([0,0,0,0,0,0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0')])
-		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
-		res.append([Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-		res.append([0,0,0,0,0,0,
-				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),0,0,0,0,0,0])
-		res.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
-		self.assertEqual(res,estad)
-		
+	# Extremo		
 	def test_calcularTasaReservaVariasReservasAbarcaVariosdias(self):
 		tabla = []
 		res = []
@@ -1946,6 +1668,7 @@ class SimpleFormTestCase(TestCase):
 		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
 		self.assertEqual(res,estad)
 		
+	# Esquina maliciosa	
 	def test_calcularTasaReservaVariasReservaAbarca7dias(self):
 		tabla = []
 		res = []
@@ -1954,13 +1677,13 @@ class SimpleFormTestCase(TestCase):
 		Horaini = datetime.datetime(2015,7,5,0,0,0,0)
 		Horafin = datetime.datetime(2015,7,5,23,59,0,0)
 		for i in range(0,7):
-			res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0')])
-		res.append([Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),
-				Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('50.0'),Decimal('49.2')])
-		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,2,Horaini)
+			res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0')])
+		res.append([Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),
+				Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('100.0'),Decimal('98.3')])
+		estad = calcularTasaReservaHoras(tabla,Horaini,Horafin,1,Horaini)
 		self.assertEqual(res,estad)

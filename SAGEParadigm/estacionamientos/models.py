@@ -7,8 +7,9 @@ import datetime
 from decimal import Decimal
 from django.db.models.fields import IntegerField
 
+# Clase que modela un estacionamiento que será gestionado mediante SAGE
+
 class Estacionamiento(models.Model):
-	# propietario=models.ForeignKey(Propietario)
 	Propietario = models.CharField(max_length = 50, help_text = "Nombre Propio")
 	Nombre = models.CharField(max_length = 50)
 	Direccion = models.TextField(max_length = 120)
@@ -22,23 +23,22 @@ class Estacionamiento(models.Model):
 
 	Rif = models.CharField(max_length = 12)
 
-	#Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
-	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), ("Hora y fracción")), ("DifHora","Diferenciado por hora"),("DifFin","Diferenciado por fin de semana"))
+	opciones_esquema = (("Hora", " Por hora"), ("Minuto"," Por minuto"), (("HoraFraccion"), \
+							("Hora y fracción")), ("DifHora","Diferenciado por hora"),\
+							("DifFin","Diferenciado por fin de semana"))
 	Esquema = models.CharField(max_length = 20, choices = opciones_esquema)
 	Apertura = models.TimeField(blank = True, null = True)
 	Cierre = models.TimeField(blank = True, null = True)
-	Reservas_Inicio = models.TimeField(blank = True,null = True)
-	Reservas_Cierre = models.TimeField(blank = True, null = True)
 	NroPuesto = models.IntegerField(blank = True, null = True)
-	#Pico_Ini = models.TimeField(blank = True,null = True)
-	#Pico_Fin = models.TimeField(blank = True, null = True)
-	#TarifaPico = models.DecimalField(max_digits = 9, decimal_places = 2,null=True)
-
+	
+# Clase para las reservas de puestos que pueden hacerse en un estacionamiento
 
 class ReservasModel(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
 	InicioReserva = models.DateTimeField(blank = True, null = True)
 	FinalReserva = models.DateTimeField(blank = True, null = True)
+	
+# Clase que modela los recibos de pago electrónicos que se deben generar después de pagar una reserva
 
 class ReciboPagoModel(models.Model):
 	Reserva = models.ForeignKey(ReservasModel)
@@ -49,12 +49,14 @@ class ReciboPagoModel(models.Model):
 	TipoTarjeta = models.CharField(max_length = 6, choices = opciones_tarjeta)
 	MontoPago = models.DecimalField(max_digits = 12, decimal_places = 2)
 
+# Clase para los esquemas tarifarios que pueden manejar los estacionamientos gestionados por SAGE
+# Los esquemas se manejan usando el patrón estrategia
+
 class Esquema(models.Model):
 	Estacionamiento = models.ForeignKey(Estacionamiento)
 	Tarifa = models.DecimalField(max_digits = 9, decimal_places = 2)
 	
-	# class Meta:
-	# abstract = True
+# Subclase de Esquema que modela el esquema tarifario de pago por hora
 	
 class Hora(Esquema):
 			
@@ -69,6 +71,8 @@ class Hora(Esquema):
 			
 		return round(Decimal(str(self.Tarifa*Decimal(temp1))),2)
 	
+# Subclase de Esquema que modela el esquema tarifario de pago por minuto
+	
 class Minuto(Esquema):
 	
 	def calcularMonto(self,iniR,finR):
@@ -79,6 +83,8 @@ class Minuto(Esquema):
 		fraccion = self.Tarifa*minextra
 		
 		return round(Decimal(str(self.Tarifa * temp1 + fraccion)),2)
+	
+# Subclase de Esquema que modela el esquema tarifario de pago por hora y fracción
 	
 class HoraFraccion(Esquema):
 	
@@ -96,6 +102,8 @@ class HoraFraccion(Esquema):
 			fraccion = Decimal(str(self.Tarifa/2))
 		
 		return round(Decimal(str(self.Tarifa * temp1 + fraccion)),2)
+	
+# Subclase de Esquema que modela el esquema tarifario de pago diferenciado por hora pico
 	
 class DifHora(Esquema):
 	
@@ -116,7 +124,10 @@ class DifHora(Esquema):
 				minvalle += 1
 			tempDatetime=tempDatetime+datetime.timedelta(minutes=1)
 	
-		return round(Decimal(str(Decimal(str(self.Tarifa*minvalle/60)) + Decimal(str(self.TarifaPico*minpico/60)))),2)
+		return round(Decimal(str(Decimal(str(self.Tarifa*minvalle/60)) \
+								+ Decimal(str(self.TarifaPico*minpico/60)))),2)
+
+# Subclase de Esquema que modela el esquema tarifario de pago diferenciado por fin de semana	
 	
 class DifFin(Esquema):
 	
@@ -134,9 +145,11 @@ class DifFin(Esquema):
 			if tempDatetime>finR:
 				difMin=(tempDatetime-finR).seconds//60
 				if difMin>=1 and difMin<=30:
-					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+					if finR.weekday() in range(idSabado,idDomingo+1) \
+						and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
 						tiempoFin+=1
-					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+					elif finR.weekday() not in range(idSabado,idDomingo+1) \
+						and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 						tiempoNoFin+=1
 					else:
 						if finR.minute==0:
@@ -150,9 +163,11 @@ class DifFin(Esquema):
 							else:
 								tiempoFin+=1
 				elif difMin>30:
-					if finR.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+					if finR.weekday() in range(idSabado,idDomingo+1) \
+						and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
 						tiempoFin+=0.5
-					elif finR.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+					elif finR.weekday() not in range(idSabado,idDomingo+1) \
+						and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 						tiempoNoFin+=0.5
 					else:
 						if finR.minute==0:
@@ -166,9 +181,11 @@ class DifFin(Esquema):
 							else:
 								tiempoFin+=0.5
 			else:				
-				if tempDatetime.weekday() in range(idSabado,idDomingo+1) and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
+				if tempDatetime.weekday() in range(idSabado,idDomingo+1) \
+					and tempDatetime2.weekday() in range(idSabado,idDomingo+1):
 					tiempoFin+=1
-				elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
+				elif tempDatetime.weekday() not in range(idSabado,idDomingo+1) \
+					and tempDatetime2.weekday() not in range(idSabado,idDomingo+1):
 					tiempoNoFin+=1
 				else:
 					if tempDatetime.minute==0:
@@ -181,4 +198,5 @@ class DifFin(Esquema):
 							tiempoNoFin+=1
 						else:
 							tiempoFin+=1					
-		return round(Decimal(str(self.Tarifa*Decimal(tiempoNoFin) + self.TarifaFin*Decimal(tiempoFin))),2)		
+		return round(Decimal(str(self.Tarifa*Decimal(tiempoNoFin) \
+								+ self.TarifaFin*Decimal(tiempoFin))),2)		

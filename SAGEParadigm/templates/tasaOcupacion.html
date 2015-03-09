@@ -38,7 +38,7 @@
 
       <!-- upper section -->
       <div class="row">
-        <div class="col-sm-2" style = "width: 17.3%;">
+        <div class="col-sm-2" style = "width: 18%;">
           <!-- left -->
           <h3>
             <i class="glyphicon glyphicon-briefcase">
@@ -60,16 +60,11 @@
 		<ul class="nav nav-stacked">
               <li>
               <a href="./" >
-                  <i class="glyphicon glyphicon-wrench"></i>
-                  Parametrizar
-                </a>
+              <i class="glyphicon glyphicon-wrench"></i> Parametrizar </a>
           		
-                <a href="./reserva">
-                  <i class="fa fa-pencil-square-o"></i>
-                  Reservar
-                </a>
-                
-                
+              <a href="./reserva"> 
+              <i class="fa fa-pencil-square-o"></i> Reservar </a>
+
                 <p style="position:relative; display: block;padding: 10px 15px;">
                   <i class="fa fa-area-chart" ></i>
                                   
@@ -78,10 +73,10 @@
                 </p>
                 
               </li>
-            </ul>
+        </ul>
 
           
-          <hr>
+        <hr>
           
         </div>
         <!-- /span-3 -->
@@ -112,15 +107,15 @@
 
           <tr>
           <td></td> 
-          {% for h in horas %}
-          	<th>{{h}}</th>
+          {% for hora in horas %}
+          	<th>{{hora}}</th>
           {% endfor %}
           </tr>
         
         <tr>
          <!-- <td>{{forloop.counter}}</td><td>{{estacionamiento.Apertura}}</td> -->
         {% for x in estadisticas %}
-	        <tr class="{% cycle dias.0 dias.1 dias.2 dias.3 dias.4 dias.5 dias.6 as dia %}">
+	        <tr class="{% cycle dias.0 dias.1 dias.2 dias.3 dias.4 dias.5 dias.6 dias.7 as dia %}">
        			<td><b>{{dia}}</b></td>
 	        {% for y in x %}	        	
 	        	<td>

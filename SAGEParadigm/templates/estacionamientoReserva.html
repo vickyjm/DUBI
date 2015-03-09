@@ -36,7 +36,7 @@
   
   <!-- upper section -->
   <div class="row">
-  <div class="col-sm-2" style = "width: 17.3%;">
+  <div class="col-sm-2" style = "width: 18%;">
       <!-- left -->
                 <h3>
             <i class="glyphicon glyphicon-briefcase">
@@ -58,23 +58,14 @@
              <ul class="nav nav-stacked">
               <li>
               	<a href="./" >
-                  <i class="glyphicon glyphicon-wrench"></i>
-                  Parametrizar
-                </a>
+                 <i class="glyphicon glyphicon-wrench"></i> Parametrizar </a>
               
           		{% if estacionamiento.NroPuesto %}
-                <p style="position:relative; display: block;padding: 10px 15px;">
-                  <i class="fa fa-pencil-square-o" ></i>
-                                  
-                  Reservar
+                	<p style="position:relative; display: block;padding: 10px 15px;">
+                  	<i class="fa fa-pencil-square-o" ></i> Reservar </p>
                 
-                </p>
-                
-                
-                <a href="./ocupacion">
-                  <i class="fa fa-area-chart"></i>
-                  Tasa de ocupación
-                </a>
+                    <a href="./ocupacion">
+                 	<i class="fa fa-area-chart"></i> Tasa de reservación </a>
                 {% endif %}
               </li>
             </ul>
@@ -156,17 +147,11 @@
         <tr><td><b><i class="fa fa-car"></i> Puestos:</b></td></tr>
         <tr><td>{{estacionamiento.NroPuesto}}</td></tr>
       {% endif %}
-      {% if estacionamiento.Reservas_Inicio or estacionamiento.Reservas_Cierre or estacionamiento.Apertura or estacionamiento.Cierre%}
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora de inicio de reservas:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Inicio}}</td></tr>
-        <tr><td><b><i class="fa fa-clock-o"></i> Hora de fin de reservas:</b></td></tr>
-        <tr><td>{{estacionamiento.Reservas_Cierre}}</td></tr>
+      {% if estacionamiento.Apertura or estacionamiento.Cierre or estacionamiento.Esquema or esquema.Tarifa%}
         <tr><td><b><i class="fa fa-clock-o"></i> Hora de apertura:</b></td></tr>
         <tr><td>{{estacionamiento.Apertura}}</td></tr>
         <tr><td><b><i class="fa fa-clock-o"></i> Hora de cierre:</b></td></tr>
-        <tr><td>{{estacionamiento.Cierre}}</td></tr>
-      {% endif %}
-      {% if estacionamiento.Esquema or esquema.Tarifa%}
+        <tr><td>{{estacionamiento.Cierre}}</td></tr>        
         <tr><td><b><i class="fa fa-money"></i></i> Esquema:</b></td></tr>
         <tr><td>{{estacionamiento.Esquema}}</td></tr>
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa:</b></td></tr>
@@ -180,7 +165,7 @@
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa de Horario Pico:</b></td></tr>
         <tr><td>{{esquema.TarifaPico}} Bsf.</td></tr>
       {% endif %}
-      {% if esquema.TarifaFin %}
+      {% if estacionamiento.Esquema == "DifFin"  %}
         <tr><td><b><i class="fa fa-money"></i></i> Tarifa de Fin de Semana:</b></td></tr>
         <tr><td>{{esquema.TarifaFin}} Bsf.</td></tr>
       {% endif %}
@@ -214,7 +199,7 @@
                   	<h5>{{field.label}} (*)</h5>
                   	{% if field.label == "Fecha Inicio Reserva" or field.label == "Fecha Final Reserva" %}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="aaaa-mm-dd" for="id_{{field.name}}"><p>            
-                    {% elif field.label == "Horario Inicio Reserva" or field.label == "Horario Final Reserva"%}
+                    {% elif field.label == "Hora Inicio Reserva" or field.label == "Hora Final Reserva"%}
                     	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
                     {% endif %}
                     {{ field.errors }}

@@ -41,7 +41,7 @@
 
       <!-- upper section -->
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-2" style = "width: 18%;">
           <!-- left -->
           <h3>
             <i class="glyphicon glyphicon-briefcase">
@@ -52,23 +52,38 @@
           
           <ul class="nav nav-stacked">
             <li>
-              <a href=".">
+              <a href="..">
                 <i class="fa fa-bus"></i>
                 Estacionamientos
               </a>
             </li>
-          </ul>
-
-
-          
+          </ul>          
           <hr>
+
+             <ul class="nav nav-stacked">
+              <li>
+              	<a href="./" >
+                  <i class="glyphicon glyphicon-wrench"></i> Parametrizar </a>
+              
+          		{% if estacionamiento.NroPuesto %}
+                	<a href="./reserva">
+                  	<i class="fa fa-pencil-square-o"></i> Reservar </a>
+                  
+                    <a href="./ocupacion">
+                 	<i class="fa fa-area-chart"></i> Tasa de reservación </a>
+                {% endif %}
+              </li>
+            </ul>
+          
+      <hr>
+
           
         </div>
         <!-- /span-3 -->
-<div class="col-sm-10">
+<div class="col-sm-9">
         
       <!-- column 2 --> 
-       <h3><i class="fa fa-bus"></i> Estacionamientos</h3>  
+       <h3><i class="fa fa-bus"></i> Estacionamiento {{estacionamiento.Nombre}}</h3>  
             
        <hr>
        
