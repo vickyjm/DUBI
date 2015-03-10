@@ -89,178 +89,101 @@
        <hr>
           
     	<div class = "col-md-8>
-    		<table class="table table-striped">
-    	</table>
+    		  <table class="table table-striped">
+    	    </table>
     	   		
-    	 <h4>Reporte de nivel de reservación </h4>
-    	 <h5>
-    	 Se reporta la tasa de reservación de los siguientes 7 días, a partir de la fecha actual:
-    	 <b>{{fechaActual}}</b>
-    	 </h5>
-    	 
-    	<div>
-    	<select onchange="getval(this);" class = "grano" id="id_grano" name="grano" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 22%;height: 34px !important;" >
-			<option value ="" select disable style="display:none;">Seleccione un grano</option>
-			<option value="Dia" style = "color:#000;">Día</option>
-			<option value="Hora" style = "color:#000;">Hora</option>
-		</select>
-    	</div>
-    	<br>
-    	
-    	<script>
-			$("#id_grano").change(function(){ 
-			    $("#Dia0").hide();
-				$("#Dia1").hide();
-				$("#Dia2").hide();
-				$("#Dia3").hide();
-				$("#Dia4").hide();
-				$("#Dia5").hide();
-				$("#Dia6").hide();
-				$("#Dia7").hide();
-				$("#id_fecha").hide();
-				$("#GranoDias").hide();
-				
-				if ($("#id_grano").val() == "Dia"){
-    				$("#GranoDias").show();
- 				}
- 				else if ($("#id_grano").val() == "Hora"){
-    				$("#id_fecha").show();
-				}
+    	<h4>Reporte de nivel de reservación </h4>
+    	<h5>
+    	   Se reporta la tasa de reservación de los siguientes 7 días, a partir de la fecha actual:
+    	   <b>{{fechaActual}}</b>
+    	</h5>
 
-				});
-		
-		</script>
-		
-    	<div>
-    	 	    	
-		<select onchange="getval(this);" class = "fecha" id="id_fecha" name="fecha" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 22%;height: 34px !important;" >
-			<option value ="" select disable style="display:none;">Seleccione una fecha</option>
-			<option value="Dia0" style = "color:#000;">{{dias.0}}</option>
-			<option value="Dia1" style = "color:#000;">{{dias.1}}</option>
-			<option value="Dia2" style = "color:#000;">{{dias.2}}</option>
-			<option value="Dia3" style = "color:#000;">{{dias.3}}</option>
-			<option value="Dia4" style = "color:#000;">{{dias.4}}</option>
-			<option value="Dia5" style = "color:#000;">{{dias.5}}</option>
-			<option value="Dia6" style = "color:#000;">{{dias.6}}</option>
-			<option value="Dia7" style = "color:#000;">{{dias.7}}</option>
-		</select> 
-		</div>    	
-    	
-		<script>
-			$("#id_fecha").change(function(){ 
-			    $("#Dia0").hide();
-				$("#Dia1").hide();
-				$("#Dia2").hide();
-				$("#Dia3").hide();
-				$("#Dia4").hide();
-				$("#Dia5").hide();
-				$("#Dia6").hide();
-				$("#Dia7").hide();
-				$("#GranoDias").hide();
-				
-				if ($("#id_fecha").val() == "Dia0"){
-    				$("#Dia0").show();
- 				}
- 				else if ($("#id_fecha").val() == "Dia1"){
-    				$("#Dia1").show();
-				}
-				else if ($("#id_fecha").val() == "Dia2"){
-    				$("#Dia2").show();
-				}
-				else if ($("#id_fecha").val() == "Dia3"){
-    				$("#Dia3").show();
-				}
-				else if ($("#id_fecha").val() == "Dia4"){
-    				$("#Dia4").show();
-				}
-				else if ($("#id_fecha").val() == "Dia5"){
-    				$("#Dia5").show();
-				}
-				else if ($("#id_fecha").val() == "Dia6"){
-    				$("#Dia6").show();
-				}
-				else if ($("#id_fecha").val() == "Dia7"){
-    				$("#Dia7").show();
-				}
-				});
-		
-		</script>
 
-    	<br>
-	    <table class="table table-striped">
+      <hr> 
 
-<div id ="GranoDias">
-    <a href="https://plot.ly/~monica.figuera/177/" target="_blank" title="Porcentaje vs D�as de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/177.png" alt="Porcentaje vs D�as de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:177" src="https://plot.ly/embed.js" async></script>
-</div>
+              <table class = "table table-striped">
+              <thead>
+                <tr>
+                    <th width="120"></th>
 
-<div id = "Dia0">
-    <a href="https://plot.ly/~monica.figuera/178/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/178.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:178" src="https://plot.ly/embed.js" async></script>
-</div>
+                    <th>Tabla</th>
+                    <th>Grano día</th>
+                    <th>Grano horas</th>
+                </tr>
+              </thead>
+              <tbody>      
+                  <td></td>
+                  <td >
+                      <a href = "./ocupacion">
+                          <i class="fa fa-search"></i>
+                          Ver reporte
+                      </a>
+                  </td>
+                  <td >
+                      <a href="./tasaDia">
+                          <i class="fa fa-search"></i>
+                          Ver gráfica por días
+                      </a> 
+                  </td>
+                  <td >
+                      <a href="./tasaHora">
+                          <i class="fa fa-search"></i>
+                          Ver gráficas por horas
+                      </a>
+                  </td>
+              </tbody>
+              </table>
+    <hr>
+    <br>
+        <div class="row">
+            <div class="col-md-2"> 
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width = "30">Día</th> 
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for x in dias %}
+                            <tr>
+                            <td>{{x}}</td>
+                            </tr>
+                    {% endfor %}
 
-<div id = "Dia1">
-    <a href="https://plot.ly/~monica.figuera/179/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/179.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:179" src="https://plot.ly/embed.js" async></script>
-</div>
+                    </tbody>
+                </table>     
 
-<div id = "Dia2">
-    <a href="https://plot.ly/~monica.figuera/180/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/180.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:180" src="https://plot.ly/embed.js" async></script>
-</div>
+            </div>
 
-<div id = "Dia3">
-    <a href="https://plot.ly/~monica.figuera/181/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/181.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:181" src="https://plot.ly/embed.js" async></script>
-</div>
+            <div class="col-md-10">
+                <div class="table-responsive">
+            	    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width = "50"></th> 
+                            {% for hora in horas %}
+                      	        <th>{{hora}}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for diaEst in estadisticas %}
+                                <tr>
+                                <td></td>
+                                {% for horaEst in diaEst %}	        	
+                	                <td> {{horaEst}} </td>
+                	            {% endfor %}
+                                </tr>
+                        {% endfor %}
 
-<div id = "Dia4" >
-    <a href="https://plot.ly/~monica.figuera/182/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/182.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:182" src="https://plot.ly/embed.js" async></script>
-</div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <hr>     
 
-<div id = "Dia5">
-    <a href="https://plot.ly/~monica.figuera/183/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/183.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:183" src="https://plot.ly/embed.js" async></script>
-</div>
-
-<div id = "Dia6">
-    <a href="https://plot.ly/~monica.figuera/184/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/184.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:184" src="https://plot.ly/embed.js" async></script>
-</div>
-
-<div id = "Dia7">
-    <a href="https://plot.ly/~monica.figuera/185/" target="_blank" title="Porcentaje vs Horas de reserva" style="display: block; text-align: center;"><img src="https://plot.ly/~monica.figuera/185.png" alt="Porcentaje vs Horas de reserva" style="max-width: 100%;width: 811px;"  width="811" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
-    <script data-plotly="monica.figuera:185" src="https://plot.ly/embed.js" async></script>
-</div>
-
-          <tr>
-          <td></td> 
-          {% for hora in horas %}
-          	<th>{{hora}}</th>
-          {% endfor %}
-          </tr>
-        
-        <tr>
-         <!-- <td>{{forloop.counter}}</td><td>{{estacionamiento.Apertura}}</td> -->
-        {% for dia in estadisticas %}
-	        <tr class="{% cycle dias.0 dias.1 dias.2 dias.3 dias.4 dias.5 dias.6 dias.7 as dia %}">
-       			<td width= "30%"><b>{{dia}}</b></td>
-	        {% for hora in dia %}	        	
-	        	<td>
-	        	{{hora}}	        	
-	        	</td>
-	        {% endfor %}
-	        </tr>	
-        {% endfor %} 
-        </tr>
-        
-      
-     
-      </table>
-      <hr>     
 </div>
     <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
-
 </body></html>

@@ -285,7 +285,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
         for obj in puestos:
             listaReserva.append([obj[0],-1])
             listaReserva.append([obj[1],1]) 
-           
+    now = datetime.datetime.now()             
     tasasDia = []
     horasApertura = []    
     if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
@@ -295,26 +295,134 @@ def estacionamiento_tasa_ocupacion(request, _id):
     for i in range(estacion.Apertura.hour,longFin):
         horasApertura.append(i)
     
-    weekDay = datetime.datetime.now().weekday()
+    weekDay = now.weekday()
 
-    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,datetime.datetime.now())
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
     porcentaje = 0
     diasReserva = []
     for dia in range(0,8):
         for i in range(len(estadistica[dia])):
             estadistica[dia][i] = float(estadistica[dia][i])
             porcentaje += estadistica[dia][i]
-        temp=(datetime.datetime.now()+datetime.timedelta(days=dia)).date()
+        temp=(now+datetime.timedelta(days=dia)).date()
         tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
         if weekDay == 6: weekDay = -1
         weekDay += 1
         diasReserva.append(porcentaje/len(horasApertura)) 
         porcentaje = 0
             
-    now = datetime.datetime.now()
+
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
-    construirGrafico(tasasDia, diasReserva,fechaActual,"","1")
+    return render(request, 'tasaOcupacion.html', \
+                  {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
+                   tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+
+
+
+# Vista para mostrar la grafica de la tasa de ocupación de un estacionamiento según granularidad dia
+def estacionamiento_tasa_ocupacion_dia(request, _id):
+    _id = int(_id)
+    # Verificamos que el objeto exista antes de continuar
+    estacionamientos = Estacionamiento.objects.all()
+    try:
+        estacion = Estacionamiento.objects.get(id = _id)
+    except ObjectDoesNotExist:
+        return render(request, '404.html')
+ 
+    global listaReserva
     
+    # Se llena la lista de reservas
+    if len(listaReserva) < 1:          
+        puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
+        for obj in puestos:
+            listaReserva.append([obj[0],-1])
+            listaReserva.append([obj[1],1]) 
+         
+    now = datetime.datetime.now()  
+    tasasDia = []
+    horasApertura = []    
+    if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
+        longFin = 24
+    else:
+        longFin = estacion.Cierre.hour
+    for i in range(estacion.Apertura.hour,longFin):
+        horasApertura.append(i)
+    
+    weekDay = now.weekday()
+
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
+    porcentaje = 0
+    diasReserva = []
+    for dia in range(0,8):
+        for i in range(len(estadistica[dia])):
+            estadistica[dia][i] = float(estadistica[dia][i])
+            porcentaje += estadistica[dia][i]
+        temp=(now+datetime.timedelta(days=dia)).date()
+        tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
+        if weekDay == 6: weekDay = -1
+        weekDay += 1
+        diasReserva.append(porcentaje/len(horasApertura)) 
+        porcentaje = 0
+            
+
+    fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
+
+    # por grano dias
+    construirGrafico(tasasDia, diasReserva,fechaActual,"","1")
+      
+    return render(request, 'tasaOcupacionDia.html', \
+                  {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
+                   tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
+
+
+
+# Vista para mostrar las graficas de la tasa de ocupación de un estacionamiento según granularidad horas
+def estacionamiento_tasa_ocupacion_hora(request, _id):
+    _id = int(_id)
+    # Verificamos que el objeto exista antes de continuar
+    estacionamientos = Estacionamiento.objects.all()
+    try:
+        estacion = Estacionamiento.objects.get(id = _id)
+    except ObjectDoesNotExist:
+        return render(request, '404.html')
+ 
+    global listaReserva
+    
+    # Se llena la lista de reservas
+    if len(listaReserva) < 1:          
+        puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
+        for obj in puestos:
+            listaReserva.append([obj[0],-1])
+            listaReserva.append([obj[1],1]) 
+    now = datetime.datetime.now()             
+    tasasDia = []
+    horasApertura = []    
+    if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
+        longFin = 24
+    else:
+        longFin = estacion.Cierre.hour
+    for i in range(estacion.Apertura.hour,longFin):
+        horasApertura.append(i)
+    
+    weekDay = now.weekday()
+
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
+    porcentaje = 0
+    diasReserva = []
+    for dia in range(0,8):
+        for i in range(len(estadistica[dia])):
+            estadistica[dia][i] = float(estadistica[dia][i])
+            porcentaje += estadistica[dia][i]
+        temp=(now+datetime.timedelta(days=dia)).date()
+        tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
+        if weekDay == 6: weekDay = -1
+        weekDay += 1
+        diasReserva.append(porcentaje/len(horasApertura)) 
+        porcentaje = 0
+            
+
+    fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
+
     # por grano horas
     construirGrafico("",estadistica[0],fechaActual,horasApertura,"2")
     construirGrafico("",estadistica[1],fechaActual,horasApertura,"3")
@@ -324,6 +432,6 @@ def estacionamiento_tasa_ocupacion(request, _id):
     construirGrafico("",estadistica[5],fechaActual,horasApertura,"7")
     construirGrafico("",estadistica[6],fechaActual,horasApertura,"8")
     construirGrafico("",estadistica[7],fechaActual,horasApertura,"9")        
-    return render(request, 'tasaOcupacion.html', \
+    return render(request, 'tasaOcupacionHora.html', \
                   {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
                    tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})

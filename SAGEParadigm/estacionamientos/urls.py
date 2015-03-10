@@ -12,4 +12,6 @@ urlpatterns = patterns('',
     url(r'^(?P<_id>\d+)/reserva$', views.estacionamiento_reserva, name = 'estacionamiento_reserva'),
     url(r'^(?P<_id>\d+)/pagar$',views.estacionamiento_pagar_reserva, name = 'estacionamiento_pagar_reserva'),
     url(r'^(?P<_id>\d+)/ocupacion$',views.estacionamiento_tasa_ocupacion, name = 'estacionamiento_tasa_ocupacion'),
+ 	url(r'^(?P<_id>\d+)/tasaDia$',views.estacionamiento_tasa_ocupacion_dia, name = 'estacionamiento_tasa_ocupacion_dia'),    
+ 	url(r'^(?P<_id>\d+)/tasaHora$',views.estacionamiento_tasa_ocupacion_hora, name = 'estacionamiento_tasa_ocupacion_hora'),    
 )
