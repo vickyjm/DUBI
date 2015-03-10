@@ -656,7 +656,8 @@ class MarzulloTestCase(TestCase):
 # Pruebas para PagoReserva
 #################################################################
 
-class PagoReservaTestCase(TestCase):		
+class PagoReservaTestCase(TestCase):
+    # frontera
 	def test_PagoReserva_CamposBien(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -667,7 +668,8 @@ class PagoReservaTestCase(TestCase):
 							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
-			
+	
+    # frontera		
 	def test_PagoReserva_TarjetaMayor16Digitos(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -678,6 +680,7 @@ class PagoReservaTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
+    # frontera
 	def test_PagoReserva_TarjetaMenor16Digitos(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -687,7 +690,8 @@ class PagoReservaTestCase(TestCase):
 							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
-		
+	
+    # malicia	
 	def test_PagoReserva_SinTipo(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -698,6 +702,7 @@ class PagoReservaTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
+    # malicia
 	def test_PagoReserva_NumTarjetaSinGuiones(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -708,7 +713,8 @@ class PagoReservaTestCase(TestCase):
 							}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
-
+    
+    # malicia
 	def test_PagoReserva_NumTarjetaConLetras(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -720,6 +726,7 @@ class PagoReservaTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 	
+    # malicia
 	def test_PagoReserva_SinNacionalidad(self):
 		form_data = { 	'nombre' : 'Juan',
 				'apellidos' : 'Perez',
@@ -729,7 +736,8 @@ class PagoReservaTestCase(TestCase):
 					}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
-		
+	
+    # malicia	
 	def test_PagoReserva_DosApellidos(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez Linares',
@@ -741,6 +749,7 @@ class PagoReservaTestCase(TestCase):
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 	
+    # malicia
 	def test_PagoReserva_CedulaConLetras(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -751,7 +760,8 @@ class PagoReservaTestCase(TestCase):
 					}
 		form = PagoReserva(data = form_data)
 		self.assertEqual(form.is_valid(), False)
-
+    
+    # malicia
 	def test_PagoReserva_CedulaVacia(self):
 		form_data = { 	'nombre' : 'Juan',
 						'apellidos' : 'Perez',
@@ -2026,6 +2036,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		
 	# Front
 class ConsultarReservasFormTestCase(TestCase):
+    # frontera
 	def test_consultarReservasCamposBien(self):
 		form_data = { 	'nacionalidad' : 'V-',
 						'cedula': '12345678',
