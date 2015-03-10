@@ -81,6 +81,7 @@ def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
         longFin = Cierre.hour
     for i in range(Apertura.hour,longFin):
         horas.append(i)    
+
     aux = []
     for dia in range(0,8):
         for i in range(Apertura.hour,longFin):
@@ -213,10 +214,26 @@ def validarFin(tarifa,tarifaFin):
 		return (False,'La tarifa para el fin de semana es obligatoria')
 	return (True,'')
 
-def construirGrafico(tasasDia,estadistica,dia):
+def construirGrafico(tasasDia,estadistica,dia,tasasHora="",name=""):
+    if tasasHora != "":
+        aux = []
+        for hora in range(len(tasasHora)):
+            aux.append(float(tasasHora[hora]) + 0.5)
+        ejeX = aux
+        type = 25
+        rangoIni = 0
+        rangoFin = 24
+        titulo = "Horas de reserva"
+    else:
+        titulo = "Días de reserva"
+        ejeX = tasasDia
+        type = 15
+        rangoIni = -0.5
+        rangoFin = 7.5
+    	
     data = Data([
         Bar(
-            x = tasasDia,
+            x = ejeX,
             y = estadistica,
         )
     ])
@@ -226,7 +243,9 @@ def construirGrafico(tasasDia,estadistica,dia):
         xaxis = XAxis(
             showline = True,
             rangemode = "nonnegative",
-            title = "Días de reserva",
+            title = titulo,
+            nticks = type,
+            range = [rangoIni,rangoFin],
             linewidth = 1,
             mirror = False,
             gridwidth = 1,
@@ -274,7 +293,7 @@ def construirGrafico(tasasDia,estadistica,dia):
     )
 
     fig = Figure(data=data,layout = layout)
-    py.plot(fig, filename='tasaOcupacion',auto_open=False) 
+    py.plot(fig, filename=name, auto_open=False)
 
 def obtenerIngresos(rif):
 	estacion = Estacionamiento.objects.filter(Rif = rif)
