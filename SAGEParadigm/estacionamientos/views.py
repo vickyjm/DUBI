@@ -285,7 +285,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
         for obj in puestos:
             listaReserva.append([obj[0],-1])
             listaReserva.append([obj[1],1]) 
-    print(listaReserva)        
+           
     tasasDia = []
     horasApertura = []    
     if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
@@ -295,7 +295,6 @@ def estacionamiento_tasa_ocupacion(request, _id):
     for i in range(estacion.Apertura.hour,longFin):
         horasApertura.append(i)
     
-    diasSemana = {0:'Lunes',1:'Martes',2:'Miércoles',3:'Jueves',4:'Viernes',5:'Sábado',6:'Domingo'}
     weekDay = datetime.datetime.now().weekday()
 
     estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,datetime.datetime.now())
@@ -314,7 +313,17 @@ def estacionamiento_tasa_ocupacion(request, _id):
             
     now = datetime.datetime.now()
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
-    construirGrafico(tasasDia, diasReserva,fechaActual)
+    construirGrafico(tasasDia, diasReserva,fechaActual,"","1")
+    
+    # por grano horas
+    construirGrafico("",estadistica[0],fechaActual,horasApertura,"2")
+    construirGrafico("",estadistica[1],fechaActual,horasApertura,"3")
+    construirGrafico("",estadistica[2],fechaActual,horasApertura,"4")
+    construirGrafico("",estadistica[3],fechaActual,horasApertura,"5")
+    construirGrafico("",estadistica[4],fechaActual,horasApertura,"6")
+    construirGrafico("",estadistica[5],fechaActual,horasApertura,"7")
+    construirGrafico("",estadistica[6],fechaActual,horasApertura,"8")
+    construirGrafico("",estadistica[7],fechaActual,horasApertura,"9")        
     return render(request, 'tasaOcupacion.html', \
                   {'estacionamiento': estacion, 'horas': horasApertura, 'dias': \
                    tasasDia, 'estadisticas': estadistica, 'fechaActual': fechaActual})
