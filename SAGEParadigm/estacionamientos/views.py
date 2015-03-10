@@ -308,7 +308,8 @@ def estacionamiento_tasa_ocupacion(request, _id):
         tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
         if weekDay == 6: weekDay = -1
         weekDay += 1
-        diasReserva.append(porcentaje/len(horasApertura)) 
+        conversion = float(Decimal('%.1f' % (porcentaje/len(horasApertura))))
+        diasReserva.append(conversion)  
         porcentaje = 0
             
 
@@ -361,10 +362,10 @@ def estacionamiento_tasa_ocupacion_dia(request, _id):
         tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
         if weekDay == 6: weekDay = -1
         weekDay += 1
-        diasReserva.append(porcentaje/len(horasApertura)) 
+        conversion = float(Decimal('%.1f' % (porcentaje/len(horasApertura))))
+        diasReserva.append(conversion) 
         porcentaje = 0
             
-
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
 
     # por grano dias
@@ -417,9 +418,9 @@ def estacionamiento_tasa_ocupacion_hora(request, _id):
         tasasDia.append(str(temp.day)+"-"+str(temp.month)+"-"+str(temp.year))
         if weekDay == 6: weekDay = -1
         weekDay += 1
-        diasReserva.append(porcentaje/len(horasApertura)) 
+        conversion = float(Decimal('%.1f' % (porcentaje/len(horasApertura))))
+        diasReserva.append(conversion)  
         porcentaje = 0
-            
 
     fechaActual = str(now.day)+"-"+str(now.month)+"-"+str(now.year)
 
