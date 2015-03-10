@@ -195,6 +195,7 @@ class EstacionamientoFormTestCase(TestCase):
 ###################################################################
 
 class EstacionamientoExtendedFormTestCase(TestCase):
+	
 	# malicia
 	def test_EstacionamientoExtendedForm_UnCampo(self):
 		form_data = { 'puestos': 2}
@@ -279,6 +280,7 @@ class EstacionamientoExtendedFormTestCase(TestCase):
 #####################################################################
 
 class EstacionamientoExtendedFormControllerTestCase(TestCase):
+	
 	# normal
 	def test_HorariosValidos(self):
 		HoraInicio = datetime.time(hour = 12, minute = 0, second = 0)
@@ -319,6 +321,7 @@ class EstacionamientoExtendedFormControllerTestCase(TestCase):
 ###################################################################
 
 class EstacionamientoReservaTestCase(TestCase):
+	
 	# malicia
 	def test_EstacionamientoReserva_Vacio(self):
 		form_data = {}
@@ -422,7 +425,6 @@ class EstacionamientoReservaControllerTestCase(TestCase):
 		x = validarHorarioReserva(ReservaInicio, ReservaFin, HoraApertura, HoraCierre, horaActual)
 		self.assertEqual(x, (False, 'La hora de inicio de la reserva debe estar en un horario valido'))
 
-	# malic	
 		
 ###################################################################
 #		Pruebas para validar horario pico
@@ -430,6 +432,7 @@ class EstacionamientoReservaControllerTestCase(TestCase):
 
 class ValidarHorarioPicoTestCase(TestCase):
 
+	#normal
 	def test_validarPicosHorarioPicoValido(self):
 
 		horaPicoIni = datetime.time(12,0,0)
@@ -442,6 +445,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (True, ''))
 		
+	#malicia	
 	def test_validarPicosInicioHorarioPicoMayorFinHorarioPico(self):
 
 		horaPicoIni = datetime.time(14,0,0)
@@ -453,7 +457,8 @@ class ValidarHorarioPicoTestCase(TestCase):
 
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'La hora de inicio de la hora pico debe ser menor que el fin de la hora pico'))
-			
+	
+	#malicia		
 	def test_validarPicosTarifaPicoIgualTarifaValle(self):
 
 		horaPicoIni = datetime.time(12,0,0)
@@ -466,8 +471,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'La tarifa para el horario pico debe ser mayor que la tarifa para el horario valle'))
 		
-		
-	
+	#malicia
 	def test_validarPicosInicioHorarioPicoMenorQueHorarioReservas(self):
 
 		horaPicoIni = datetime.time(5,0,0)
@@ -480,6 +484,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
 	
+	#malicia
 	def test_validarPicosFinHorarioPicoMayorQueHorarioReservas(self):
 
 		horaPicoIni = datetime.time(12,0,0)
@@ -492,6 +497,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False,'El horario pico debe estar dentro del horario de funcionamiento del estacionamiento'))
 	
+	#malicia
 	def test_validarPicosHorarioPicoIgualQueHorarioReservas(self):
 
 		horaPicoIni = datetime.time(6,0,0)
@@ -504,6 +510,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 		respuesta = validarPicos(inicioReservas,finReservas,horaPicoIni,horaPicoFin,tarifa,tarifaPico)
 		self.assertEqual(respuesta, (False, 'Se debe garantizar la existencia de al menos un minuto de horario valle'))
 	
+	#malicia
 	def test_validarPicosInicioHorarioPicoIgualFinHorarioPico(self):
 
 		horaPicoIni = datetime.time(10,0,0)
@@ -522,6 +529,7 @@ class ValidarHorarioPicoTestCase(TestCase):
 ################################################################
 
 class MarzulloTestCase(TestCase):
+	
 	# caso borde
 	def test_Reservar_horarios_todoeldia(self):
 		Hora1In = datetime.datetime(year = 2015,month = 10,day = 5,hour = 6, minute = 0, second = 0)
@@ -657,6 +665,7 @@ class MarzulloTestCase(TestCase):
 #################################################################
 
 class PagoReservaTestCase(TestCase):
+	
     # frontera
 	def test_PagoReserva_CamposBien(self):
 		form_data = { 	'nombre' : 'Juan',
@@ -1344,6 +1353,7 @@ class PruebasParaEsquemasTarifarios(unittest.TestCase):
 
 class PruebasDecimalYFloat(unittest.TestCase):
 
+	#normal (prueba de aceptación)
 	def test_diferenciaEntreDecimalYFloat(self):
 		tarifa = Decimal(0.5)
 		inires = datetime.datetime(2015,7,12,10,0,0,0)
@@ -1705,6 +1715,7 @@ class PruebasCalcularTasaReserva(unittest.TestCase):
 
 class TestCaseIngresoForm(unittest.TestCase):
 	
+	#borde
 	def test_ConsultarIngresoFormValido(self):
 		form_data = {
 					'rif' : 'J-12345678-0'
@@ -1712,6 +1723,7 @@ class TestCaseIngresoForm(unittest.TestCase):
 		form = ConsultarIngresoForm(data = form_data)
 		self.assertEqual(form.is_valid(), True)
 		
+	#borde
 	def test_ConsultarIngresoFormNoValidoPorfaltadecaracteres(self):
 		form_data = {
 					'rif' : 'J-1234'
@@ -1719,6 +1731,7 @@ class TestCaseIngresoForm(unittest.TestCase):
 		form = ConsultarIngresoForm(data = form_data)
 		self.assertEqual(form.is_valid(), False)
 		
+	#borde
 	def test_ConsultarIngresoFormNoValidoPorcaracteresincorrecto(self):
 		form_data = {
 					'rif' : 'K-12345678-0'
@@ -1732,6 +1745,7 @@ class TestCaseIngresoForm(unittest.TestCase):
 
 class TestCaseobtenerIngresos(unittest.TestCase):
 	
+	#esquina
 	def test_obtenerIngresosSinEstacionamientos(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1739,6 +1753,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, []) 
 		
+	#borde
 	def test_obtenerIngresosEstacionamientosNocoincideRif(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1751,7 +1766,8 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		obj.save()
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, [])
-		
+	
+	#borde	
 	def test_obtenerIngresosEstacionamientosSinReservas(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1765,6 +1781,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, [['EstacionamientoA',0]])
 		
+	#normal
 	def test_obtenerIngresosEstacionamientosConVariasReservas(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1806,6 +1823,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('24.0')]])
 		
+	#normal
 	def test_obtenerIngresosMultiplesEstacionamientosUnaSolaCoincidencia(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1845,6 +1863,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, [['EstacionamientoA',Decimal('16.0')]])
 		
+	#normal
 	def test_obtenerIngresosMultiplesEstacionamientosTodosCoinciden(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1914,6 +1933,7 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 								['EstacionamientoB',Decimal('20.0')],
 								['EstacionamientoC',Decimal('27.5')]])
 		
+	#borde
 	def test_obtenerIngresosMultipleEstacionamientosNocoincideRif(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -1950,7 +1970,8 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 		obj5.save()
 		ingresos = obtenerIngresos('J-12345678-0')
 		self.assertEqual(ingresos, [])
-		
+	
+	#esquina	
 	def test_obtenerIngresosMaximoEstacionamientosTodosCoinciden(self):
 		Estacionamiento.objects.all().delete()
 		ReservasModel.objects.all().delete()
@@ -2034,8 +2055,8 @@ class TestCaseobtenerIngresos(unittest.TestCase):
 								['EstacionamientoD',0],
 								['EstacionamientoE',0]])
 		
-	# Front
 class ConsultarReservasFormTestCase(TestCase):
+	
     # frontera
 	def test_consultarReservasCamposBien(self):
 		form_data = { 	'nacionalidad' : 'V-',

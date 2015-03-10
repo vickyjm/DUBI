@@ -292,8 +292,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
         puestos = ReservasModel.objects.filter(Estacionamiento = estacion).values_list('InicioReserva', 'FinalReserva')
         for obj in puestos:
             listaReserva.append([obj[0],-1])
-            listaReserva.append([obj[1],1]) 
-    print(listaReserva)        
+            listaReserva.append([obj[1],1])      
     tasasDia = []
     horasApertura = []    
     if estacion.Cierre.hour == 23 and estacion.Cierre.minute > 0:
