@@ -11,8 +11,9 @@ $(function(){
 		var _valor = $('#id_nombre').val();
 		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
 		var valid = regEx.test(_valor);
+		var tam = _valor.length;
 		
-		if (valid){
+		if (valid && tam <= 100){
 			$('#id_nombre').popover('hide');
 		} else {
 			$('#id_nombre').popover('show');
@@ -25,8 +26,9 @@ $(function(){
 		var _valor = $('#id_apellidos').val();
 		var regEx = /^[a-zA-ZáéíóúñÑÁÉÍÓÚüÜ][a-zA-ZáéíóúñÑÁÉÍÓÚüÜ ]*$/;
 		var valid = regEx.test(_valor);
+		var tam = _valor.length;
 		
-		if (valid){
+		if (valid && tam <= 100){
 			$('#id_apellidos').popover('hide');
 		} else {
 			$('#id_apellidos').popover('show');
@@ -37,7 +39,7 @@ $(function(){
 	$('#id_cedula').keyup(function(){
 		var _this = $('#id_cedula');
 		var _valor = $('#id_cedula').val();
-		var regEx = /^([1-9][0-9]{0,3})(\.?[0-9]{3}){0,2}$/;
+		var regEx = /^([1-9][0-9]{0,3})([0-9]{3}){0,2}$/;
 		var valid = regEx.test(_valor);
 
         

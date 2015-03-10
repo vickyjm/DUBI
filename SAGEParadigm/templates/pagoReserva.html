@@ -116,17 +116,37 @@
                 	{% ifnotequal field.name "tipoTarjeta" %}
                 		<label>{{field.label}} (*)</label>
                 		{%if field.name == "numTarjeta"%}
-                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="Número" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Debe ingresar 16 dígitos. Puede separar cada 4 dígitos con un guión si lo desea"><p>
+                			{% if field.value %}
+                    			<input type="text" class="form-control" name="{{field.name}}" placeholder="Número" value="{{field.value}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Debe ingresar 16 dígitos. Puede separar cada 4 dígitos con un guión si lo desea"><p>
+                    		{% else %}
+                    			<input type="text" class="form-control" name="{{field.name}}" placeholder="Número" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Debe ingresar 16 dígitos. Puede separar cada 4 dígitos con un guión si lo desea"><p>
+                    		{% endif %}		
                     	{%elif field.name == "nacionalidad"%}
 							<select id="id_{{field.name}}" name="nacionalidad" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 								<option value ="" select disable style="display:none;">Nacionalidad</option>
-								<option value="V-" style = "color:#000;">Venezolano</option>
-								<option value="E-" style = "color:#000;">Extranjero</option>
+								{% if field.value == "V-" %}
+									<option value="V-" selected style = "color:#000;">Venezolano</option>
+								{% else %}
+									<option value="V-" style = "color:#000;">Venezolano</option>
+								{% endif %}
+								{% if field.value == "E-" %}	
+									<option value="E-" selected style = "color:#000;">Extranjero</option>
+								{% else %}
+									<option value="E-" style = "color:#000;">Extranjero</option>
+								{% endif %}
 							</select>
 						{%elif field.name == "cedula"%}
-							<input type="text" class="form-control" name="{{field.name}}" placeholder="Máximo 9 dígitos" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Máximo 9 dígitos"><p>
+							{% if field.value %}
+								<input type="text" class="form-control" name="{{field.name}}" value="{{field.value}}" placeholder="Máximo 9 dígitos" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Máximo 9 dígitos"><p>
+							{% else %}
+								<input type="text" class="form-control" name="{{field.name}}" placeholder="Máximo 9 dígitos" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Máximo 9 dígitos"><p>
+							{% endif %}
                     	{%else%}
-                    		<input type="text" class="form-control" name="{{field.name}}" placeholder={{field.label}} id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo caracteres del Castellano"><p>
+                    		{% if field.value %}
+                    			<input type="text" class="form-control" name="{{field.name}}" value="{{field.value}}" placeholder={{field.label}} id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo caracteres del Castellano"><p>
+                    		{% else %}
+                    			<input type="text" class="form-control" name="{{field.name}}" placeholder={{field.label}} id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo caracteres del Castellano"><p>
+                    		{% endif%}	
                 
                     	{%endif%}
                     		
@@ -135,9 +155,21 @@
                   		<label> Tipo de Tarjeta (*)</label>
 						<select id="id_tarjeta" name="tipoTarjeta" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 							<option value ="" select disable style="display:none;">Tipos</option>
-							<option value="Mister" style = "color:#000;">Mister</option>
-							<option value="Vista" style = "color:#000;">Vista</option>
-							<option value="Xpres" style = "color:#000;">Xpres</option>
+							{% if field.value == "Mister" %}
+								<option value="Mister"selected style = "color:#000;">Mister</option>
+							{% else %}	
+								<option value="Mister" style = "color:#000;">Mister</option>
+							{% endif %}
+							{% if field.value == "Vista" %}
+								<option value="Vista"selected style = "color:#000;">Vista</option>
+							{% else %}
+								<option value="Vista" style = "color:#000;">Vista</option>
+							{% endif %}
+							{% if field.value == "Xpres" %}
+								<option value="Xpres"selected style = "color:#000;">Xpres</option>
+							{% else %}
+								<option value="Xpres" style = "color:#000;">Xpres</option>
+							{% endif %}
 						</select>                	
                 	</h></tr>
                 	<br></br>

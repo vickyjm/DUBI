@@ -122,8 +122,15 @@ def estacionamiento_detail(request, _id):
     else:
         form = EstacionamientoExtendedForm()
         esquemaform = EsquemaForm()
-    return render(request, 'estacionamiento.html', \
-                  {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq})
+    if (estacion.Apertura != None):
+        hApertura = str(estacion.Apertura.hour) + ':' + str(estacion.Apertura.minute)
+        hCierre = str(estacion.Cierre.hour) + ':' + str(estacion.Cierre.minute)
+        if (estacion.Esquema == 'DifHora'):
+            pIni = str(esq.PicoIni.hour) + ':' + str(esq.PicoIni.minute)
+            pFin = str(esq.PicoFin.hour) + ':' + str(esq.PicoFin.minute)
+            return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq,'hApertura':hApertura,'hCierre':hCierre,"pIni":pIni,"pFin":pFin})
+        return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq,'hApertura':hApertura,'hCierre':hCierre})    
+    return render(request, 'estacionamiento.html', {'form': form, 'esquemaform': esquemaform, 'estacionamiento': estacion, 'esquema': esq})
 
 # Vista para procesar una reserva en un estacionamiento
 def estacionamiento_reserva(request, _id):

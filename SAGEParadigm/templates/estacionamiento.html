@@ -8,10 +8,12 @@
       SAGE
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
-    <link href="{% static 'css/base.css'%}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css'%}" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/validParametrizar.js"></script>
    </head>
 
  <body>
@@ -209,10 +211,30 @@
 					<h5>{{field.label}} (*)</h5>
 					
 					{% if field.name == "puestos" %}
-                   		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
-                   	{% else %}
-                    	<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
-                    {% endif %} 
+                   		{% if field.value %}
+                   			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
+                   		{% elif estacionamiento.NroPuesto %}
+                   			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{estacionamiento.NroPuesto}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>
+                   		{% else %}	
+							<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo enteros positivos"><p>                   		
+                   		{% endif %}
+                   	{% elif field.name == "horarioin" %}
+                    	{% if field.value%}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% elif estacionamiento.Cierre %}             
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hApertura}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% else %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% endif %}
+                    {% elif field.name == "horarioout" %}
+                    	{% if field.value %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% elif estacionamiento.Cierre %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{hCierre}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% else %}
+                    		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                    	{% endif %}
+                   {% endif %} 
               {{ field.errors }}
                </div>
                </div>
@@ -232,35 +254,56 @@
             		<h5>{{field.label}} (*)</h5>
             		<select onchange="getval(this);" class = "esquema" id="id_esquema" name="esquema" style="background-color:#fff;color:#A0A0A0;border:1px solid #ccc;padding: 4px 8px;border-radius:7px;width: 100%;height: 34px !important;" >
 						<option value ="" select disable style="display:none;">Seleccione una opción</option>
-						<option value="Hora" style = "color:#000;">Por hora</option>
-						<option value="Minuto" style = "color:#000;">Por minuto</option>
-						<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
-						<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
-						<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
-					</select> 
-					
-					<script>
-			
-					$("#id_esquema").change(function(){ 
-						 if ($("#id_esquema").val() == "DifHora"){
-    						$("#IniHorarioPico").show();
- 							$("#FinHorarioPico").show();
- 							$("#TarifaPico").show();
- 							$("#TarifaFin").hide();
- 						}
- 						else if ($("#id_esquema").val() == "DifFin"){
- 							$("#IniHorarioPico").hide();
- 							$("#FinHorarioPico").hide();
- 							$("#TarifaPico").hide();
- 							$("#TarifaFin").show();
- 						}
- 						else{
- 							$("#IniHorarioPico").hide();
- 							$("#FinHorarioPico").hide();
- 							$("#TarifaPico").hide();
- 							$("#TarifaFin").hide();
- 						}
-					});
+
+						{% if estacionamiento.Esquema == "Hora" or field.value == "Hora" %}
+							<option value="Hora" selected style ="color:#000;">Por hora</option>	
+						{% else %}
+							<option value="Hora" style ="color:#000;">Por hora</option>
+						{% endif %}
+						{% if estacionamiento.Esquema == "Minuto" or field.value == "Minuto" %}
+							<option value="Minuto" selected style = "color:#000;">Por minuto</option>
+						{% else %}
+							<option value="Minuto" style = "color:#000;">Por minuto</option>
+						{% endif %}
+						{% if estacionamiento.Esquema == "HoraFraccion" or field.value == "HoraFraccion"%}
+							<option value="HoraFraccion" selected style = "color:#000;">Hora y fracción</option>
+						{% else %}	
+							<option value="HoraFraccion" style = "color:#000;">Hora y fracción</option>
+						{% endif %}
+						{% if estacionamiento.Esquema == "DifHora" or field.value == "DifHora"%}
+							<option value="DifHora" selected style = "color:#000;">Diferenciado por hora</option>
+						{% else %}
+							<option value="DifHora" style = "color:#000;">Diferenciado por hora</option>
+						{% endif %}
+						{% if estacionamiento.Esquema == "DifFin" or field.value == "DifFin"%}
+							<option value="DifFin" selected style = "color:#000;">Diferenciado por fin de semana</option>
+						{% else %}
+							<option value="DifFin" style = "color:#000;">Diferenciado por fin de semana</option>
+						{% endif %}
+						</select> 
+						
+						<script>
+	
+						$("#id_esquema").change(function(){ 
+							 if ($("#id_esquema").val() == "DifHora"){
+	    						$("#IniHorarioPico").show();
+	 							$("#FinHorarioPico").show();
+	 							$("#TarifaPico").show();
+	 							$("#TarifaFin").hide();
+	 						}
+	 						else if ($("#id_esquema").val() == "DifFin"){
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").show();
+	 						}
+	 						else{
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").hide();
+	 						}
+						});
 		
 					</script>
 
@@ -269,51 +312,89 @@
 				
 				{%endifequal%}
 
-
-               	{% ifequal field.name "tarifa" %}
-               		<h5>{{field.label}} (*)</h5>
-               	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
-               	{%endifequal%}
-               	
-               	{% if field.name == "hora_picoini" %}
-            		<div id = "IniHorarioPico" >
-            		<h5>{{field.label}} (*)</h5>
-            		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
-            		</div>
-            		
-            	{% endif%}
-            	
-            	{% if field.name == "hora_picofin"%}
-            		<div id = "FinHorarioPico" >
-            		<h5>{{field.label}} (*)</h5>
-            		<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}"><p>
-            		</div>
-            	{% endif%}
-            	
-            	{% if field.name == "tarifa_pico"%}
-               		<div id = "TarifaPico" >
-               		<h5>{{field.label}} (*)</h5>
-            		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
-            		</div>
-         		{% endif %}
-         		
-         		{% if field.name == "tarifa_fin"%}
-               		<div id = "TarifaFin" >
-               		<h5>{{field.label}} (*)</h5>
-            		<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}"><p>
-            		</div>
-         		{% endif %}
-         		
-    			<script>
-            		if ($("#id_esquema").val() != "Hora" && $("#id_esquema").val() != "Minuto" && $("#id_esquema").val() != "HoraFraccion" && $("#id_esquema").val() != "DifHora" && $("#id_esquema").val() != "DifFin"){
-            			$("#IniHorarioPico").hide();
-            			$("#FinHorarioPico").hide();
-            			$("#TarifaPico").hide();
-            			$("#TarifaFin").hide();
-            			}
-            	</script>
-    			        			
-				{{ field.errors }}
+	
+                   	{% ifequal field.name "tarifa" %}
+                   	 <h5>{{field.label}} (*)</h5>
+                   	 {% if field.value %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{field.value}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                   	 {% elif esquema.Tarifa %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.Tarifa}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                   	 {% else %}
+                   	 	<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                   	 {% endif %}	
+                   	{%endifequal%}
+                   	
+                   	
+                   	{% if field.name == "hora_picoini" %}
+                		<div id = "IniHorarioPico" >
+                		<h5>{{field.label}} (*)</h5>
+                		{% if field.value %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% elif esquema.PicoFin %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pIni}}"for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% endif %}
+                		</div>
+                		
+                	{% endif%}
+                	
+                	{% if field.name == "hora_picofin"%}
+                		<div id = "FinHorarioPico" >
+                		<h5>{{field.label}} (*)</h5>
+                		{% if field.value %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{field.value}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% elif esquema.PicoFin %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" value="{{pFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="hh:mm" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="El formato correcto es HH:MM"><p>
+                		{% endif %}
+                		</div>
+                	{% endif%}
+                	
+                	{% if field.name == "tarifa_pico"%}
+                   		<div id = "TarifaPico" >
+                   		<h5>{{field.label}} (*)</h5>
+                   		{% if esquema.TarifaPico %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.TarifaPico}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                		{% endif %}	
+                		</div>
+             		{% endif %}
+             		
+             		{% if field.name == "tarifa_fin"%}
+                   		<div id = "TarifaFin" >
+                   		<h5>{{field.label}} (*)</h5>
+                   		{% if esquema.TarifaFin %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" value="{{esquema.TarifaFin}}" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                		{% else %}
+                			<input type="text" class="form-control" name="{{field.name}}" placeholder="" for="id_{{field.name}}" id="id_{{field.name}}" data-toggle="popover" title="¡Atento!" data-content="Solo números con hasta dos cifras significativas"><p>
+                		{% endif %}	
+                		</div>
+             		{% endif %}
+        			<script>
+                		if ($("#id_esquema").val() != "DifHora" && $("#id_esquema").val() != "DifFin"){
+                			$("#IniHorarioPico").hide();
+                			$("#FinHorarioPico").hide();
+                			$("#TarifaPico").hide();
+                			$("#TarifaFin").hide();
+                			}
+                		else if ($("#id_esquema").val() == "DifHora"){
+	    						$("#IniHorarioPico").show();
+	 							$("#FinHorarioPico").show();
+	 							$("#TarifaPico").show();
+	 							$("#TarifaFin").hide();
+	 						}
+	 					else if ($("#id_esquema").val() == "DifFin"){
+	 							$("#IniHorarioPico").hide();
+	 							$("#FinHorarioPico").hide();
+	 							$("#TarifaPico").hide();
+	 							$("#TarifaFin").show();
+	 						}
+                	</script>
+        			        			
+					{{ field.errors }}
 					
               {% endfor %}
              
