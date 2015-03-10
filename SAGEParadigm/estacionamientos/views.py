@@ -297,7 +297,7 @@ def estacionamiento_tasa_ocupacion(request, _id):
     
     weekDay = now.weekday()
 
-    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now)
     porcentaje = 0
     diasReserva = []
     for dia in range(0,8):
@@ -351,7 +351,7 @@ def estacionamiento_tasa_ocupacion_dia(request, _id):
     
     weekDay = now.weekday()
 
-    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now)
     porcentaje = 0
     diasReserva = []
     for dia in range(0,8):
@@ -407,7 +407,7 @@ def estacionamiento_tasa_ocupacion_hora(request, _id):
     
     weekDay = now.weekday()
 
-    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now,longFin,horasApertura)
+    estadistica = calcularTasaReservaHoras(listaReserva, estacion.Apertura, estacion.Cierre,estacion.NroPuesto,now)
     porcentaje = 0
     diasReserva = []
     for dia in range(0,8):

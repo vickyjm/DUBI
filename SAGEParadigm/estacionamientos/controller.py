@@ -70,8 +70,17 @@ def reservar(horaIni,horaFin,tabla,puestos) :
 # Devuelve una matriz con el porcentaje de ocupación por horas del día actual
 # y de los próximos 7 días válidos de reserva a partir de él
 
-def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual,longFin,horas):
+def calcularTasaReservaHoras(tabla,Apertura, Cierre,NroPuesto,DiaActual):
     estadistica = []
+    horas = []
+
+    if Cierre.hour == 23 and Cierre.minute > 0:
+        longFin = 24
+    else:
+        longFin = Cierre.hour
+    for i in range(Apertura.hour,longFin):
+        horas.append(i)    
+
     aux = []
     for dia in range(0,8):
         for i in range(Apertura.hour,longFin):
