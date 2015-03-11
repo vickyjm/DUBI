@@ -156,6 +156,8 @@ def validarHorarioReserva(ReservaInicio, ReservaFin, HorarioApertura, HorarioCie
     delta = ReservaFin - ReservaInicio
     deltaActual = ReservaInicio - fechaActual
     
+    if (ReservaFin>fechaActual+datetime.timedelta(days=7)):
+        return (False, 'La reserva debe estar en un intervalo dentro de los próximos 7 días')
     if (delta.days == 0) and (delta.seconds < 3600) :
         return (False, 'El tiempo de reserva debe ser al menos de 1 hora')
     else:
