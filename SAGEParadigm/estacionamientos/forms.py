@@ -125,7 +125,7 @@ class PagoReserva(forms.Form):
                     label = "Cédula de Identidad",
                     validators = [
                         RegexValidator(
-                            regex = '^([1-9][0-9]{0,3})([0-9]{3}){0,2}$',
+                            regex = '^([1-9][0-9]{0,2})([0-9]{3}){0,2}$',
                             message = 'Formato erróneo'
                         )
                     ]
@@ -163,7 +163,7 @@ class ConsultarReservasForm(forms.Form):
                 label = "Cédula de Identidad",
                 validators = [
                     RegexValidator(
-                        regex = '^([1-9][0-9]{0,3})([0-9]{3}){0,2}$',
+                        regex = '^([1-9][0-9]{0,2})([0-9]{3}){0,2}$',
                         message = 'Formato erróneo'
                     )
                 ]
